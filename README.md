@@ -1,2 +1,12 @@
 # they-said
 An app to analyze the argument of texts on topics
+
+## Technologies Used
+
+* Flask
+* React
+  * Annotation and Highlight support (for Text analysis): [react-text-annotate](https://github.com/mcamac/react-text-annotate)
+  * Search support (various uses on site): [react-elasticsearch](https://github.com/betagouv/react-elasticsearch)
+  * File upload support (for Text creation): [react-dropzone](https://github.com/react-dropzone/react-dropzone)
+  * Slider component (for Ratings): [react-component/slider](https://github.com/react-component/slider)
+  * Bar charts (for Text profile display): [react-charts/bar-chart](https://canvasjs.com/react-charts/bar-chart/)
