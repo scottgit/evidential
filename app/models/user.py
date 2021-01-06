@@ -6,10 +6,14 @@ class User(db.Model, UserMixin):
   __tablename__ = 'users'
 
   id = db.Column(db.Integer, primary_key = True)
-  username = db.Column(db.String(40), nullable = False, unique = True)
   email = db.Column(db.String(255), nullable = False, unique = True)
+  first_name = db.Column(db.String(40), nullable = False)
+  last_name = db.Column(db.String(40), nullable = False)
+  verified = db.Column(db.Boolean, nullable = False, default=False)
+  active = db.Column(db.Boolean, nullable = False, default=True)
   hashed_password = db.Column(db.String(255), nullable = False)
-
+  created_at = db.Column(db.DateTime, nullable = False)
+  updated_at = db.Column(db.DateTime, nullable = False)
 
   @property
   def password(self):
@@ -25,9 +29,24 @@ class User(db.Model, UserMixin):
     return check_password_hash(self.password, password)
 
 
-  def to_dict(self):
+  def full_to_dict(self):
     return {
       "id": self.id,
-      "username": self.username,
-      "email": self.email
+      "email": self.email,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "active": self.active,
+      "created": self.created_at,
+      "updated": self.updated_at
+    }
+
+  def public_to_dict(self):
+    return {
+      "id": self.id,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "active": self.active,
+      "created": self.created_at
     }
