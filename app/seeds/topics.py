@@ -1,20 +1,20 @@
 from app.models import db, Topic
-from datetime import date
+from datetime import datetime
 
 def seed_topics():
 
     topics = [
         Topic(
-            key_name='Test',
+            label='Test',
             description='A topic created purely to test with',
-            created_at=date.today(),
-            updated_at=date.today(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
             ),
         Topic(
-            key_name='Jean Calvin on Redemption',
-            description='A topic created to test with works by the theologian',
-            created_at=date.today(),
-            updated_at=date.today(),
+            label='Salvation is by faith',
+            description='A topic created to test with some various works',
+            created_at=datetime(2020, 1, 4, 13),
+            updated_at=datetime(2020, 1, 5, 8),
             ),
     ]
 
