@@ -4,11 +4,24 @@ from app.models import db, User
 # Adds a demo user, you can add other users here if you want
 def seed_users():
 
-    demo = User(username='Demo', email='demo@aa.io',
-                password='password')
+    users = [
+        User(
+            first_name='Demo',
+            last_name='Persona',
+            email='demo@demo.demo',
+            verified=True,
+            password='hj8n%9Gw'
+            ),
+        User(
+            first_name='Scott',
+            last_name='Smith',
+            email='scott@scott.com',
+            verified=True,
+            password='ss2DevT$'
+        )
+    ]
 
-    db.session.add(demo)
-
+    db.session.bulk_save_objects(objects)
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the users table.
