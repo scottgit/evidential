@@ -5,6 +5,7 @@ An app to analyze the argument of texts on topics
 
 * Flask
   * Convert pdf support: [pdfminer.six](https://github.com/pdfminer/pdfminer.six)
+  * URL request support: [requests](https://github.com/psf/requests)
 * React
   * Annotation and Highlight support (for Text analysis): [react-text-annotate](https://github.com/mcamac/react-text-annotate)
   * Search support (various uses on site): [react-elasticsearch](https://github.com/betagouv/react-elasticsearch)
