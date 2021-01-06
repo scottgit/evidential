@@ -2,7 +2,6 @@ from werkzeug.security import generate_password_hash
 from app.models import db, User
 from datetime import date
 
-# Adds a demo user, you can add other users here if you want
 def seed_users():
 
     users = [
