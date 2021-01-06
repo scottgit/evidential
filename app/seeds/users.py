@@ -18,10 +18,10 @@ def seed_users():
             email='scott@scott.com',
             verified=True,
             password='ss2DevT$'
-        )
+        ),
     ]
 
-    db.session.bulk_save_objects(objects)
+    db.session.bulk_save_objects(users)
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the users table.
