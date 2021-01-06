@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
   first_name = db.Column(db.String(40), nullable = False)
   last_name = db.Column(db.String(40), nullable = False)
   verified = db.Column(db.Boolean, nullable = False, default=False)
-  active = db.Column(db.Boolean, nullable = False, default=True)
+  deleted = db.Column(db.Boolean, nullable = False, default=False)
   hashed_password = db.Column(db.String(255), nullable = False)
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
       "firstName": self.first_name,
       "lastName": self.last_name,
       "verified": self.verified,
-      "active": self.active,
+      "deleted": self.deleted,
       "created": self.created_at,
       "updated": self.updated_at
     }
@@ -47,6 +47,6 @@ class User(db.Model, UserMixin):
       "firstName": self.first_name,
       "lastName": self.last_name,
       "verified": self.verified,
-      "active": self.active,
+      "deleted": self.deleted,
       "created": self.created_at
     }

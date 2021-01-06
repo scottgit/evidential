@@ -10,6 +10,8 @@ def user_exists(form, field):
     user = User.query.filter(User.email == email).first()
     if not user:
         raise ValidationError("Email provided not found.")
+    if user.deleted:
+        raise ValidationError("Account for that email was deleted.")
 
 
 def password_matches(form, field):

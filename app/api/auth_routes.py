@@ -68,8 +68,9 @@ def sign_up():
                 last_name=form.data['lastName'],
                 email=form.data['email'],
                 password=form.data['password'],
-                # active defaults to True
-                # verified defaults to False
+                # deleted defaults to False
+                # TODO verified eventually will default to False
+                verified=True,
             )
             db.session.add(user)
             db.session.commit()

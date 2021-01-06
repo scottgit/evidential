@@ -8,6 +8,8 @@ def user_exists(form, field):
     print("Checking if user exits", field.data)
     email = field.data
     user = User.query.filter(User.email == email).first()
+    if user and user.deleted:
+        raise ValidationError("Account for that email was deleted.")
     if user:
         raise ValidationError("User with this email is already registered.")
 
@@ -20,5 +22,5 @@ class SignUpForm(FlaskForm):
     password = StringField('password', validators=[
         DataRequired(),
         Length(min=8, message='Password must be 8 or more characters'), EqualTo('confirmPassword', message='Confirmed password must match password'),
-        Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]$", message='Password must contain 1 lower & 1 upper case letter, 1 number, and 1 special character of @$!%*?&')
+        Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])$", message='Password must contain 1 lower & 1 upper case letter, 1 number, and 1 special character of @$!%*?&')
         ])
