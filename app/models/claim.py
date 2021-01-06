@@ -1,29 +1,29 @@
 from .db import db
 from sqlalchemy.orm import relationship
-from .association_topic_hit_key import topic_hit_key_association
+from .association_claim_hit_key import claim_hit_key_association
 
-class Topic(db.Model):
-  __tablename__ = 'topics'
+class Claim(db.Model):
+  __tablename__ = 'claims'
 
   id = db.Column(db.Integer, primary_key = True)
-  label = db.Column(db.String(30), nullable = False)
-  description = db.Column(db.Text, nullable = False)
+  assertion = db.Column(db.String(200), nullable = False, unique=True)
+  notes = db.Column(db.Text, nullable = False)
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
-  history = relationship('Topic_History', back_populates='topic', order_by='desc(Topic_History.id)')
+  history = relationship('Claim_History', back_populates='claim', order_by='desc(Claim_History.id)')
 
   hit_keys = relationship(
     'HitKey',
-    secondary=topic_hit_key_association,
-    back_populates='topics',
+    secondary=claim_hit_key_association,
+    back_populates='claims',
     order_by='asc(HitKey.key)')
 
   def to_dict(self):
     return {
       "id": self.id,
-      "label": self.label,
-      "description": self.description,
+      "assertion": self.assertion,
+      "notes": self.notes,
       "created": self.created_at,
       "updated": self.updated_at,
       "changeHistory": self.history,

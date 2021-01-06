@@ -7,7 +7,7 @@ def seed_hit_keys():
             key="test"
             ),
         HitKey(
-            key="topic"
+            key="claim"
             ),
         HitKey(
             key="salvation"

@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
-  topic_changes = relationship('Topic_History', back_populates='user', order_by='desc(Topic_History.id)')
+  claim_changes = relationship('Claim_History', back_populates='user', order_by='desc(Claim_History.id)')
 
   @property
   def password(self):
@@ -42,7 +42,7 @@ class User(db.Model, UserMixin):
       "deleted": self.deleted,
       "created": self.created_at,
       "updated": self.updated_at,
-      "topicChanges": self.topic_history
+      "claimChanges": self.claim_history
     }
 
   def public_to_dict(self):
@@ -53,5 +53,5 @@ class User(db.Model, UserMixin):
       "verified": self.verified,
       "deleted": self.deleted,
       "created": self.created_at,
-      "topicChanges": self.topic_history
+      "claimChanges": self.claim_history
     }
