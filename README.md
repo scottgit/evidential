@@ -1,5 +1,5 @@
-# they-said
-An app to analyze the argument of texts on claims
+# Evidential
+An app to analyze the argument of texts for various claims
 
 ## Technologies Used
 
