@@ -1,4 +1,5 @@
 from .db import db
+from sqlalchemy.orm import relationship
 
 class Text(db.Model):
   __tablename__ = 'texts'

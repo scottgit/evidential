@@ -7,7 +7,7 @@ class Claim(db.Model):
 
   id = db.Column(db.Integer, primary_key = True)
   assertion = db.Column(db.String(200), nullable = False, unique=True)
-  notes = db.Column(db.Text, nullable = False)
+  notes = db.Column(db.Text)
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
@@ -17,7 +17,10 @@ class Claim(db.Model):
     'HitKey',
     secondary=claim_hit_key_association,
     back_populates='claims',
-    order_by='asc(HitKey.key)')
+    order_by='asc(HitKey.key)',
+    )
+
+  relations = relationship('SupportRebut', back_populates='claims', order_by='asc(SupportRebut.id)')
 
   def to_dict(self):
     return {
@@ -26,6 +29,17 @@ class Claim(db.Model):
       "notes": self.notes,
       "created": self.created_at,
       "updated": self.updated_at,
-      "changeHistory": self.history,
-      "hitKeys": self.hit_keys,
+    }
+
+  def full_to_dict(self):
+    return {
+      "id": self.id,
+      "assertion": self.assertion,
+      "notes": self.notes,
+      "created": self.created_at,
+      "updated": self.updated_at,
+      "changeHistory": [update.to_dict() for update in self.history],
+      "hitKeys": [key.to_dict() for key in self.hit_keys],
+      "supportingArguments": [relation.get_arguments() for relation in self.relations if relation.supports == True],
+      "rebutingArguments": [relation.get_arguments() for relation in self.relations if relation.supports == False],
     }

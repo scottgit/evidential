@@ -32,6 +32,18 @@ class User(db.Model, UserMixin):
     return check_password_hash(self.password, password)
 
 
+  def to_dict(self):
+     return {
+      "id": self.id,
+      "email": self.email,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "deleted": self.deleted,
+      "created": self.created_at,
+      "updated": self.updated_at,
+    }
+
   def full_to_dict(self):
     return {
       "id": self.id,
@@ -42,7 +54,7 @@ class User(db.Model, UserMixin):
       "deleted": self.deleted,
       "created": self.created_at,
       "updated": self.updated_at,
-      "claimChanges": self.claim_history
+      "claimChanges": [update.to_dict() for update in self.claim_history]
     }
 
   def public_to_dict(self):
@@ -53,5 +65,15 @@ class User(db.Model, UserMixin):
       "verified": self.verified,
       "deleted": self.deleted,
       "created": self.created_at,
-      "claimChanges": self.claim_history
+    }
+
+  def full_public_to_dict(self):
+    return {
+      "id": self.id,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "deleted": self.deleted,
+      "created": self.created_at,
+      "claimChanges": [update.to_dict() for update in self.claim_history]
     }

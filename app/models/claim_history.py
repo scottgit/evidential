@@ -23,3 +23,15 @@ class Claim_History(db.Model):
       "notes": self.notes,
       "created": self.created_at,
     }
+
+  def full_to_dict(self):
+    return {
+      "id": self.id,
+      "updated_by": self.updated_by,
+      "claimId": self.claim_id,
+      "assertion": self.assertion,
+      "notes": self.notes,
+      "created": self.created_at,
+      "user": self.user.public_to_dict(),
+      "claim": self.claim.to_dict(),
+    }

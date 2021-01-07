@@ -18,5 +18,11 @@ class HitKey(db.Model):
     return {
       "id": self.id,
       "key": self.key,
-      "usedBy": self.claims,
+    }
+
+  def full_to_dict(self):
+    return {
+      "id": self.id,
+      "key": self.key,
+      "usedBy": [claim.to_dict() for claim in self.claims],
     }
