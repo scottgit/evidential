@@ -1,16 +1,17 @@
 from .db import db
 from sqlalchemy.orm import relationship
 
-class Text(db.Model):
-  __tablename__ = 'texts'
+class Hit(db.Model):
+  __tablename__ = 'hits'
 
   id = db.Column(db.Integer, primary_key = True)
-  title = db.Column(db.String(200), nullable = False)
-  content = db.Column(db.Text, nullable = False)
+  text_id = db.Column(db.ForeignKey('texts.id'), nullable = False)
+  key_id = db.Column(db.ForeignKey('hit_keys.id'), nullable = False)
+  claim_id = db.Column(db.ForeignKey('claims.id'), nullable = False)
+  location = db.Column(db.Integer, nullable = False)
   word_count = db.Column(db.Integer, nullable = False)
-  source = db.Column(db.String(500))
-  locked = db.Column(db.Boolean, nullable = False, default=False)
-  added_by = db.Column(db.Integer, nullable = False)
+  custom_key = db.Column(db.String(500), default='')
+  grouped_id = db.Column(db.Integer, default=None)
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 

@@ -10,7 +10,7 @@ user_routes = Blueprint('users', __name__)
 def users():
     users = User.query.all()
 
-    return {"users": [user.public_to_dict() for user in users]}
+    return {"users": [user.full_public_to_dict() for user in users]}
 
 
 @user_routes.route('/<int:id>')
@@ -19,4 +19,4 @@ def user(id):
     self = current_user
     user = User.query.get(id)
 
-    return user.full_to_dict() if id == self.id else user.public_to_dict()
+    return user.full_to_dict() if id == self.id else user.full_public_to_dict()
