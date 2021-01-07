@@ -5,7 +5,7 @@ def seed_claims():
 
     claims = [
         Claim(
-            assertion='Test',
+            assertion='Tests are bad things',
             notes='A claim created purely to test with',
             created_by=1
             ),

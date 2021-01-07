@@ -14,7 +14,7 @@ class Hit(db.Model, CommonColumns, TrackUpdates):
   location = db.Column(db.Integer, nullable = False)
   word_count = db.Column(db.Integer, nullable = False)
   custom_key = db.Column(db.String(500), default='')
-  grouped_id = db.Column(db.ForeignKey('hits.id'))
+  grouped_id = db.Column(db.ForeignKey('hits.id'), default=None)
   ignore = db.Column(db.Boolean, nullable = False, default = False)
 
   # grouped_parent = relationship('Hit', remote_side=[id])

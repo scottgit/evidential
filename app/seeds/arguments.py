@@ -1,5 +1,4 @@
 from app.models import db, Argument
-from datetime import datetime
 
 def seed_arguments():
 
