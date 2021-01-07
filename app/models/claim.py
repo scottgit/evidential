@@ -1,6 +1,6 @@
 from .db import db
 from sqlalchemy.orm import relationship
-from .association_claim_hit_key import claim_hit_key_association
+from .claim_hit_keys import claim_hit_key_association
 from .mixins.track_updates import TrackUpdates
 from .mixins.common_columns import CommonColumns
 
@@ -33,7 +33,8 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
       "id": self.id,
       "assertion": self.assertion,
       "notes": self.notes,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
     }
 
   def full_to_dict(self):
@@ -41,7 +42,8 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
       "id": self.id,
       "assertion": self.assertion,
       "notes": self.notes,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
       "hitKeys": [key.to_dict() for key in self.hit_keys],
       "supportingArguments": [relation.get_arguments() for relation in self.argument_relations if relation.supports == True],
       "rebutingArguments": [relation.get_arguments() for relation in self.argument_relations if relation.supports == False],

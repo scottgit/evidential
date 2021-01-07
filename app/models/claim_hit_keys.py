@@ -4,8 +4,8 @@ from .mixins.track_updates import TrackUpdates
 from .mixins.common_columns import CommonColumns
 
 
-class Argument(db.Model, CommonColumns, TrackUpdates):
-  __tablename__ = 'arguments'
+class ClaimHitKeys(db.Model, CommonColumns, TrackUpdates):
+  __tablename__ = 'claim_hit_keys'
 
   claim_id = db.Column(db.ForeignKey('claims.id'))
   key_id = db.Column(db.ForeignKey('hit_keys.id'))
@@ -20,6 +20,6 @@ class Argument(db.Model, CommonColumns, TrackUpdates):
   # to_dict functions are for javascript, so camel-case keys
   def to_dict(self):
     return {
-      "claim_id": self.claim_id,
-      "key_id": self.key_id,
+      "claimId": self.claim_id,
+      "keyId": self.key_id,
     }

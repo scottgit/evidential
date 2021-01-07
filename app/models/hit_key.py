@@ -1,7 +1,7 @@
 from typing import Set
 from .db import db
 from sqlalchemy.orm import relationship
-from .association_claim_hit_key import claim_hit_key_association
+from .claim_hit_keys import claim_hit_key_association
 from .mixins.track_updates import TrackUpdates
 from .mixins.common_columns import CommonColumns
 
@@ -28,12 +28,16 @@ class HitKey(db.Model, CommonColumns, TrackUpdates):
     return {
       "id": self.id,
       "key": self.key,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at
     }
 
   def full_to_dict(self):
     return {
       "id": self.id,
       "key": self.key,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at
       "usedBy": [claim.to_dict() for claim in self.claims],
       "foundIn": [hit.to_dict() for hit in self.hits]
     }

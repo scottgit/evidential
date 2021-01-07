@@ -24,7 +24,8 @@ class Text(db.Model, CommonColumns):
       "source": self.source,
       "locked": self.locked,
       "addedBy": self.added_by,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
       "locked_at": self.locked_at
     }
 
@@ -37,7 +38,8 @@ class Text(db.Model, CommonColumns):
       "source": self.source,
       "locked": self.locked,
       "addedBy": self.added_by,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
       "locked_at": self.locked_at,
       "hits": [hit.to_dict() for hit in self.hits]
     }

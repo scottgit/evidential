@@ -19,7 +19,8 @@ class Rating(db.Model, CommonColumns, TrackUpdates):
   #     "id": self.id,
   #     "statement": self.statement,
   #     "notes": self.notes,
-  #     "created": self.created_at,
+  #     "createdBy": self.created_by,
+  #     "createdAt": self.created_at,
   #     "updated": self.updated_at,
   #   }
 
@@ -28,7 +29,8 @@ class Rating(db.Model, CommonColumns, TrackUpdates):
   #     "id": self.id,
   #     "statement": self.statement,
   #     "notes": self.notes,
-  #     "created": self.created_at,
+  #     "createdBy": self.created_by,
+  #     "createdAt": self.created_at,
   #     "updated": self.updated_at,
   #     "supports": [relation.get_claims() for relation in self.claim_relations if relation.supports == True],
   #     "rebuts": [relation.get_claims() for relation in self.claim_relations if relation.supports == False]

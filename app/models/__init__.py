@@ -4,7 +4,7 @@ from .text import Text
 from .claim import Claim
 from .change_history import Change_History
 from .hit_key import HitKey
-from .association_claim_hit_key import claim_hit_key_association
+from .claim_hit_keys import claim_hit_key_association
 from .argument import Argument
 from .support_rebut import SupportRebut
 from .hit import Hit

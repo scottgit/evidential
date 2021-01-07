@@ -15,6 +15,7 @@ class Hit(db.Model, CommonColumns, TrackUpdates):
   word_count = db.Column(db.Integer, nullable = False)
   custom_key = db.Column(db.String(500), default='')
   grouped_id = db.Column(db.ForeignKey('hits.id'))
+  ignore = db.Column(db.Boolean, nullable = False, default = False)
 
   # grouped_parent = relationship('Hit', remote_side=[id])
   grouped_children = relationship('Hit')
@@ -71,7 +72,8 @@ class Hit(db.Model, CommonColumns, TrackUpdates):
       "wordCount": self.word_count,
       "customKey": self.custom_key,
       "groupedId": self.grouped_id,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
     }
 
   def full_to_dict(self):
@@ -84,6 +86,7 @@ class Hit(db.Model, CommonColumns, TrackUpdates):
       "wordCount": self.word_count,
       "customKey": self.custom_key,
       "groupedId": self.grouped_id,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
       "group": self.get_group_info()
     }

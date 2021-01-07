@@ -41,8 +41,8 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
-      "updated": self.updated_at,
+      "createdAt": self.created_at,
+      "updatedAt": self.updated_at,
     }
 
   def full_to_dict(self):
@@ -53,8 +53,8 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
-      "updated": self.updated_at,
+      "createdAt": self.created_at,
+      "updatedAt": self.updated_at,
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
     }
@@ -66,7 +66,7 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
+      "createdAt": self.created_at,
     }
 
   def full_public_to_dict(self):
@@ -76,7 +76,7 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
+      "createdAt": self.created_at,
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
     }

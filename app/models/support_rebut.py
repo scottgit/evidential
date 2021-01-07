@@ -9,7 +9,7 @@ class SupportRebut(db.Model, CommonColumns, TrackUpdates):
 
   claim_id = db.Column(db.ForeignKey('claims.id'), nullable = False)
   argument_id = db.Column(db.ForeignKey('arguments.id'), nullable = False)
-  
+
   # NOTE: A rebut is indicated by setting "supports" to False
   supports = db.Column(db.Boolean(), nullable = False)
 
@@ -37,7 +37,8 @@ class SupportRebut(db.Model, CommonColumns, TrackUpdates):
       "claimId": self.claim_id,
       "argumentId": self.argument_id,
       "supports": self.supports,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
     }
 
   def full_to_dict(self):
@@ -46,7 +47,8 @@ class SupportRebut(db.Model, CommonColumns, TrackUpdates):
       "claimId": self.claim_id,
       "argumentId": self.argument_id,
       "supports": self.supports,
-      "created": self.created_at,
+      "createdBy": self.created_by,
+      "createdAt": self.created_at,
       "claimArguments": self.get_arguments(),
       "argumentClaims": self.get_claims(),
     }
