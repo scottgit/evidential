@@ -2,14 +2,13 @@ from .db import db
 from sqlalchemy.orm import relationship
 from .association_claim_hit_key import claim_hit_key_association
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class Claim(db.Model, TrackUpdates):
+class Claim(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'claims'
 
-  id = db.Column(db.Integer, primary_key = True)
   assertion = db.Column(db.String(200), nullable = False, unique=True)
   notes = db.Column(db.Text)
-  created_at = db.Column(db.DateTime, nullable = False)
 
   hit_keys = relationship(
     'HitKey',

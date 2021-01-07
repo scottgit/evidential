@@ -1,18 +1,17 @@
-from models.mixins.track_updates import TrackUpdates
 from .db import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import object_session
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class SupportRebut(db.Model, TrackUpdates):
+class SupportRebut(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'supports_rebuts'
 
-  id = db.Column(db.Integer, primary_key = True)
   claim_id = db.Column(db.ForeignKey('claims.id'), nullable = False)
   argument_id = db.Column(db.ForeignKey('arguments.id'), nullable = False)
+  
   # NOTE: A rebut is indicated by setting "supports" to False
   supports = db.Column(db.Boolean(), nullable = False)
-  created_at = db.Column(db.DateTime, nullable = False)
 
   arguments = relationship('Argument', back_populates='claim_relations', order_by='Argument.statement')
   claims = relationship('Claim', back_populates='argument_relations', order_by='Claim.assertion')

@@ -3,11 +3,11 @@ from .db import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import object_session
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class Hit(db.Model, TrackUpdates):
+class Hit(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'hits'
 
-  id = db.Column(db.Integer, primary_key = True)
   text_id = db.Column(db.ForeignKey('texts.id'), nullable = False)
   key_id = db.Column(db.ForeignKey('hit_keys.id'))
   claim_id = db.Column(db.ForeignKey('claims.id'), nullable = False)
@@ -15,7 +15,6 @@ class Hit(db.Model, TrackUpdates):
   word_count = db.Column(db.Integer, nullable = False)
   custom_key = db.Column(db.String(500), default='')
   grouped_id = db.Column(db.ForeignKey('hits.id'))
-  created_at = db.Column(db.DateTime, nullable = False)
 
   # grouped_parent = relationship('Hit', remote_side=[id])
   grouped_children = relationship('Hit')

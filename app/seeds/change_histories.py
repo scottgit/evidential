@@ -1,25 +1,26 @@
-from app.models import db, Claim_History
+from app.models import db, Change_History
 from datetime import datetime
 
-def seed_claim_histories():
+def seed_change_histories():
 
-    claim_histories = [
-        Claim_History(
+    change_histories = [
+        Change_History(
             updated_by=2,
-            claim_id=2,
+            change_id=2,
             assertion='Salvation',
-            notes='A test claim',
+            notes='A test Change',
             created_at=datetime(2020, 1, 5, 8),
             ),
     ]
 
-    db.session.bulk_save_objects(claim_histories)
+    db.session.bulk_save_objects(change_histories)
     db.session.commit()
 
-# Uses a raw SQL query to TRUNCATE the claim_histories table.
+# Uses a raw SQL query to TRUNCATE the Change_histories table.
 # SQLAlchemy doesn't have a built in function to do this
 # TRUNCATE Removes all the data from the table, and resets
 # the auto incrementing primary key
-def undo_claim_histories():
-    db.session.execute('TRUNCATE claim_histories;')
+def undo_change_histories():
+    db.session.execute('TRUNCATE change_histories;')
+    db.session.execute('DROP TYPE tracked_tables;')
     db.session.commit()

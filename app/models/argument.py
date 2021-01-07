@@ -1,14 +1,13 @@
 from .db import db
 from sqlalchemy.orm import relationship
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class Argument(db.Model, TrackUpdates):
+class Argument(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'arguments'
 
-  id = db.Column(db.Integer, primary_key = True)
   statement = db.Column(db.String(250), nullable = False, unique=True)
   notes = db.Column(db.Text)
-  created_at = db.Column(db.DateTime, nullable = False)
 
   claim_relations = relationship('SupportRebut', back_populates='arguments', order_by='SupportRebut.id')
 

@@ -1,17 +1,15 @@
 from .db import db
 from sqlalchemy.orm import relationship
+from .mixins.common_columns import CommonColumns
 
-class Text(db.Model):
+class Text(db.Model, CommonColumns):
   __tablename__ = 'texts'
 
-  id = db.Column(db.Integer, primary_key = True)
   title = db.Column(db.String(200), nullable = False)
   content = db.Column(db.Text, nullable = False)
   word_count = db.Column(db.Integer, nullable = False)
   source = db.Column(db.String(500))
   locked = db.Column(db.Boolean, nullable = False, default=False)
-  added_by = db.Column(db.ForeignKey('user.id'))
-  created_at = db.Column(db.DateTime, nullable = False)
   locked_at = db.Column(db.DateTime, nullable = False)
 
   hits = relationship('Hit', back_populates='text', order_by='Hit.location')

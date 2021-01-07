@@ -1,14 +1,14 @@
+from typing import Set
 from .db import db
 from sqlalchemy.orm import relationship
 from .association_claim_hit_key import claim_hit_key_association
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class HitKey(db.Model, TrackUpdates):
+class HitKey(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'hit_keys'
 
-  id = db.Column(db.Integer, primary_key = True)
   key = db.Column(db.String(30), nullable = False, unique=True)
-  created_at = db.Column(db.DateTime, nullable = False)
 
   claims = relationship(
     'Claim',

@@ -1,14 +1,14 @@
 from .db import db
 from sqlalchemy.orm import relationship
 from .mixins.track_updates import TrackUpdates
+from .mixins.common_columns import CommonColumns
 
-class Rating(db.Model, TrackUpdates):
+class Rating(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'ratings'
 
-  id = db.Column(db.Integer, primary_key = True)
-  hit_id = db.Column(db.ForeignKey('hit.id'))
+  hit_id = db.Column(db.ForeignKey('hits.id'))
   # TODO Finish
-  created_at = db.Column(db.DateTime, nullable = False)
+
 
   # claim_relations = relationship('SupportRebut', back_populates='arguments', order_by='SupportRebut.id')
 
