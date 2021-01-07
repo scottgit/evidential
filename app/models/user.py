@@ -16,7 +16,8 @@ class User(db.Model, UserMixin):
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
-  claim_changes = relationship('Claim_History', back_populates='user', order_by='desc(Claim_History.id)')
+  data_changes = relationship('Change_History', back_populates='user', order_by='desc(Change_History.changed_at)')
+  texts_added = relationship('Text', back_populates='user', order_by='desc(Text.created_at)')
 
   @property
   def password(self):
@@ -54,7 +55,8 @@ class User(db.Model, UserMixin):
       "deleted": self.deleted,
       "created": self.created_at,
       "updated": self.updated_at,
-      "claimChanges": [update.to_dict() for update in self.claim_history]
+      "dataChanges": [update.to_dict() for update in self.data_changes],
+      "textsAdded": [text.to_dict() for text in self.texts_added],
     }
 
   def public_to_dict(self):
@@ -75,5 +77,6 @@ class User(db.Model, UserMixin):
       "verified": self.verified,
       "deleted": self.deleted,
       "created": self.created_at,
-      "claimChanges": [update.to_dict() for update in self.claim_history]
+      "dataChanges": [update.to_dict() for update in self.data_changes],
+      "textsAdded": [text.to_dict() for text in self.texts_added],
     }

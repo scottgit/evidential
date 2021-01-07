@@ -2,6 +2,10 @@ from .db import db
 from .user import User
 from .text import Text
 from .claim import Claim
-from .claim_history import Claim_History
+from .change_history import Change_History
 from .hit_key import HitKey
 from .association_claim_hit_key import claim_hit_key_association
+from .argument import Argument
+from .support_rebut import SupportRebut
+from .hit import Hit
+from .rating import Rating
