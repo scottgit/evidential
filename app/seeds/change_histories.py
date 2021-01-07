@@ -1,19 +1,16 @@
-from app.models import db, Change_History
+from app.models import db, Claim, HitKey, Argument
 from datetime import datetime
 
 def seed_change_histories():
 
-    change_histories = [
-        Change_History(
-            updated_by=2,
-            change_id=2,
-            assertion='Salvation',
-            notes='A test Change',
-            created_at=datetime(2020, 1, 5, 8),
-            ),
-    ]
+    claim = Claim.query.get(3)
+    claim.update_data(2, {"assertion": "Ian Bentley is the best programmer", "notes": "A totally accurate claim"})
 
-    db.session.bulk_save_objects(change_histories)
+    hit_key = HitKey.query.get(3)
+    hit_key.update_data(1, {"key": "salvation"})
+
+    argument = Argument.query.get(5)
+    argument.update_data(1, {"statement": 'Ian knows the answers to most of my questions'})
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the Change_histories table.

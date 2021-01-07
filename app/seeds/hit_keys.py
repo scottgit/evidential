@@ -4,16 +4,20 @@ def seed_hit_keys():
 
     hit_keys = [
         HitKey(
-            key="test"
+            key="test",
+            created_by=1
             ),
         HitKey(
-            key="claim"
+            key="claim",
+            created_by=1
             ),
         HitKey(
-            key="salvation"
+            key="slvation", #Correcting to "salvation" in seed run
+            created_by=2
             ),
         HitKey(
-            key="faith"
+            key="faith",
+            created_by=2
             ),
     ]
 

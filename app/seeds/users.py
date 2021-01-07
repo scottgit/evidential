@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 from app.models import db, User
-from datetime import date
+from datetime import datetime
 
 def seed_users():
 
@@ -11,8 +11,8 @@ def seed_users():
             email='demo@demo.demo',
             verified=True,
             password='hj8n%9Gw',
-            created_at=date.today(),
-            updated_at=date.today(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
             ),
         User(
             first_name='Scott',
@@ -20,8 +20,8 @@ def seed_users():
             email='scott@scott.com',
             verified=True,
             password='ss2DevT$',
-            created_at=date.today(),
-            updated_at=date.today(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         ),
         User(
             first_name='Deleted',
@@ -30,8 +30,8 @@ def seed_users():
             verified=True,
             deleted=True,
             password='delTE$T0',
-            created_at=date.today(),
-            updated_at=date.today(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         ),
         User(
             first_name='Ian',
@@ -39,8 +39,8 @@ def seed_users():
             email='ian@ian.io',
             verified=True,
             password='ianPA$S9',
-            created_at=date.today(),
-            updated_at=date.today(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         ),
     ]
 

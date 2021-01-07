@@ -15,6 +15,7 @@ class SupportRebut(db.Model, CommonColumns, TrackUpdates):
 
   arguments = relationship('Argument', back_populates='claim_relations', order_by='Argument.statement')
   claims = relationship('Claim', back_populates='argument_relations', order_by='Claim.assertion')
+  ratings = relationship('Rating', back_populates='supports', order_by='Rating.hit_id')
 
   def get_claims(self):
     return [claim.to_dict() for claim in self.claims]

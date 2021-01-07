@@ -22,6 +22,7 @@ class Hit(db.Model, CommonColumns, TrackUpdates):
   text = relationship('Text', back_populates='hits')
   hit_key = relationship('HitKey', back_populates='hits')
   claim = relationship('Claim', back_populates='hits')
+  ratings = relationship('Rating', back_populates='hit', order_by='Rating.id')
 
   def group_to_parent(self, parent_id):
     if (parent_id != self.id):

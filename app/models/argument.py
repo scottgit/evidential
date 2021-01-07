@@ -10,6 +10,7 @@ class Argument(db.Model, CommonColumns, TrackUpdates):
   notes = db.Column(db.Text)
 
   claim_relations = relationship('SupportRebut', back_populates='arguments', order_by='SupportRebut.id')
+  ratings = relationship('Rating', back_populates='argument', order_by='Rating.hit_id')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
   def to_history(self):

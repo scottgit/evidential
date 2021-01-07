@@ -7,7 +7,9 @@ class TrackUpdates():
 
   @property
   def last_updated(self):
-    last = Change_History.query.filter_by(table_pk=self.id).order_by(Change_History.changed_at.desc()).first()
+    table = self.__tablename__.upper()
+    last = Change_History.query.filter_by(table_name=table, table_pk=self.id).order_by(Change_History.changed_at.desc()).first()
+
     return last.to_dict()['changed_at']
 
   @property
@@ -27,18 +29,18 @@ class TrackUpdates():
         "new_data": new_data
         })
     db.session.add(history)
-    db.session.commit()
 
     return revised_obj
 
   def __update_data__(self, data):
     for key in data:
       if key in self.MODIFIABLE:
-        self[key] = data[key]
+        setattr(self, key, data[key])
     db.session.add(self)
-    db.session.commit()
     return self
 
   def get_history(self):
-    history = Change_History.query.filter_by(table_pk=self.id).order_by(Change_History.changed_at.desc())
+    table = self.__tablename__.upper()
+    history = Change_History.query.filter_by(table_name=table, table_pk=self.id).order_by(Change_History.changed_at.desc())
+
     return [item.to_dict() for item in history]

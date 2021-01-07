@@ -7,15 +7,20 @@ def seed_claims():
         Claim(
             assertion='Test',
             notes='A claim created purely to test with',
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
+            created_by=1
             ),
         Claim(
             assertion='Salvation is by faith',
             notes='A claim created to test with some various works',
             created_at=datetime(2020, 1, 4, 13),
-            updated_at=datetime(2020, 1, 5, 8),
+            created_by=2
             ),
+        Claim(
+            assertion='Bill Gates is the best programmer', # Updated on seeding
+            notes='A totally bogus claim', # Updated on seeding
+            created_at=datetime(2020, 1, 4, 13),
+            created_by=2
+        )
     ]
 
     db.session.bulk_save_objects(claims)

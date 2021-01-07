@@ -1,5 +1,5 @@
 from app.models import db, Text
-from datetime import date
+from datetime import datetime
 import requests
 
 def seed_texts():
@@ -19,9 +19,9 @@ def seed_texts():
             word_count=c1wc,
             source="test/1/no/real/url.html",
             locked=True,
-            added_by=1,
-            created_at=date.today(),
-            updated_at=date.today(),
+            locked_at=datetime.now(),
+            created_by=1,
+            created_at=datetime.today(),
             ),
         Text(
             title='Institutes of the Christian Religion, Vol. 1',
@@ -29,9 +29,9 @@ def seed_texts():
             word_count=c2wc,
             source=c2source,
             locked=True,
-            added_by=2,
-            created_at=date.today(),
-            updated_at=date.today(),
+            locked_at=datetime.now(),
+            created_by=2,
+            created_at=datetime.today()
             ),
     ]
 

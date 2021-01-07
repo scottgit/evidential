@@ -1,6 +1,6 @@
 from .db import db
 from sqlalchemy.orm import relationship
-from .claim_hit_keys import claim_hit_key_association
+from .claim_hit_keys import ClaimHitKeys
 from .mixins.track_updates import TrackUpdates
 from .mixins.common_columns import CommonColumns
 
@@ -11,10 +11,9 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
   notes = db.Column(db.Text)
 
   hit_keys = relationship(
-    'HitKey',
-    secondary=claim_hit_key_association,
-    back_populates='claims',
-    order_by='HitKey.key',
+    'ClaimHitKeys',
+    back_populates='claim',
+    order_by='ClaimHitKeys.hit_key.key',
     )
 
   argument_relations = relationship('SupportRebut', back_populates='claims', order_by='SupportRebut.id')

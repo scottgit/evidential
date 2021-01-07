@@ -13,7 +13,7 @@ class Text(db.Model, CommonColumns):
   locked_at = db.Column(db.DateTime, nullable = False)
 
   hits = relationship('Hit', back_populates='text', order_by='Hit.location')
-  user = relationship('User', back_populates='texts_added', order_by='desc(Claim_History.id)')
+  user = relationship('User', back_populates='texts_added')
 
   def to_dict(self):
     return {
@@ -23,10 +23,9 @@ class Text(db.Model, CommonColumns):
       "wordCount": self.word_count,
       "source": self.source,
       "locked": self.locked,
-      "addedBy": self.added_by,
+      "locked_at": self.locked_at,
       "createdBy": self.created_by,
       "createdAt": self.created_at,
-      "locked_at": self.locked_at
     }
 
   def full_to_dict(self):
@@ -37,9 +36,8 @@ class Text(db.Model, CommonColumns):
       "wordCount": self.word_count,
       "source": self.source,
       "locked": self.locked,
-      "addedBy": self.added_by,
+      "locked_at": self.locked_at,
       "createdBy": self.created_by,
       "createdAt": self.created_at,
-      "locked_at": self.locked_at,
       "hits": [hit.to_dict() for hit in self.hits]
     }
