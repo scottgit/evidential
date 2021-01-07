@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from .association_claim_hit_key import claim_hit_key_association
 from .mixins.track_updates import TrackUpdates
 
-class HitKey(db.Model, from .mixins.track_updates import TrackUpdates):
+class HitKey(db.Model, TrackUpdates):
   __tablename__ = 'hit_keys'
 
   id = db.Column(db.Integer, primary_key = True)
