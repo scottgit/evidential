@@ -122,7 +122,7 @@ def edit():
 
 @auth_routes.route('/deactivate')
 @login_required
-def logout():
+def deactivate():
     """
     Logs a user out then sets flag
     """

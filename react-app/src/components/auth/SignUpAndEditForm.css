@@ -1,0 +1,33 @@
+.user-info-change {
+  max-width: 500px;
+}
+
+.user-info-change form {
+  max-width: 300px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.user-info-change form > div {
+  margin-bottom: 5px;
+}
+
+.user-info-change label {
+  display: inline-block;
+  width: 9rem;
+  padding-right: 5px;
+  font-weight: bold;
+}
+
+.user-info-change button {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.unmatched-confirm {
+  color: red;
+  padding-left: calc(8rem + 7px);
+  font-size: .9em;
+}

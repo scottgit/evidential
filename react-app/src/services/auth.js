@@ -1,14 +1,14 @@
 export const authenticate = async() => {
-  const response = await fetch('/api/auth',{
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  return await response.json();
+    const response = await fetch('/api/auth',{
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return await response.json();
 }
 
 export const loginOrRecheckPassword = async (email, password, recheck=false) => {
-  endPoint = recheck ? 'recheck' : 'login'
+  const endPoint = recheck ? 'recheck' : 'login'
   const response = await fetch(`/api/auth/${endPoint}`, {
     method: 'POST',
     headers: {
@@ -34,7 +34,7 @@ export const logout = async () => {
 
 
 export const signUpOrEdit = async (lastName, firstName, email, password, confirmPassword, edit) => {
-  endPoint = edit ? 'edit' : 'signup';
+  const endPoint = edit ? 'edit' : 'signup';
   const response = await fetch(`/api/auth/${endPoint}`, {
     method: "POST",
     headers: {

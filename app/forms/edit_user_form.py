@@ -1,9 +1,8 @@
 from typing import Optional
 from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.validators import Optional, DataRequired, Email, ValidationError, EqualTo, Length, Regexp
-from app.models import User
-from .includes import user_exists
+from wtforms.validators import Optional, Email, EqualTo, Length, Regexp
+from .includes.user_exists import user_exists
 
 class EditUserForm(FlaskForm):
     first_name = StringField('firstName', validators=[Optional()])

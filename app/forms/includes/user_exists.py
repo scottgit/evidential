@@ -1,4 +1,5 @@
 from app.models import User
+from wtforms.validators import ValidationError
 
 def user_exists(form, field):
     print("Checking if user exits", field.data)

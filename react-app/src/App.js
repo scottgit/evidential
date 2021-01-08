@@ -15,8 +15,9 @@ function App() {
 
   useEffect(() => {
     (async() => {
+      console.log('In App: Auth check occurring')
       const user = await authenticate();
-      if (!user.errors) {
+      if (user && !user.errors) {
         setAuthenticated(true);
       }
       setLoaded(true);

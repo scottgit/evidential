@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.validators import DataRequired, Email, ValidationError, EqualTo, Length, Regexp
-from .includes import user_exists
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
+from .includes.user_exists import user_exists
 
 class SignUpForm(FlaskForm):
     first_name = StringField('firstName', validators=[DataRequired()])
