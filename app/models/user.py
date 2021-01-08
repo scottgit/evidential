@@ -1,5 +1,6 @@
 from .db import db
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -16,7 +17,13 @@ class User(db.Model, UserMixin):
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
-  claim_changes = relationship('Claim_History', back_populates='user', order_by='desc(Claim_History.id)')
+  data_changes = relationship('ChangeHistory', back_populates='user', order_by='desc(ChangeHistory.changed_at)')
+
+  @hybrid_property
+  def texts_added(self):
+    from app.models import Text
+    texts = Text.query.filter_by(created_by=self.id)
+    return texts
 
   @property
   def password(self):
@@ -32,6 +39,18 @@ class User(db.Model, UserMixin):
     return check_password_hash(self.password, password)
 
 
+  def to_dict(self):
+     return {
+      "id": self.id,
+      "email": self.email,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "deleted": self.deleted,
+      "createdAt": self.created_at,
+      "updatedAt": self.updated_at,
+    }
+
   def full_to_dict(self):
     return {
       "id": self.id,
@@ -40,9 +59,10 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
-      "updated": self.updated_at,
-      "claimChanges": self.claim_history
+      "createdAt": self.created_at,
+      "updatedAt": self.updated_at,
+      "dataChanges": [update.to_dict() for update in self.data_changes],
+      "textsAdded": [text.to_dict() for text in self.texts_added],
     }
 
   def public_to_dict(self):
@@ -52,6 +72,17 @@ class User(db.Model, UserMixin):
       "lastName": self.last_name,
       "verified": self.verified,
       "deleted": self.deleted,
-      "created": self.created_at,
-      "claimChanges": self.claim_history
+      "createdAt": self.created_at,
+    }
+
+  def full_public_to_dict(self):
+    return {
+      "id": self.id,
+      "firstName": self.first_name,
+      "lastName": self.last_name,
+      "verified": self.verified,
+      "deleted": self.deleted,
+      "createdAt": self.created_at,
+      "dataChanges": [update.to_dict() for update in self.data_changes],
+      "textsAdded": [text.to_dict() for text in self.texts_added],
     }
