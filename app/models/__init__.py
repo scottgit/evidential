@@ -2,7 +2,7 @@ from .db import db
 from .user import User
 from .text import Text
 from .claim import Claim
-from .change_history import Change_History
+from .change_history import ChangeHistory
 from .hit_key import HitKey
 from .claim_hit_keys import ClaimHitKeys
 from .argument import Argument

@@ -10,8 +10,8 @@ class ClaimHitKeys(db.Model, CommonColumns, TrackUpdates):
   claim_id = db.Column(db.Integer, db.ForeignKey('claims.id'), primary_key=True, autoincrement=False)
   key_id = db.Column(db.Integer, db.ForeignKey('hit_keys.id'),primary_key=True, autoincrement=False)
 
-  claim = relationship('Claim' back_populates='hit_keys')
-  hit_key = relationship('HitKey' back_populates='claims')
+  claim = relationship('Claim', back_populates='hit_keys')
+  hit_key = relationship('HitKey', back_populates='claims')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
   def to_history(self):

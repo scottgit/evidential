@@ -2,7 +2,7 @@ import json
 from .db import db
 from sqlalchemy.orm import relationship
 
-class Change_History(db.Model):
+class ChangeHistory(db.Model):
   __tablename__ = 'change_histories'
 
   id = db.Column(db.Integer, primary_key = True)

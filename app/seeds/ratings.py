@@ -1,5 +1,4 @@
 from app.models import db, Rating
-from models import support_rebut
 
 def seed_ratings():
 

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a6ed9e42c293
+Revision ID: 705bb7494a00
 Revises: 
-Create Date: 2021-01-07 08:22:38.777831
+Create Date: 2021-01-07 16:00:38.050078
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a6ed9e42c293'
+revision = '705bb7494a00'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -81,11 +81,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('claim_hit_keys',
-    sa.Column('claim_id', sa.Integer(), nullable=False),
-    sa.Column('key_id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_by', sa.Integer(), nullable=True),
+    sa.Column('claim_id', sa.Integer(), autoincrement=False, nullable=False),
+    sa.Column('key_id', sa.Integer(), autoincrement=False, nullable=False),
     sa.ForeignKeyConstraint(['claim_id'], ['claims.id'], ),
     sa.ForeignKeyConstraint(['key_id'], ['hit_keys.id'], ),
-    sa.PrimaryKeyConstraint('claim_id', 'key_id')
+    sa.PrimaryKeyConstraint('id', 'claim_id', 'key_id')
     )
     op.create_table('hits',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -98,6 +101,7 @@ def upgrade():
     sa.Column('word_count', sa.Integer(), nullable=False),
     sa.Column('custom_key', sa.String(length=500), nullable=True),
     sa.Column('grouped_id', sa.Integer(), nullable=True),
+    sa.Column('ignore', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['claim_id'], ['claims.id'], ),
     sa.ForeignKeyConstraint(['grouped_id'], ['hits.id'], ),
     sa.ForeignKeyConstraint(['key_id'], ['hit_keys.id'], ),
@@ -120,7 +124,12 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('created_by', sa.Integer(), nullable=True),
     sa.Column('hit_id', sa.Integer(), nullable=True),
+    sa.Column('support_rebut_id', sa.Integer(), nullable=True),
+    sa.Column('argument_id', sa.Integer(), nullable=True),
+    sa.Column('rating', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['argument_id'], ['arguments.id'], ),
     sa.ForeignKeyConstraint(['hit_id'], ['hits.id'], ),
+    sa.ForeignKeyConstraint(['support_rebut_id'], ['supports_rebuts.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

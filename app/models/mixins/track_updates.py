@@ -1,18 +1,19 @@
 import json
 from ..db import db
-from ..change_history import Change_History
+from ..change_history import ChangeHistory
+from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 
-class TrackUpdates():
+class TrackUpdates(object):
 
-  @property
+  @hybrid_property
   def last_updated(self):
     table = self.__tablename__.upper()
-    last = Change_History.query.filter_by(table_name=table, table_pk=self.id).order_by(Change_History.changed_at.desc()).first()
+    last = ChangeHistory.query.filter_by(table_name=table, table_pk=self.id).order_by(ChangeHistory.changed_at.desc()).first()
 
     return last.to_dict()['changed_at']
 
-  @property
+  @hybrid_property
   def MODIFIABLE(self):
     return self.to_history().keys()
 
@@ -20,7 +21,7 @@ class TrackUpdates():
     old_data = json.dumps(self.to_history())
     revised_obj = self.__update_data__(change_data)
     new_data = json.dumps(revised_obj.to_history())
-    history = Change_History({
+    history = ChangeHistory({
         "updated_by": user_id,
         "changed_at": datetime.now(),
         "table_name": self.__tablename__.upper(),
@@ -41,6 +42,6 @@ class TrackUpdates():
 
   def get_history(self):
     table = self.__tablename__.upper()
-    history = Change_History.query.filter_by(table_name=table, table_pk=self.id).order_by(Change_History.changed_at.desc())
+    history = ChangeHistory.query.filter_by(table_name=table, table_pk=self.id).order_by(ChangeHistory.changed_at.desc())
 
     return [item.to_dict() for item in history]

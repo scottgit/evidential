@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
   created_at = db.Column(db.DateTime, nullable = False)
   updated_at = db.Column(db.DateTime, nullable = False)
 
-  data_changes = relationship('Change_History', back_populates='user', order_by='desc(Change_History.changed_at)')
+  data_changes = relationship('ChangeHistory', back_populates='user', order_by='desc(ChangeHistory.changed_at)')
   texts_added = relationship('Text', back_populates='user', order_by='desc(Text.created_at)')
 
   @property
