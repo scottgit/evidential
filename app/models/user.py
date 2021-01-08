@@ -1,5 +1,7 @@
+from app.models import Text
 from .db import db
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -17,7 +19,11 @@ class User(db.Model, UserMixin):
   updated_at = db.Column(db.DateTime, nullable = False)
 
   data_changes = relationship('ChangeHistory', back_populates='user', order_by='desc(ChangeHistory.changed_at)')
-  texts_added = relationship('Text', back_populates='user', order_by='desc(Text.created_at)')
+
+  @hybrid_property
+  def texts_added(self):
+    texts = Text.query.filter_by(created_by=self.id)
+    return [text.to_dict() for text in texts]
 
   @property
   def password(self):

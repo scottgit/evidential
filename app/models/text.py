@@ -13,7 +13,6 @@ class Text(db.Model, CommonColumns):
   locked_at = db.Column(db.DateTime, nullable = False)
 
   hits = relationship('Hit', back_populates='text', order_by='Hit.location')
-  user = relationship('User', back_populates='texts_added')
 
   def to_dict(self):
     return {
