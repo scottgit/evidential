@@ -1,7 +1,7 @@
 from ..db import db
 from datetime import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
-from app.models import User
+
 
 class CommonColumns(object):
     id = db.Column(db.Integer, primary_key = True)
@@ -10,6 +10,7 @@ class CommonColumns(object):
 
     @hybrid_property
     def created_by(self):
+        from app.models import User
         creator = User.query.get(self._created_by)
         return creator.public_to_dict()
 
