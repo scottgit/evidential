@@ -10,13 +10,9 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
   assertion = db.Column(db.String(200), nullable = False, unique=True)
   notes = db.Column(db.Text)
 
-  hit_keys = relationship(
-    'ClaimHitKeys',
-    back_populates='claim',
-    order_by='ClaimHitKeys.hit_key.key',
-    )
+  hit_keys = relationship('ClaimHitKeys',back_populates='claim')
 
-  argument_relations = relationship('SupportRebut', back_populates='claims', order_by='SupportRebut.id')
+  argument_relations = relationship('SupportRebut', back_populates='claims')
   hits = relationship('Hit', back_populates='claim', order_by='Hit.text_id')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case

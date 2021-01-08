@@ -27,7 +27,7 @@ class Rating(db.Model, CommonColumns, TrackUpdates):
 
   hit = relationship('Hit', back_populates='ratings')
   argument = relationship('Argument', back_populates='ratings')
-  supports = relationship('Supports_Rebuts', back_populates='ratings')
+  supports = relationship('SupportRebut', back_populates='ratings')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
   def to_history(self):

@@ -23,7 +23,7 @@ class User(db.Model, UserMixin):
   def texts_added(self):
     from app.models import Text
     texts = Text.query.filter_by(created_by=self.id)
-    return [text.to_dict() for text in texts]
+    return texts
 
   @property
   def password(self):

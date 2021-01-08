@@ -21,14 +21,14 @@ class TrackUpdates(object):
     old_data = json.dumps(self.to_history())
     revised_obj = self.__update_data__(change_data)
     new_data = json.dumps(revised_obj.to_history())
-    history = ChangeHistory({
-        "updated_by": user_id,
-        "changed_at": datetime.now(),
-        "table_name": self.__tablename__.upper(),
-        "table_pk": self.id,
-        "old_data": old_data,
-        "new_data": new_data
-        })
+    history = ChangeHistory(
+        updated_by= user_id,
+        changed_at= datetime.now(),
+        table_name= self.__tablename__.upper(),
+        table_pk= self.id,
+        old_data= old_data,
+        new_data= new_data
+        )
     db.session.add(history)
 
     return revised_obj

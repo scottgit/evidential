@@ -2,8 +2,8 @@ from app.models import db, Hit, Text
 
 def seed_hits():
 
-    text_1 = Text.query.get(1)
-    text_2 = Text.query.get(2)
+    text_1 = Text.query.get(1).content
+    text_2 = Text.query.get(2).content
     loc_1 = text_2.index('salvation')
     loc_2 = text_2.index('faith')
     loc_3 = text_2.index('faith', loc_2+1)
