@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LoginForm from "./components/auth/LoginForm";
-import SignUpForm from "./components/auth/SignUpForm";
+import SignUpAndEditForm from "./components/auth/SignUpAndEditForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
@@ -37,8 +37,11 @@ function App() {
           />
         </Route>
         <Route path="/sign-up" exact={true}>
-          <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
+          <SignUpAndEditForm authenticated={authenticated} setAuthenticated={setAuthenticated} edit={false}/>
         </Route>
+        <ProtectedRoute path="/edit" exact={true}>
+          <SignUpAndEditForm authenticated={authenticated} setAuthenticated={setAuthenticated} edit={true}/>
+        </ProtectedRoute>
         <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
           <UsersList/>
         </ProtectedRoute>
