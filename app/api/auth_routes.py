@@ -1,8 +1,10 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, request
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+from app.forms import EditUserForm
+from datetime import datetime
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -47,6 +49,7 @@ def login():
 
 
 @auth_routes.route('/logout')
+@login_required
 def logout():
     """
     Logs a user out
@@ -63,21 +66,61 @@ def sign_up():
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-            user = User(
-                first_name=form.data['firstName'],
-                last_name=form.data['lastName'],
-                email=form.data['email'],
-                password=form.data['password'],
-                # deleted defaults to False
-                # TODO verified eventually will default to False
-                verified=True,
-            )
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            return user.full_to_dict()
+        user = User(
+            first_name=form.data['firstName'],
+            last_name=form.data['lastName'],
+            email=form.data['email'],
+            password=form.data['password'],
+            # deleted defaults to False
+            # TODO verified eventually will default to False
+            verified=True,
+        )
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return user.full_to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}
 
+
+@auth_routes.route('/edit', methods=['POST'])
+@login_required
+def edit():
+    """
+    Edits current user information
+    """
+    form = EditUserForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        user = current_user
+        first_name=form.data['firstName']
+        last_name=form.data['lastName'],
+        email=form.data['email'],
+        password=form.data['password'],
+        if (first_name):
+            user.first_name = first_name
+        if (last_name):
+            user.last_name = last_name
+        if (email):
+            user.email = email
+        if (password):
+            user.password = password
+        user.updated_at = datetime.now()
+        db.session.commit()
+        return user.full_to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}
+
+@auth_routes.route('/deactivate')
+@login_required
+def logout():
+    """
+    Logs a user out then sets flag
+    """
+    user = current_user
+    user.deleted = True
+    user.updated_at = datetime.now()
+    db.session.commit()
+    logout_user()
+    return {'message': 'User account deactivated'}
 
 @auth_routes.route('/unauthorized')
 def unauthorized():

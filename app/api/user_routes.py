@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from flask_login import login_required, current_user
 from app.models import User
 
@@ -6,7 +6,6 @@ user_routes = Blueprint('users', __name__)
 
 
 @user_routes.route('/')
-@login_required
 def users():
     users = User.query.all()
 
@@ -20,3 +19,4 @@ def user(id):
     user = User.query.get(id)
 
     return user.full_to_dict() if id == self.id else user.full_public_to_dict()
+
