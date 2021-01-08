@@ -7,15 +7,17 @@ export const authenticate = async() => {
   return await response.json();
 }
 
-export const login = async (email, password) => {
-  const response = await fetch('/api/auth/login', {
+export const loginOrRecheckPassword = async (email, password, recheck=false) => {
+  endPoint = recheck ? 'recheck' : 'login'
+  const response = await fetch(`/api/auth/${endPoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       email,
-      password
+      password,
+      recheck
     })
   });
   return await response.json();
@@ -31,8 +33,9 @@ export const logout = async () => {
 };
 
 
-export const signUp = async (lastName, firstName, email, password) => {
-  const response = await fetch("/api/auth/signup", {
+export const signUpOrEdit = async (lastName, firstName, email, password, confirmPassword, edit) => {
+  endPoint = edit ? 'edit' : 'signup';
+  const response = await fetch(`/api/auth/${endPoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,21 +45,7 @@ export const signUp = async (lastName, firstName, email, password) => {
       firstName,
       email,
       password,
-    }),
-  });
-  return await response.json();
-}
-
-export const editUser = async (lastName, firstName, email, password) => {
-  const response = await fetch("/api/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username,
-      email,
-      password,
+      confirmPassword
     }),
   });
   return await response.json();

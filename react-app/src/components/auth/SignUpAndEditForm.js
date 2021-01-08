@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
-import { signUp } from '../../services/auth';
+import { signUpOrEdit } from '../../services/auth';
 
 const SignUpAndEditForm = ({authenticated, setAuthenticated, edit}) => {
   const [firstName, setFirstName] = useState("");
@@ -10,18 +10,22 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit}) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [verified, setVerified] = useState(edit ? false : true)
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      const user = await signUp(firstName, lastName, email, password, confirmPassword);
-      if (!user.errors) {
+      const user = await signUpOrEdit(firstName, lastName, email, password, confirmPassword, edit);
+      if (!user.errors && !edit) {
         setAuthenticated(true);
       }
     }
   };
 
-  const updateUsername = (e) => {
-    setUsername(e.target.value);
+  const updateFirstName = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const updateLastName = (e) => {
+    setLastName(e.target.value);
   };
 
   const updateEmail = (e) => {
@@ -41,9 +45,8 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit}) => {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <div>
-      {/* autocomplete, list, maxlength, minlength, pattern, placeholder, readonly, required and size */}
         <label for="first_name">First Name</label>
         <input
           id="first_name"

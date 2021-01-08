@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect, url_for
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -43,9 +43,20 @@ def login():
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
-        login_user(user)
-        return user.full_to_dict()
+        if (form.data['recheck']):
+            return {'validated': True}
+        else:
+            login_user(user)
+            return user.full_to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+@auth_routes.route('/recheck', methods=['POST'])
+@login_required
+def recheck():
+    """
+    Requires logged in route, then redirect's to login to recheck's user password for verification
+    """
+    return redirect(url_for('login'))
 
 
 @auth_routes.route('/logout')
