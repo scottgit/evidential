@@ -5,7 +5,7 @@ from app.models import User
 user_routes = Blueprint('users', __name__)
 
 
-@user_routes.route('/')
+@user_routes.route('')
 def users():
     users = User.query.all()
 
@@ -19,4 +19,3 @@ def user(id):
     user = User.query.get(id)
 
     return user.full_to_dict() if id == self.id else user.full_public_to_dict()
-

@@ -19,6 +19,10 @@ class User(db.Model, UserMixin):
 
   data_changes = relationship('ChangeHistory', back_populates='user', order_by='desc(ChangeHistory.changed_at)')
 
+  @property
+  def site_identifier(self):
+    return f"{self.first_name} {self.last_name} (user #{self.id})"
+
   @hybrid_property
   def texts_added(self):
     from app.models import Text
@@ -49,18 +53,12 @@ class User(db.Model, UserMixin):
       "deleted": self.deleted,
       "createdAt": self.created_at,
       "updatedAt": self.updated_at,
+      "siteIdentifier": self.site_identifier,
     }
 
   def full_to_dict(self):
     return {
-      "id": self.id,
-      "email": self.email,
-      "firstName": self.first_name,
-      "lastName": self.last_name,
-      "verified": self.verified,
-      "deleted": self.deleted,
-      "createdAt": self.created_at,
-      "updatedAt": self.updated_at,
+      **self.to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
     }
@@ -73,16 +71,12 @@ class User(db.Model, UserMixin):
       "verified": self.verified,
       "deleted": self.deleted,
       "createdAt": self.created_at,
+      "siteIdentifier": self.site_identifier,
     }
 
   def full_public_to_dict(self):
     return {
-      "id": self.id,
-      "firstName": self.first_name,
-      "lastName": self.last_name,
-      "verified": self.verified,
-      "deleted": self.deleted,
-      "createdAt": self.created_at,
+      **self.public_to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
     }
