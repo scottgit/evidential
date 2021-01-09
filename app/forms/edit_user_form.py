@@ -5,6 +5,7 @@ from wtforms.validators import Optional, Email, EqualTo, Length, Regexp
 from .includes.user_exists import user_exists
 
 class EditUserForm(FlaskForm):
+    formType = "edit_user"
     first_name = StringField('firstName', validators=[Optional()])
     last_name = StringField('lastName', validators=[Optional()])
     email = StringField('email', validators=[Optional(), Email(), user_exists])

@@ -1,9 +1,18 @@
 html {
   /* Colors */
-  --primary-color: blue;
-  --primary-color-light: rgb(191, 191, 252);
-  --primary-color-dark: rgb(1, 1, 131);
+  --primary-color: rgb(108, 77, 138);;
+  --primary-color-light: rgb(183, 183, 212);
+  --primary-color-dark: rgb(85, 26, 139);
   --error-color: red;
+
+  /* Icons */
+  --icon-color-stop1: var(--primary-color-light);
+  --icon-color-stop2: var(--primary-color);
+  --icon-color-stop3: var(--primary-color-dark);
+  --icon-padding: 3px;
+  --icon-margin: 10px;
+  --icon-button-padding: 6px;
+  --icon-button-font-size: 3rem;
 
   --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark))
 }

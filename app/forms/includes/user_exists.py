@@ -2,7 +2,9 @@ from app.models import User
 from wtforms.validators import ValidationError
 
 def user_exists(form, field):
+    print(form.data)
     print("Checking if user exits", field.data)
+    formType = form.data
     email = field.data
     user = User.query.filter(User.email == email).first()
     if user and user.deleted:

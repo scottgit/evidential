@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUpOrEdit, loginOrRecheckPassword } from '../../services/auth';
-import "./SignUpAndEditForm.css"
+import "./SignUpAndEditForm.css";
+import { faSignInAlt, faSave } from '@fortawesome/free-solid-svg-icons';
+import FAI from '../includes/FAI';
 
 
 const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser}) => {
@@ -13,8 +15,27 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   const [verificationPassword, setVerificationPassword] = useState("")
   const [verified, setVerified] = useState(edit ? false : true)
   const [errors, setErrors] = useState([]);
+  const [filled, setFilled] = useState(false)
 
   const passwordMatch = () => password === confirmPassword;
+
+
+  useEffect(() => {
+    const checkFilled = () => {
+      if (
+        firstName.length &&
+        lastName.length &&
+        email.length &&
+        password.length &&
+        confirmPassword.length
+      ) {
+        setFilled(true);
+      } else {
+        setFilled(false);
+      }
+    }
+    checkFilled();
+  }, [firstName, lastName, email, password, confirmPassword])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +91,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
 
 
   return (
-    <div className="page-wrapper user-info-change">
+    <div className="content-wrapper user-info-change">
       <h1>
       { (edit && `Edit ${currentUser.siteIdentifier}`)
         ||
@@ -78,9 +99,9 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
       }
       </h1>
       { (!!errors.length) &&
-        <div>
+        <div className="form-errors">
           {errors.map((error) => (
-            <div>{error}</div>
+            <div key={error}>{error}</div>
           ))}
         </div>
       }
@@ -112,7 +133,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
           }
           </p>
           <p>As this is a site focused on academic integrity, please use real first and last names.</p>
-          <p>{edit && "If updating Password, then"} Password and Confirm password must match and should have a minimum of 8 characters, with at least 1 lower case, 1 upper case, 1 number, and 1 special character of: {"@$!%*?&"}</p>
+          <p>{edit && "If updating Password, then"} Password and Confirm password must match and should have a minimum of 8 characters, with at least 1 lower case, 1 upper case, 1 number, and 1 special character of: {"#?!@$%^&*-"}</p>
 
           <form onSubmit={handleSubmit}>
             <div>
@@ -175,7 +196,9 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 <div className="unmatched-confirm">Confirm must match password</div>
               }
             </div>
-            <button type="submit">{edit ? 'Edit Info' : 'Sign Up'}</button>
+            { filled &&
+              <button className="icon submit" type="submit">{edit ? <FAI icon={faSave} /> : <FAI icon={faSignInAlt} />}</button>
+            }
           </form>
         </main>
       }

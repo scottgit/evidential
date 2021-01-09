@@ -34,7 +34,21 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar setAuthenticated={setAuthenticated} />
+      {/* <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="icon-svg">
+      <radialGradient id="icon-gradient" r="110%" cx="30%" cy="30%">
+    <stop stopColor="var(--icon-color-stop3)" offset="0" />
+    <stop stopColor="var(--icon-color-stop2)" offset="0.45" />
+    <stop stopColor="var(--icon-color-stop1)" offset="0.9" />
+      </radialGradient>
+        <linearGradient id="icon-gradient" gradientUnits="userSpaceOnUse"
+    x1="0"  gradientTransform="rotate(-75)">
+          <stop offset="0%" stopColor="var(--icon-color-stop1)" />
+          <stop offset="30%" stopColor="var(--icon-color-stop2)" />
+          <stop offset="60%" stopColor="var(--icon-color-stop2)" />
+          <stop offset="100%" stopColor="var(--icon-color-stop3)" />
+        </linearGradient>
+      </svg> */}
+      <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} />
       <Switch>
         <Route path="/login" exact={true}>
           <LoginForm
@@ -55,6 +69,11 @@ function App() {
         <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
         </ProtectedRoute>
+        { !authenticated &&
+        <Route path="/" exact={true}>
+          <h1>Welcome</h1>
+        </Route>
+        }
         <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
           <h1>My Home Page</h1>
         </ProtectedRoute>

@@ -1,3 +1,4 @@
+from datetime import datetime
 from .db import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -14,8 +15,8 @@ class User(db.Model, UserMixin):
   verified = db.Column(db.Boolean, nullable = False, default=False)
   deleted = db.Column(db.Boolean, nullable = False, default=False)
   hashed_password = db.Column(db.String(255), nullable = False)
-  created_at = db.Column(db.DateTime, nullable = False)
-  updated_at = db.Column(db.DateTime, nullable = False)
+  created_at = db.Column(db.DateTime, nullable = False, default= datetime.now())
+  updated_at = db.Column(db.DateTime, nullable = False, default= datetime.now())
 
   data_changes = relationship('ChangeHistory', back_populates='user', order_by='desc(ChangeHistory.changed_at)')
 

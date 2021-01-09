@@ -1,11 +1,87 @@
+html {
+  height: 100%;
+}
+
+div {
+  box-sizing: border-box;
+}
+
 .body {
+  height: 100%;
   min-width: 250px;
+}
+
+.page-wrapper {
+  height: 100%;
+  padding-top: 10px;
+}
+
+.root {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.content-wrapper {
+  padding: 20px 40px;
+}
+
+a {
+  color: var(--primary-color-dark);
+}
+
+a:hover {
+  text-shadow: 1px 1px 1px var(--primary-color-dark);
+}
+
+/* .icon-svg {
+  width: 3em;
+  height: 3em;
+} */
+
+.ev-icon {
+  display: block;
+  padding: var(--icon-padding);
+  margin: var(--icon-margin);;
+  color: white;
+}
+
+.active .ev-icon {
+  filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
+  cursor: default;
+}
+
+/* .ev-icon * {
+  fill: url(#icon-gradient) #fff;
+  fill: white white;
+} */
+
+:not(a) > .ev-icon:hover,
+:not(.active) > .ev-icon:hover {
+  color: var(--primary-color);
+  cursor: pointer;
 }
 
 button {
   display: inline-block;
-  padding: 6px 12px;
+  padding: var(--icon-button-padding);
   background: var(--button-primary-background);
   border: none;
-  border-radius: .4rem;
+  border-radius: 4px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+button.icon {
+  font-size: var(--icon-button-font-size);
+}
+
+/* Inputs */
+.form-errors {
+  color: var(--error-color);
+}
+form {
+  font-size: 1.1em;
+}
+
+input {
+  padding: 4px;
 }

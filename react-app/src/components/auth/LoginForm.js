@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { loginOrRecheckPassword } from "../../services/auth";
-import "./LoginForm.css"
+import "./LoginForm.css";
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import FAI from '../includes/FAI';
 
 const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   const [errors, setErrors] = useState([]);
@@ -32,34 +34,41 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   }
 
   return (
-    <form onSubmit={onLogin}>
-      <div>
-        {errors.map((error) => (
-          <div>{error}</div>
-        ))}
-      </div>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          name="email"
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={updateEmail}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={updatePassword}
-        />
-        <button type="submit">Login</button>
-      </div>
-    </form>
+    <div className="content-wrapper user-info-change">
+      <h1>Log In</h1>
+      <main>
+        <form onSubmit={onLogin}>
+          <div className="form-errors">
+            {errors.map((error) => (
+              <div key={error}>{error}</div>
+            ))}
+          </div>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={updateEmail}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={updatePassword}
+            />
+            <button className="icon submit" type="submit"><FAI icon={faSignInAlt} /></button>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 };
 

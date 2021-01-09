@@ -5,11 +5,12 @@
 }
 
 .user-info-change form {
-  max-width: 300px;
+  max-width: 80%;
   margin: 30px auto;
   padding: 30px;
-  border: 1px solid black;
+  border: 1px solid var(--primary-color-dark);
   border-radius: 10px;
+  position: relative;
 }
 
 .user-info-change form > div {
@@ -21,6 +22,10 @@
   width: var(--text-space);
   padding-right: 5px;
   font-weight: bold;
+}
+
+.user-info-change input {
+  width: 60%;
 }
 
 .user-info-change button {
@@ -38,4 +43,12 @@
   padding-left: calc(var(--text-space) + 7px);
   font-size: .9em;
   margin-bottom: -1rem;
+}
+
+.user-info-change .icon.submit {
+  position: absolute;
+  z-index: 1;
+  left: 95%;
+  top: 50%;
+  margin-top: calc(var(--icon-button-font-size)/-2 - var(--icon-button-padding) - var(--icon-padding) - var(--icon-margin));
 }
