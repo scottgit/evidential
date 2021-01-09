@@ -1,0 +1,9 @@
+html {
+  /* Colors */
+  --primary-color: blue;
+  --primary-color-light: rgb(191, 191, 252);
+  --primary-color-dark: rgb(1, 1, 131);
+  --error-color: red;
+
+  --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark))
+}

@@ -1,13 +1,15 @@
-.user-info-change {
+.user-info-change > main {
   max-width: 500px;
+  margin: 0 auto;
+  --text-space: 9rem;
 }
 
 .user-info-change form {
   max-width: 300px;
-  margin: 0 auto;
+  margin: 30px auto;
+  padding: 30px;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 30px;
 }
 
 .user-info-change form > div {
@@ -16,7 +18,7 @@
 
 .user-info-change label {
   display: inline-block;
-  width: 9rem;
+  width: var(--text-space);
   padding-right: 5px;
   font-weight: bold;
 }
@@ -26,8 +28,14 @@
   margin: 20px auto 0;
 }
 
-.unmatched-confirm {
-  color: red;
-  padding-left: calc(8rem + 7px);
+.user-info-change .error-border {
+  outline: var(--error-color) auto 1px;
+  /* box-shadow: 0 0 3px var(--error-color); */
+}
+
+.user-info-change .unmatched-confirm {
+  color: var(--error-color);
+  padding-left: calc(var(--text-space) + 7px);
   font-size: .9em;
+  margin-bottom: -1rem;
 }

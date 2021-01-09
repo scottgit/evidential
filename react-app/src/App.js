@@ -7,6 +7,11 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
 import { authenticate } from "./services/auth";
+import { library } from '@fortawesome/fontawesome-svg-core';
+// import { fab } from '@fortawesome/free-brands-svg-icons';
+import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faCheckSquare, faCoffee)
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -15,7 +20,6 @@ function App() {
 
   useEffect(() => {
     (async() => {
-      console.log('In App: Auth check occurring')
       const user = await authenticate();
       if (user && !user.errors) {
         setAuthenticated(true);

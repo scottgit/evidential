@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { loginOrRecheckPassword } from "../../services/auth";
+import "./LoginForm.css"
 
 const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   const [errors, setErrors] = useState([]);

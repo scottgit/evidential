@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUpOrEdit, loginOrRecheckPassword } from '../../services/auth';
-// import { renderCSS } from '../../services/renderCSS';
-import './SignUpAndEditForm.css'
+import "./SignUpAndEditForm.css"
+
 
 const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser}) => {
   const [firstName, setFirstName] = useState("");
@@ -13,6 +13,8 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   const [verificationPassword, setVerificationPassword] = useState("")
   const [verified, setVerified] = useState(edit ? false : true)
   const [errors, setErrors] = useState([]);
+
+  const passwordMatch = () => password === confirmPassword;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +68,6 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
     return <Redirect to="/" />;
   }
 
-  // renderCSS('./SignUpAndEditForm.css')
 
   return (
     <div className="page-wrapper user-info-change">
@@ -124,7 +125,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 value={firstName}
                 maxLength={40}
                 required={edit ? false : true}
-              ></input>
+              />
             </div>
             <div>
               <label htmlFor="last_name">Last Name</label>
@@ -135,7 +136,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 onChange={updateLastName}
                 value={lastName}
                 required={edit ? false : true}
-              ></input>
+              />
             </div>
             <div>
               <label htmlFor="email">Email</label>
@@ -146,7 +147,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 onChange={updateEmail}
                 value={email}
                 required={edit ? false : true}
-              ></input>
+              />
             </div>
             <div>
               <label htmlFor="password">Password</label>
@@ -157,7 +158,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 onChange={updatePassword}
                 value={password}
                 required={edit ? false : true}
-              ></input>
+              />
             </div>
             <div>
               <label htmlFor="confirm_password">Confirm Password</label>
@@ -168,9 +169,11 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
                 onChange={updateConfirmPassword}
                 value={confirmPassword}
                 required={password ? true : false}
-              ></input>
-              { password !== confirmPassword &&
-                <div className="unmatched-confirm">Confirm must match password</div>}
+                className={!passwordMatch() ? "error-border" : ""}
+              />
+              { !passwordMatch() &&
+                <div className="unmatched-confirm">Confirm must match password</div>
+              }
             </div>
             <button type="submit">{edit ? 'Edit Info' : 'Sign Up'}</button>
           </form>

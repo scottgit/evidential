@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from './auth/LogoutButton';
+import FAI from './includes/FAI';
 
 const NavBar = ({ setAuthenticated }) => {
   return (
     <nav>
       <ul>
+        <FAI icon="coffee"/>
         <li>
           <NavLink to="/" exact={true} activeClassName="active">
             Home
