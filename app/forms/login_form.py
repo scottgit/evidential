@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 from app.models import User
-from .includes import user_exists
+from .includes.user_exists import user_exists
 
 def password_matches(form, field):
     print("Checking if password matches")
@@ -16,6 +16,10 @@ def password_matches(form, field):
 
 
 class LoginForm(FlaskForm):
+    formType = StringField('formType', default='login')
     email = StringField('email', validators=[DataRequired(), user_exists])
     password = StringField('password', validators=[
-                           DataRequired(), password_matches])
+        DataRequired(),
+        password_matches
+        ])
+    recheck = BooleanField('recheck')

@@ -1,21 +1,23 @@
 export const authenticate = async() => {
-  const response = await fetch('/api/auth/',{
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  return await response.json();
+    const response = await fetch('/api/auth',{
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return await response.json();
 }
 
-export const login = async (email, password) => {
-  const response = await fetch('/api/auth/login', {
+export const loginOrRecheckPassword = async (email, password, recheck=false) => {
+  const endPoint = recheck ? 'recheck' : 'login'
+  const response = await fetch(`/api/auth/${endPoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       email,
-      password
+      password,
+      recheck
     })
   });
   return await response.json();
@@ -31,18 +33,20 @@ export const logout = async () => {
 };
 
 
-export const signUp = async (username, email, password) => {
-  const response = await fetch("/api/auth/signup", {
+export const signUpOrEdit = async (lastName, firstName, email, password, confirmPassword, edit) => {
+  const endPoint = edit ? 'edit' : 'signup';
+  const response = await fetch(`/api/auth/${endPoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      username,
+      lastName,
+      firstName,
       email,
       password,
+      confirmPassword
     }),
   });
   return await response.json();
 }
-

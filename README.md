@@ -12,3 +12,4 @@ An app to analyze the argument of texts for various claims
   * File upload support (for Text creation): [react-dropzone](https://github.com/react-dropzone/react-dropzone)
   * Slider component (for Ratings): [react-component/slider](https://github.com/react-component/slider)
   * Bar charts (for Text profile display): [react-charts/bar-chart](https://canvasjs.com/react-charts/bar-chart/)
+  * Icons [fontawesome with react](https://fontawesome.com/how-to-use/on-the-web/using-with/react)

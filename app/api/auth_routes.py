@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect, url_for
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -20,14 +20,14 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@auth_routes.route('/')
+@auth_routes.route('')
 def authenticate():
     """
     Authenticates a user.
     """
     if current_user.is_authenticated:
         return current_user.full_to_dict()
-    return {'errors': ['Unauthorized']}, 401
+    return {'errors': ['Unauthorized']}
 
 
 @auth_routes.route('/login', methods=['POST'])
@@ -36,6 +36,7 @@ def login():
     Logs a user in
     """
     form = LoginForm()
+    print('****1', form.data)
     print(request.get_json())
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
@@ -43,9 +44,20 @@ def login():
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
-        login_user(user)
-        return user.full_to_dict()
+        if (form.data['recheck']):
+            return {'validated': True}
+        else:
+            login_user(user)
+            return user.full_to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+@auth_routes.route('/recheck', methods=['POST'])
+@login_required
+def recheck():
+    """
+    Requires logged in route, then redirect's to login to recheck's user password for verification
+    """
+    return redirect(url_for('login'))
 
 
 @auth_routes.route('/logout')
@@ -111,7 +123,7 @@ def edit():
 
 @auth_routes.route('/deactivate')
 @login_required
-def logout():
+def deactivate():
     """
     Logs a user out then sets flag
     """
