@@ -1,3 +1,4 @@
+import { faHome, faSignInAlt, faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from './auth/LogoutButton';
@@ -7,25 +8,24 @@ const NavBar = ({ setAuthenticated }) => {
   return (
     <nav>
       <ul>
-        <FAI icon="coffee"/>
         <li>
           <NavLink to="/" exact={true} activeClassName="active">
-            Home
+            <FAI icon={faHome} />
           </NavLink>
         </li>
         <li>
           <NavLink to="/login" exact={true} activeClassName="active">
-            Login
+            <FAI icon={faSignInAlt} />
           </NavLink>
         </li>
         <li>
           <NavLink to="/sign-up" exact={true} activeClassName="active">
-            Sign Up
+            <FAI icon={faUserPlus} />
           </NavLink>
         </li>
         <li>
           <NavLink to="/users" exact={true} activeClassName="active">
-            Users
+            <FAI icon={faUsers} />
           </NavLink>
         </li>
         <li>

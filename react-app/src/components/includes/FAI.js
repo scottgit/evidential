@@ -2,9 +2,9 @@ import React from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const FAI = ({icon}) => {
+const FAI = (props) => {
   return (
-    <FontAwesomeIcon icon={icon} />
+    <FontAwesomeIcon {...props} className="icon-color"/>
   )
 }
 

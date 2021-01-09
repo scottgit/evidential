@@ -1,5 +1,7 @@
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { logout } from "../../services/auth";
+import FAI from "../includes/FAI";
 
 const LogoutButton = ({setAuthenticated}) => {
   const onLogout = async (e) => {
@@ -7,7 +9,7 @@ const LogoutButton = ({setAuthenticated}) => {
     setAuthenticated(false);
   };
 
-  return <button onClick={onLogout}>Logout</button>;
+  return <FAI icon={faSignOutAlt} onClick={onLogout} />;
 };
 
 export default LogoutButton;
