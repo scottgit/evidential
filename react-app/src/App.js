@@ -6,6 +6,8 @@ import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/user/UsersList";
 import User from "./components/user/User";
+import Welcome from "./components/Welcome";
+import Home from "./components/Home";
 import { authenticate } from "./services/auth";
 import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -23,6 +25,7 @@ function App() {
       const user = await authenticate();
       if (user && !user.errors) {
         setAuthenticated(true);
+        setCurrentUser(user);
       }
       setLoaded(true);
     })();
@@ -71,11 +74,11 @@ function App() {
         </ProtectedRoute>
         { !authenticated &&
         <Route path="/" exact={true}>
-          <h1>Welcome</h1>
+          <Welcome />
         </Route>
         }
         <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
-          <h1>My Home Page</h1>
+          <Home currentUser={currentUser} />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
