@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { loginOrRecheckPassword } from "../../services/auth";
 import "./LoginForm.css";
@@ -9,8 +9,23 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [filled, setFilled] = useState(false);
 
-  const onLogin = async (e) => {
+  useEffect(() => {
+    const checkFilled = () => {
+      if (
+        email.length &&
+        password.length
+      ) {
+        setFilled(true);
+      } else {
+        setFilled(false);
+      }
+    }
+    checkFilled();
+  }, [email, password])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = await loginOrRecheckPassword(email, password);
     if (!user.errors) {
@@ -20,6 +35,11 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
       setErrors(user.errors);
     }
   };
+
+  const handleDemoLogin = (e) => {
+    setEmail("demo@demo.demo");
+    setPassword("hj8n%9Gw");
+  }
 
   const updateEmail = (e) => {
     setEmail(e.target.value);
@@ -37,7 +57,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
     <div className="content-wrapper user-info-change">
       <h1>Log In</h1>
       <main>
-        <form onSubmit={onLogin}>
+        <form onSubmit={handleSubmit}>
           <div className="form-errors">
             {errors.map((error) => (
               <div key={error}>{error}</div>
@@ -64,8 +84,14 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
               value={password}
               onChange={updatePassword}
             />
-            <button className="icon submit" type="submit"><FAI icon={faSignInAlt} /></button>
           </div>
+          {/* TODO Fade button in/out */}
+          { filled &&
+              <button className="icon submit" type="submit"><FAI icon={faSignInAlt} /></button>
+          }
+          <button type="button" onClick={handleDemoLogin}>
+            User Demo User Credentials
+          </button>
         </form>
       </main>
     </div>

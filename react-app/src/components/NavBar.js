@@ -14,13 +14,13 @@ const NavBar = ({ setAuthenticated, authenticated }) => {
         { !authenticated &&
           <>
             <li>
-              <NavLink to="/login" exact={true} activeClassName="active">
-                <FAI icon={faSignInAlt} />
+              <NavLink to="/sign-up" exact={true} activeClassName="active">
+                <FAI icon={faUserPlus} />
               </NavLink>
             </li>
             <li>
-              <NavLink to="/sign-up" exact={true} activeClassName="active">
-                <FAI icon={faUserPlus} />
+              <NavLink to="/login" exact={true} activeClassName="active">
+                <FAI icon={faSignInAlt} />
               </NavLink>
             </li>
           </>

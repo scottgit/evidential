@@ -3,6 +3,7 @@ html {
   --primary-color: rgb(108, 77, 138);;
   --primary-color-light: rgb(183, 183, 212);
   --primary-color-dark: rgb(85, 26, 139);
+  --primary-color-white: rgb(232, 232, 252);
   --error-color: red;
 
   /* Icons */
@@ -13,6 +14,11 @@ html {
   --icon-margin: 10px;
   --icon-button-padding: 6px;
   --icon-button-font-size: 3rem;
+  --icon-button-primary-background: linear-gradient(140deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
 
-  --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark))
+  --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+
+  --button-primary-background-hover: linear-gradient(179deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+
+
 }

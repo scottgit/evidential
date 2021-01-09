@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
 from .includes.user_exists import user_exists
 
 class SignUpForm(FlaskForm):
-    formType = "sign_up"
+    formType = StringField('formType', default='sign up'),
     firstName = StringField('firstName', validators=[DataRequired()])
     lastName = StringField('lastName', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired(), Email(), user_exists])

@@ -9,7 +9,14 @@ const LogoutButton = ({setAuthenticated}) => {
     setAuthenticated(false);
   };
 
-  return <FAI icon={faSignOutAlt} onClick={onLogout} />;
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      onLogout();
+    }
+  }
+
+  // TODO Make a warning wrapper to confirm logout
+  return <FAI icon={faSignOutAlt} onClick={onLogout} onKeyDown={handleKeyDown}tabIndex="0"/>;
 };
 
 export default LogoutButton;

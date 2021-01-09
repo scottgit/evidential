@@ -15,7 +15,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   const [verificationPassword, setVerificationPassword] = useState("")
   const [verified, setVerified] = useState(edit ? false : true)
   const [errors, setErrors] = useState([]);
-  const [filled, setFilled] = useState(false)
+  const [filled, setFilled] = useState(false);
 
   const passwordMatch = () => password === confirmPassword;
 
