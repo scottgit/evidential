@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import TextsList from "./text/TextsList";
 
-const Home = ({currentUser}) => {
+const Home = ({currentUser, authenticated}) => {
 
   return (
-    <div className="content-container">
+    <div className="content-wrapper">
       <h1>Home ({currentUser.firstName})</h1>
-      change and more change
+      <TextsList />
     </div>
   )
 }

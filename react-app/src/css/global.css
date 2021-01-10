@@ -54,7 +54,7 @@ a:hover {
   fill: url(#icon-gradient) #fff;
   fill: white white;
 } */
-
+nav .ev-icon:hover,
 a:not(.active) > .ev-icon:hover {
   color: var(--primary-color);
   cursor: pointer;

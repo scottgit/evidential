@@ -36,8 +36,9 @@ def login():
     Logs a user in
     """
     form = LoginForm()
-    print('****1', form.data)
+    print("***HERE TOO***")
     print(request.get_json())
+    print(form.data)
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -57,7 +58,9 @@ def recheck():
     """
     Requires logged in route, then redirect's to login to recheck's user password for verification
     """
-    return redirect(url_for('login'))
+    form = LoginForm()
+    print("****IN RECHECK", form.data)
+    return redirect('login', code=307)
 
 
 @auth_routes.route('/logout')

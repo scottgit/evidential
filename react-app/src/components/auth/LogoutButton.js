@@ -3,7 +3,7 @@ import React from "react";
 import { logout } from "../../services/auth";
 import FAI from "../includes/FAI";
 
-const LogoutButton = ({setAuthenticated}) => {
+const LogoutButton = ({setAuthenticated, title}) => {
   const onLogout = async (e) => {
     await logout();
     setAuthenticated(false);
@@ -16,7 +16,7 @@ const LogoutButton = ({setAuthenticated}) => {
   }
 
   // TODO Make a warning wrapper to confirm logout
-  return <FAI icon={faSignOutAlt} onClick={onLogout} onKeyDown={handleKeyDown}tabIndex="0"/>;
+  return <FAI icon={faSignOutAlt} onClick={onLogout} onKeyDown={handleKeyDown} tabIndex="0" title={title}/>;
 };
 
 export default LogoutButton;

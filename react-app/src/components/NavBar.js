@@ -1,4 +1,4 @@
-import { faHome, faSignInAlt, faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSignInAlt, faUserPlus, faUsers, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from './auth/LogoutButton';
@@ -15,12 +15,12 @@ const NavBar = ({ setAuthenticated, authenticated }) => {
           <>
             <li>
               <NavLink to="/sign-up" exact={true} activeClassName="active">
-                <FAI icon={faUserPlus} />
+                <FAI icon={faUserPlus} title="Sign Up"/>
               </NavLink>
             </li>
             <li>
               <NavLink to="/login" exact={true} activeClassName="active">
-                <FAI icon={faSignInAlt} />
+                <FAI icon={faSignInAlt} title="Log In"/>
               </NavLink>
             </li>
           </>
@@ -29,17 +29,22 @@ const NavBar = ({ setAuthenticated, authenticated }) => {
           <>
             <li>
               <NavLink to="/users" exact={true} activeClassName="active">
-                <FAI icon={faUsers} />
+                <FAI icon={faUsers} title="Users List"/>
               </NavLink>
             </li>
             <li>
-              <LogoutButton setAuthenticated={setAuthenticated} />
+              <NavLink to="/edit-your-info" exact={true} activeClassName="active">
+                <FAI icon={faUserEdit} title="Edit User"/>
+              </NavLink>
+            </li>
+            <li>
+              <LogoutButton setAuthenticated={setAuthenticated} title="Log Out" />
             </li>
           </>
         }
         <li>
           <NavLink to="/" exact={true} activeClassName="active">
-            <FAI icon={faHome} />
+            <FAI icon={faHome} title="Home"/>
           </NavLink>
         </li>
       </ul>
