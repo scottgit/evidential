@@ -5,6 +5,7 @@ html {
   --primary-color-dark: rgb(85, 26, 139);
   --primary-color-white: rgb(232, 232, 252);
   --error-color: red;
+  --success-color: green;
 
   /* Icons */
   --icon-color-stop1: var(--primary-color-light);

@@ -33,7 +33,7 @@ export const logout = async () => {
 };
 
 
-export const signUpOrEdit = async (lastName, firstName, email, password, confirmPassword, edit) => {
+export const signUpOrEdit = async (firstName, lastName, email, password, confirmPassword, edit) => {
   const endPoint = edit ? 'edit' : 'signup';
   const response = await fetch(`/api/auth/${endPoint}`, {
     method: "POST",
@@ -41,8 +41,8 @@ export const signUpOrEdit = async (lastName, firstName, email, password, confirm
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      lastName,
       firstName,
+      lastName,
       email,
       password,
       confirmPassword

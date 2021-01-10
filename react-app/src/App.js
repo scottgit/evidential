@@ -67,21 +67,23 @@ function App() {
           <SignUpAndEditForm
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
+            setCurrentUser={setCurrentUser}
             edit={false}
           />
         </Route>
         <Route path="/text/:textId" exact={true}>
           <ViewText
             authenticated={authenticated}
-            setCurrentUser={setCurrentUser}
+            currentUser={currentUser}
           />
         </Route>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
-            edit={true}
             currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            edit={true}
           />
         </ProtectedRoute>
         <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
