@@ -9,7 +9,7 @@ class Argument(db.Model, CommonColumns, TrackUpdates):
   statement = db.Column(db.String(250), nullable = False, unique=True)
   notes = db.Column(db.Text)
 
-  claim_relations = relationship('SupportRebut', back_populates='arguments', order_by='SupportRebut.id')
+  claim_relations = relationship('SupportRebut', back_populates='argument', order_by='SupportRebut.id')
   ratings = relationship('Rating', back_populates='argument', order_by='Rating.hit_id')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
@@ -36,6 +36,6 @@ class Argument(db.Model, CommonColumns, TrackUpdates):
       "notes": self.notes,
       "createdBy": self.created_by,
       "createdAt": self.created_at,
-      "supports": [relation.get_claims() for relation in self.claim_relations if relation.supports == True],
-      "rebuts": [relation.get_claims() for relation in self.claim_relations if relation.supports == False]
+      "supports": [relation.get_claim() for relation in self.claim_relations if relation.supports == True],
+      "rebuts": [relation.get_claim() for relation in self.claim_relations if relation.supports == False]
     }

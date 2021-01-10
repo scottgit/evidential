@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask_login import login_required, current_user
+from flask_login import login_required
 from app.models import Text
 
 text_routes = Blueprint('texts', __name__)
@@ -15,7 +15,7 @@ def texts():
 @text_routes.route('/<int:id>')
 @login_required
 def text(id):
-    self = current_user
     text = Text.query.get(id)
+    print("***TEXT***", text.title)
 
-    return text.full_to_dict() if id == self.id else text.full_public_to_dict()
+    return text.full_to_dict()

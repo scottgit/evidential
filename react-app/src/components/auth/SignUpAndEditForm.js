@@ -47,7 +47,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
       }
     }
     checkFilled();
-  }, [firstName, lastName, email, password, confirmPassword])
+  }, [firstName, lastName, email, password, confirmPassword, verified])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

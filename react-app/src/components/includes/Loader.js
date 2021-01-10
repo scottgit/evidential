@@ -2,9 +2,9 @@ import React from 'react'
 import FAI from './FAI';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
-const Loader = ({props}) => {
+const Loader = (props) => {
   return (
-    <FAI icon={faCircleNotch} className="loader" {...props} />
+    <FAI icon={faCircleNotch} {...props} className={`loader ${props.className}`} />
   )
 }
 

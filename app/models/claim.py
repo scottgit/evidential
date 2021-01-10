@@ -12,7 +12,7 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
 
   hit_keys = relationship('ClaimHitKeys',back_populates='claim')
 
-  argument_relations = relationship('SupportRebut', back_populates='claims')
+  argument_relations = relationship('SupportRebut', back_populates='claim')
   hits = relationship('Hit', back_populates='claim', order_by='Hit.text_id')
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
@@ -40,6 +40,6 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
       "createdBy": self.created_by,
       "createdAt": self.created_at,
       "hitKeys": [key.to_dict() for key in self.hit_keys],
-      "supportingArguments": [relation.get_arguments() for relation in self.argument_relations if relation.supports == True],
-      "rebutingArguments": [relation.get_arguments() for relation in self.argument_relations if relation.supports == False],
+      "supportingArguments": [relation.get_argument() for relation in self.argument_relations if relation.supports == True],
+      "rebutingArguments": [relation.get_argument() for relation in self.argument_relations if relation.supports == False],
     }

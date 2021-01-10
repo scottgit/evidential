@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import Loader from "../includes/Loader";
 
 const TextsList = () => {
   const [texts, setTexts] = useState([]);
@@ -23,7 +24,13 @@ const TextsList = () => {
 
   return (
     <div className="link-list">
-      <ul>{textsList}</ul>
+      <h2>Text Titles</h2>
+      { (!!texts.length &&
+          <ul>{textsList}</ul>
+        )
+        ||
+        <p>Loading texts <Loader className="in-text" /></p>
+      }
     </div>
   );
 }

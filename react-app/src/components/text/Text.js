@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
+import ReactHtmlParser from 'react-html-parser';
 
-const Text = () => {
-  const {text, setText} = useState();
+const Text = ({text}) => {
 
   return (
-    <div className="text-container">
-
-    </div>
+    <section className="text-view">
+      {text && ReactHtmlParser(text.content)}
+    </section>
   )
 }
 

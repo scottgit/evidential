@@ -16,6 +16,10 @@ div {
   padding-top: 10px;
 }
 
+p {
+  font-size: 1.3em;
+}
+
 .root {
   margin: 0 auto;
   max-width: 1000px;
@@ -37,6 +41,10 @@ a:hover {
   color: var(--success-color);
 }
 
+.error {
+  color: var(--error-color);
+}
+
 /* .icon-svg {
   width: 3em;
   height: 3em;
@@ -47,6 +55,30 @@ a:hover {
   padding: var(--icon-padding);
   margin: var(--icon-margin);;
   color: white;
+}
+
+.ev-icon.loader {
+  color: var(--primary-color);
+  animation: rotate-loader 1s linear infinite;
+}
+
+.loader.in-text {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  padding: 0;
+  margin:  0 .1em -.1em .1em;
+  background-image: radial-gradient(circle at 50%, rgba(0,0,0,0) 1em, orange 3px);
+  border-radius: 50%;
+}
+
+@keyframes rotate-loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .active .ev-icon {
@@ -74,6 +106,14 @@ button {
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
   position: relative;
   outline: none;
+}
+
+button.in-text {
+  padding: 3px 6px;
+  margin: -.2em 3px 0;
+  font-size: .7em;
+  position: relative;
+  top: -.2em;
 }
 
 button.icon {

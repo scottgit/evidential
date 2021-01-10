@@ -7,8 +7,8 @@ from .mixins.common_columns import CommonColumns
 class ClaimHitKeys(db.Model, CommonColumns, TrackUpdates):
   __tablename__ = 'claim_hit_keys'
 
-  claim_id = db.Column(db.Integer, db.ForeignKey('claims.id'), primary_key=True, autoincrement=False)
-  key_id = db.Column(db.Integer, db.ForeignKey('hit_keys.id'),primary_key=True, autoincrement=False)
+  claim_id = db.Column(db.Integer, db.ForeignKey('claims.id'), primary_key=True, autoincrement=False, nullable=False)
+  key_id = db.Column(db.Integer, db.ForeignKey('hit_keys.id'),primary_key=True, autoincrement=False, nullable=False)
 
   claim = relationship('Claim', back_populates='hit_keys')
   hit_key = relationship('HitKey', back_populates='claims')
