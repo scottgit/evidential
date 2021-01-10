@@ -27,6 +27,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
     const user = await loginOrRecheckPassword(email, password);
     if (!user.errors) {
       setAuthenticated(true);

@@ -6,7 +6,7 @@ import { faSignInAlt, faSave } from '@fortawesome/free-solid-svg-icons';
 import FAI from '../includes/FAI';
 
 
-const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser}) => {
+const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, setCurrentUser}) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,6 +16,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   const [verified, setVerified] = useState(edit ? false : true)
   const [errors, setErrors] = useState([]);
   const [filled, setFilled] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
 
   const passwordMatch = () => password === confirmPassword;
 
@@ -23,11 +24,22 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   useEffect(() => {
     const checkFilled = () => {
       if (
-        firstName.length &&
-        lastName.length &&
-        email.length &&
-        password.length &&
-        confirmPassword.length
+        // For SIGN UP all fields need entry for submission
+        ( firstName.length &&
+          lastName.length &&
+          email.length &&
+          password.length &&
+          confirmPassword.length
+        )
+        ||
+        // For EDIT at lease one field needs entry for submission
+        ( verified &&
+          (firstName.length +
+          lastName.length +
+          email.length +
+          password.length +
+          confirmPassword.length)
+        )
       ) {
         setFilled(true);
       } else {
@@ -35,14 +47,26 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
       }
     }
     checkFilled();
-  }, [firstName, lastName, email, password, confirmPassword])
+  }, [firstName, lastName, email, password, confirmPassword, verified])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
+    setEditSuccess(false);
     if (password === confirmPassword) {
       const user = await signUpOrEdit(firstName, lastName, email, password, confirmPassword, edit);
       if (!user.errors && !edit) {
         setAuthenticated(true);
+        setCurrentUser(user);
+      } else if (!user.errors && edit) {
+        // currentUser = user; //Local property
+        setCurrentUser(user); //Send up to App
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setEditSuccess(true);
       } else {
         setErrors(user.errors)
       }
@@ -52,6 +76,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
   const handleVerify = async (e) => {
     if (!currentUser) return;
     e.preventDefault();
+    setErrors([])
     const res = await loginOrRecheckPassword(currentUser.email, verificationPassword, edit);
     if ("validated" in res && res.validated === true) {
       setVerified(true)
@@ -105,7 +130,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
           ))}
         </div>
       }
-      { edit &&
+      { edit && !verified &&
       <section className="verify">
         <p>
           Please submit a password verification in order to open up editing of your user information.
@@ -126,6 +151,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser})
       }
       { verified &&
         <main className="change-form">
+          <h2>Verified! {editSuccess && <span className="success">and successful submission!</span>}</h2>
           <p>
           { (edit && "Leave blank any items not being updated.")
             ||

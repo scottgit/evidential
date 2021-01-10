@@ -36,28 +36,29 @@ def login():
     Logs a user in
     """
     form = LoginForm()
-    print('****1', form.data)
-    print(request.get_json())
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
-        if (form.data['recheck']):
-            return {'validated': True}
-        else:
-            login_user(user)
-            return user.full_to_dict()
+        login_user(user)
+        return user.full_to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 @auth_routes.route('/recheck', methods=['POST'])
 @login_required
 def recheck():
     """
-    Requires logged in route, then redirect's to login to recheck's user password for verification
+    Requires logged in route, then uses login form to recheck's user password for verification
+    with no need to do anything with user itself if the password checks out
     """
-    return redirect(url_for('login'))
+    form = LoginForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        # if (form.data['recheck']):
+        return {'validated': True}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
 @auth_routes.route('/logout')
@@ -105,9 +106,9 @@ def edit():
     if form.validate_on_submit():
         user = current_user
         first_name=form.data['firstName']
-        last_name=form.data['lastName'],
-        email=form.data['email'],
-        password=form.data['password'],
+        last_name=form.data['lastName']
+        email=form.data['email']
+        password=form.data['password']
         if (first_name):
             user.first_name = first_name
         if (last_name):

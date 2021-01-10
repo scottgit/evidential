@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import LoginForm from "./components/auth/LoginForm";
 import SignUpAndEditForm from "./components/auth/SignUpAndEditForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import UsersList from "./components/user/UsersList";
-import User from "./components/user/User";
-import Welcome from "./components/Welcome";
+import {
+  UsersList,
+  User,
+  Welcome,
+  ViewText
+} from "./Pages";
 import Home from "./components/Home";
 import { authenticate } from "./services/auth";
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -61,10 +64,27 @@ function App() {
           />
         </Route>
         <Route path="/sign-up" exact={true}>
-          <SignUpAndEditForm authenticated={authenticated} setAuthenticated={setAuthenticated} edit={false}/>
+          <SignUpAndEditForm
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+            setCurrentUser={setCurrentUser}
+            edit={false}
+          />
         </Route>
-        <ProtectedRoute path="/edit-your-info" exact={true}>
-          <SignUpAndEditForm authenticated={authenticated} setAuthenticated={setAuthenticated} edit={true} currentUser={currentUser}/>
+        <Route path="/text/:textId" exact={true}>
+          <ViewText
+            authenticated={authenticated}
+            currentUser={currentUser}
+          />
+        </Route>
+        <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
+          <SignUpAndEditForm
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            edit={true}
+          />
         </ProtectedRoute>
         <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
           <UsersList/>
@@ -78,8 +98,14 @@ function App() {
         </Route>
         }
         <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
-          <Home currentUser={currentUser} />
+          <Home authenticated={authenticated} currentUser={currentUser} />
         </ProtectedRoute>
+        <Route path="/page-not-found">
+          <div className="content-wrapper">
+            <h1>We are sorry, the requested page was not found.</h1>
+          </div>
+        </Route>
+        <Redirect to="/page-not-found" />
       </Switch>
     </BrowserRouter>
   );
