@@ -9,8 +9,15 @@ html {
   --primary-color-light: rgb(183, 183, 212);
   --primary-color-dark: rgb(85, 26, 139);
   --primary-color-white: rgb(232, 232, 252);
+
+  --secondary-color: rgb(250, 211, 84);
+  --secondary-color-light: rgb(255, 238, 181);
+  --secondary-color-dark: rgb(189, 147, 9);
+  --secondary-color-white: rgb(255, 251, 239);
+
   --error-color: red;
   --success-color: green;
+  --lightest-white: white;
 
   /* Icons */
   --icon-color-stop1: var(--primary-color-light);
