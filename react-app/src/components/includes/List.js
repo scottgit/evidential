@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loader from "../includes/Loader";
 
-const ControlList = ({setDisplay, listType, links}) => {
+const ControlList = ({setDisplay, listType, linkPath}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -53,10 +53,11 @@ const ControlList = ({setDisplay, listType, links}) => {
 
   const list = listItems.map((item) => {
     const identifier = `${listType}-${item.id}`;
+
     return (
-      <li key={identifier} className={`ev-list ${linked ? 'ev-links-list' : ''}`}>
-        { (links &&
-            <NavLink to={`/${listType}/${item.id}`}>
+      <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
+        { (linkPath &&
+            <NavLink to={`${linkPath}${item.id}`}>
               {item[displayKey]}
             </NavLink>
           )
@@ -72,8 +73,10 @@ const ControlList = ({setDisplay, listType, links}) => {
   }
 
   return (
-    <div className="ev-control-list">
-      <h2>{pluralType}</h2>
+    <div className="ev-list">
+      <header className="ev-list-header">
+        <h2>{pluralType[0].toUpperCase()+pluralType.slice(1)}</h2>
+      </header>
       { (isLoaded === 1 &&
           ((
           !!list.length && displayKey &&
