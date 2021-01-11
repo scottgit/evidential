@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loader from "../includes/Loader";
 
-const ControlList = ({setDisplay, listType}) => {
+const ControlList = ({setDisplay, listType, links}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -54,8 +54,15 @@ const ControlList = ({setDisplay, listType}) => {
   const list = listItems.map((item) => {
     const identifier = `${listType}-${item.id}`;
     return (
-      <li key={identifier} id={identifier} className="ev-control" tabIndex="0" onClick={setDisplay(identifier)} >
-        {item[displayKey]}
+      <li key={identifier} className={`ev-list ${linked ? 'ev-links-list' : ''}`}>
+        { (links &&
+            <NavLink to={`/${listType}/${item.id}`}>
+              {item[displayKey]}
+            </NavLink>
+          )
+          ||
+          item[displayKey]
+        }
       </li>
     );
   });

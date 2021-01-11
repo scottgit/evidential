@@ -6,7 +6,8 @@ const MainView = ({currentUser, display, setDisplay, children}) => {
   return (
     <>
       <main className="ev-main">
-        {children}
+        <header>{children[0]}</header>
+        {children[1]}
       </main>
     </>
   )

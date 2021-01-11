@@ -19,13 +19,19 @@ p {
   font-size: 1.3em;
 }
 
+h1 {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 1.5em;
+}
+
 
 a {
   color: var(--primary-color-dark);
 }
 
 a:hover {
-  text-shadow: 1px 1px 1px var(--primary-color-dark);
+  text-shadow: 0px 0px 1px var(--primary-color-dark);
 }
 
 /* Global "ev" name scoped selectors */
@@ -78,6 +84,23 @@ nav .ev-icon:hover,
 a:not(.active) > .ev-icon:hover {
   color: var(--primary-color);
   cursor: pointer;
+}
+
+/* Scroll Bar standards */
+
+* {
+/* The emerging W3C standard that is currently Firefox-only */
+  scrollbar-width: 12px;
+}
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 12px; /* vertical bar */
+  height: 12px; /* horizontal bar */
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  border: 1px solid rgba(204, 203, 203, 0);
+  background-clip: padding-box;
 }
 
 /* Buttons */

@@ -10,6 +10,7 @@ import {
   Home
 } from "./Pages";
 import { authenticate } from "./services/auth";
+import Footer from "./components/structure/Footer";
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
           </div>
         </Route>
       </Switch>
+      <Footer />
     </BrowserRouter>
   );
 }

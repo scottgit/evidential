@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import SplitView from "./structure/SplitView";
-import ControlListings from "./control/ControlListings"
+import List from "./includes/List";
 
 const Home = (props) => {
   //props has: authenticated, currentUser
@@ -13,8 +13,11 @@ const Home = (props) => {
 
   return (
     <SplitView {...props} {...addProps}>
-      <h1>{props.currentUser.firstName}</h1>
-      <ControlListings setDisplay={setDisplay}/>
+      <header><h1>{props.currentUser.firstName}</h1></header>
+      <>
+        <List setDisplay={setDisplay} listType={"text"} links={true}/>
+        <List setDisplay={setDisplay} listType={"claim"} links={true}/>
+      </>
       <div>Sidebar</div>
     </SplitView>
   )
