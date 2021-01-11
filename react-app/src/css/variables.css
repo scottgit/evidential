@@ -1,6 +1,7 @@
 html {
   /* Colors */
-  --primary-color: rgb(108, 77, 138);;
+  --primary-color: rgb(108, 77, 138);
+  --raw-rgb-primary-color: 108, 77, 138;
   --primary-color-light: rgb(183, 183, 212);
   --primary-color-dark: rgb(85, 26, 139);
   --primary-color-white: rgb(232, 232, 252);

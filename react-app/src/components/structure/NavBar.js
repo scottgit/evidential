@@ -1,9 +1,9 @@
 import { faHome, faSignInAlt, faUserPlus, faUsers, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import LogoutButton from './auth/LogoutButton';
-import FAI from './includes/FAI';
-import Logo from './includes/Logo';
+import LogoutButton from '../auth/LogoutButton';
+import FAI from '../includes/FAI';
+import Logo from '../includes/Logo';
 import './NavBar.css';
 
 const NavBar = ({ setAuthenticated, authenticated }) => {

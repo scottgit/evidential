@@ -20,11 +20,6 @@ p {
   font-size: 1.3em;
 }
 
-.root {
-  margin: 0 auto;
-  max-width: 1000px;
-}
-
 .content-wrapper {
   padding: 20px 40px;
 }

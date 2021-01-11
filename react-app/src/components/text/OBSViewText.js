@@ -3,19 +3,18 @@ import Loader from "../includes/Loader";
 import Text from "./Text";
 
 
+
 const ViewText = ({textId}) => {
   const [text, setText] = useState({});
   const [isLoaded, setIsLoaded] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
-      console.log('is loaded inside', isLoaded)
       if (isLoaded) return; //Only load if nothing is loaded and no error
       try {
         const response = await fetch(`/api/texts/${textId}`);
         if (response.ok) {
           const responseData = await response.json();
-          console.log(responseData)
           setText(responseData);
           setIsLoaded(1);
         } else {
@@ -32,10 +31,10 @@ const ViewText = ({textId}) => {
   const handleRetry = (e) => {
     setIsLoaded(0)
   }
-  console.log('is loaded outside', isLoaded)
+
   return (
     <div className="content-wrapper">
-      <h2>Text:
+      <h1>Text:
         {
           (!isLoaded && <> Loading <Loader className="in-text" /></>)
           ||
@@ -43,8 +42,8 @@ const ViewText = ({textId}) => {
           ||
           ` ${text.title}`
         }
-      </h2>
-       { (isLoaded === 1 && <Text text={text}/>)}
+      </h1>
+       { (isLoaded === 1 && ("content" in text) && <Text text={text}/>)}
     </div>
   )
 }

@@ -1,20 +1,22 @@
-// import React, { useState, useEffect } from "react";
-import React from "react";
-import TextsList from "./text/TextsList";
-import ClaimsList from "./claim/ClaimsList";
-import ViewText from "./text/ViewText";
+import React, {useState} from "react";
+import SplitView from "./structure/SplitView";
+import ControlListings from "./control/ControlListings"
 
+const Home = (props) => {
+  //props has: authenticated, currentUser
+  const [display, setDisplay] = useState(
+    props.authenticated ? {main: "HOME", sidebar: "USER"}
+                        : {main: "WELCOME", sidebar: "ABOUT"}
+  );
 
-
-const Home = ({currentUser, authenticated}) => {
+  const addProps = {display, setDisplay};
 
   return (
-    <div className="content-wrapper">
-      <h1>Home ({currentUser.firstName})</h1>
-      {/* <TextsList />
-      <ClaimsList /> */}
-      <ViewText textId={2} />
-    </div>
+    <SplitView {...props} {...addProps}>
+      <h1>{props.currentUser.firstName}</h1>
+      <ControlListings setDisplay={setDisplay}/>
+      <div>Sidebar</div>
+    </SplitView>
   )
 }
 
