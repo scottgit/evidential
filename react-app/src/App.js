@@ -10,11 +10,7 @@ import {
   Home
 } from "./Pages";
 import { authenticate } from "./services/auth";
-import { library } from '@fortawesome/fontawesome-svg-core';
-// import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faBalanceScaleRight, faChartBar, faCircleNotch, faCloudUploadAlt, faEye, faFileUpload, faHome, faLayerGroup, faPlus, faSave, faSearch, faSignInAlt, faSignOutAlt, faUserEdit, faUserPlus, faUserSlash, faVoteYea, faWindowClose, faUsers } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCloudUploadAlt, faEye, faFileUpload, faVoteYea, faWindowClose, faHome, faChartBar, faBalanceScaleRight, faCircleNotch, faSignOutAlt, faSignInAlt, faSearch, faUserEdit, faUserSlash, faUserPlus, faLayerGroup, faPlus, faSave, faUsers )
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -76,7 +72,7 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path="/page-not-found">
-          <div className="content-wrapper">
+          <div className="ev-content-wrapper">
             <h1>We are sorry, the requested page was not found.</h1>
           </div>
         </Route>

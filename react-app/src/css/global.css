@@ -1,3 +1,7 @@
+/****
+global.css settings after normalizing
+****/
+
 html {
   height: 100%;
 }
@@ -11,18 +15,10 @@ div {
   min-width: 250px;
 }
 
-.page-wrapper {
-  height: 100%;
-  padding-top: 10px;
-}
-
 p {
   font-size: 1.3em;
 }
 
-.content-wrapper {
-  padding: 20px 40px;
-}
 
 a {
   color: var(--primary-color-dark);
@@ -32,19 +28,16 @@ a:hover {
   text-shadow: 1px 1px 1px var(--primary-color-dark);
 }
 
-.success {
+/* Global "ev" name scoped selectors */
+.ev-success {
   color: var(--success-color);
 }
 
-.error {
+.ev-error {
   color: var(--error-color);
 }
 
-/* .icon-svg {
-  width: 3em;
-  height: 3em;
-} */
-
+/* Icons */
 .ev-icon {
   display: block;
   padding: var(--icon-padding);
@@ -57,7 +50,7 @@ a:hover {
   animation: rotate-loader 1s linear infinite;
 }
 
-.loader.in-text {
+.ev-icon.loader.in-text {
   display: inline-block;
   height: 1em;
   width: 1em;
@@ -81,16 +74,13 @@ a:hover {
   cursor: default;
 }
 
-/* .ev-icon * {
-  fill: url(#icon-gradient) #fff;
-  fill: white white;
-} */
 nav .ev-icon:hover,
 a:not(.active) > .ev-icon:hover {
   color: var(--primary-color);
   cursor: pointer;
 }
 
+/* Buttons */
 button {
   color: white;
   display: inline-block;
@@ -133,9 +123,8 @@ button:active {
 }
 
 
-
 /* Inputs */
-.form-errors {
+.ev-form-errors {
   color: var(--error-color);
 }
 form {

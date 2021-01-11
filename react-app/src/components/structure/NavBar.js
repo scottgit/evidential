@@ -4,11 +4,10 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import FAI from '../includes/FAI';
 import Logo from '../includes/Logo';
-import './NavBar.css';
 
 const NavBar = ({ setAuthenticated, authenticated }) => {
   return (
-    <nav className="main-nav">
+    <nav className="ev-main-nav">
       <Logo />
       <ul>
         { !authenticated &&

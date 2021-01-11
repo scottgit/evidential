@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { loginOrRecheckPassword } from "../../services/auth";
-import "./LoginForm.css";
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import FAI from '../includes/FAI';
 
@@ -55,11 +54,11 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   }
 
   return (
-    <div className="content-wrapper user-info-change">
+    <div className="ev-content-wrapper ev-user-info-change">
       <h1>Log In</h1>
       <main>
         <form onSubmit={handleSubmit}>
-          <div className="form-errors">
+          <div className="ev-form-errors">
             {errors.map((error) => (
               <div key={error}>{error}</div>
             ))}
