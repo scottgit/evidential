@@ -1,0 +1,12 @@
+/****
+structure.css -- works with site layout wrappers
+****/
+
+.ev-page-wrapper {
+  height: 100%;
+  padding-top: 10px;
+}
+
+.ev-content-wrapper {
+  padding: 20px 40px;
+}

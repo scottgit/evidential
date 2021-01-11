@@ -7,7 +7,7 @@ const SplitView = (props) => {
   //Expects three children, first is page h1, 2nd is main content, 3rd is sidebar content
 
   return (
-    <div className="content-wrapper ev-splitview">
+    <div className="ev-content-wrapper ev-splitview">
       <MainDisplay {...props}>
         {props.children[0]}
         {props.children[1]}

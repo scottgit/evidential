@@ -33,12 +33,12 @@ const ViewText = ({textId}) => {
   }
 
   return (
-    <div className="content-wrapper">
+    <div className="ev-content-wrapper">
       <h1>Text:
         {
           (!isLoaded && <> Loading <Loader className="in-text" /></>)
           ||
-          (isLoaded === -1 && <><span className="error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
+          (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
           ||
           ` ${text.title}`
         }

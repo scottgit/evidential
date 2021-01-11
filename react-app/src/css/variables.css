@@ -1,3 +1,7 @@
+/****
+variables.css -- setting variables for full page scope after normalizing
+****/
+
 html {
   /* Colors */
   --primary-color: rgb(108, 77, 138);
@@ -21,6 +25,4 @@ html {
   --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
 
   --button-primary-background-hover: linear-gradient(179deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
-
-
 }

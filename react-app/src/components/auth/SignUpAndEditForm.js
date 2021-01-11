@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUpOrEdit, loginOrRecheckPassword } from '../../services/auth';
-import "./SignUpAndEditForm.css";
 import { faSignInAlt, faSave } from '@fortawesome/free-solid-svg-icons';
 import FAI from '../includes/FAI';
 
@@ -116,7 +115,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
 
 
   return (
-    <div className="content-wrapper user-info-change">
+    <div className="ev-content-wrapper ev-user-info-change">
       <h1>
       { (edit && `Edit ${currentUser.siteIdentifier}`)
         ||
@@ -124,7 +123,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
       }
       </h1>
       { (!!errors.length) &&
-        <div className="form-errors">
+        <div className="ev-form-errors">
           {errors.map((error) => (
             <div key={error}>{error}</div>
           ))}
@@ -151,7 +150,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
       }
       { verified &&
         <main className="change-form">
-          <h2>Verified! {editSuccess && <span className="success">and successful submission!</span>}</h2>
+          <h2>Verified! {editSuccess && <span className="ev-success">and successful submission!</span>}</h2>
           <p>
           { (edit && "Leave blank any items not being updated.")
             ||
