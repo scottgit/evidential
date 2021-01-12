@@ -110,7 +110,7 @@ structure.css -- works with site layout wrappers
 }
 
 .ev-list > header {
-  top: 0;
+  top: 3.4em;
   position: sticky;
   background-color: var(--lightest-white);
 }
