@@ -1,15 +1,28 @@
 import React, {useCallback, useState} from 'react';
 import  {Editor } from '@tinymce/tinymce-react';
 import {useDropzone} from 'react-dropzone';
+import DOMPurify from "dompurify";
+// import uploadText from
 
-const AddTextForm = (props) => {
-  const [text, setText] = useState('');
-  const [evEditor, setEvEditor] = useState(null)
-  const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx';
+const AddTextForm = ({currentUser}) => {
+  const [editor, setEditor] = useState('');
+  const [textDetails, _setTextDetails] = useState({
+    title: '',
+    content: '',
+    source: '',
+    wordCount: ''
+  })
+  const setTextDetails = (details) => {
+    _setTextDetails({...textDetails, ...details});
+    return;
+  };
+  console.log(textDetails)
+  // const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx, .md';
+  const accepted = '.htm, .html, .txt, .md';
 
   const onDrop =  useCallback((acceptedFiles) => {
+
     acceptedFiles.forEach(async (file) => {
-      const displayDiv = document.getElementById('sample');
       const reader = new FileReader()
 
       reader.onabort = () => console.log('file reading was aborted')
@@ -17,7 +30,13 @@ const AddTextForm = (props) => {
       reader.onload = () => {
       // Do whatever you want with the file contents
         const res = reader.result
-        setText(res);
+        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img']});
+        setTextDetails({
+          title: '',
+          content,
+          source: file.path,
+        })
+
       }
       reader.readAsText(file)
 
@@ -38,16 +57,39 @@ const AddTextForm = (props) => {
     multiple: false,
   });
 
+  const acceptedFileItem = acceptedFiles.map(file => (
+    <span key={file.path}>
+      {file.path} - {file.size} bytes
+    </span>
+  ));
 
-  const handleEditorChange = (content, editor) => {
-    setText(content)
+  const rejectedFileItem = fileRejections.map(({ file, errors  }) => {
+    return (
+      <span key={file.path}>
+           {file.path} - {file.size} bytes
+           <ul>
+             {errors.map(e => <li key={e.code}>{e.message}</li>)}
+          </ul>
+      </span>
+    )
+   });
+
+  const handleTitleInput = (e) => {
+    setTextDetails({title: e.target.value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const createdByUserId = currentUser.id;
+    const wordCount = editor.plugins.wordcount.body.getWordCount();
+    // const wordCount = editorWordCount.body.getWordCount();
+    // console.log({...textDetails, wordCount})
   }
 
   return (
-    <div className="ev-text-upload">
+    <form className="ev-text-upload">
       <h3>Text File Upload</h3>
       <div {...getRootProps({className: "ev-drop-zone"})}  >
-
         <p className="ev-file-drop" >
         {/* {isDragAccept && "All files will be accepted"}
         {isDragReject && "Some files will be rejected"} */}
@@ -55,27 +97,26 @@ const AddTextForm = (props) => {
         </p>
       </div>
       <input id="drop-input" {...getInputProps()} />
+      <div className="ev-text-upload-status">
+        {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
+          {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
+      </div>
+      <input type="text" value={textDetails.title} placeholder="Input title" onChange={handleTitleInput} required={true} maxLength="200" />
+      <button type='submit' onClick={handleSubmit}>Upload</button>
       <Editor
+         className
          apiKey={process.env.REACT_APP_TINY_API}
-         initialValue="<p>This is the initial content of the editor</p>"
-         value={text}
+         initialValue={textDetails.content}
+         value={textDetails.content}
          init={{
-
-           height: 500,
-           menubar: true,
-           plugins: [
-             'advlist autolink lists link image charmap print preview anchor',
-             'searchreplace visualblocks code fullscreen',
-             'insertdatetime media table paste code help wordcount'
-           ],
-           toolbar:
-             'undo redo | formatselect | bold italic backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat | help'
+           setup: (editor) => setEditor(editor),
+           height: 0,
+           menubar: false,
+           plugins: ['wordcount'],
+           toolbar: false,
          }}
-         onEditorChange={handleEditorChange}
        />
-    </div>
+    </form>
   )
 }
 

@@ -17,6 +17,10 @@ structure.css -- works with site layout wrappers
   overflow: hidden;
 }
 
+.ev-content-wrapper.--single-page {
+  grid-template-columns: [main] 100%;
+}
+
 .ev-main {
   grid-column: main;
   padding: 0px 20px 10px;
@@ -24,6 +28,10 @@ structure.css -- works with site layout wrappers
   border-right: 1px solid var(--primary-color-light);
   /* The emerging W3C standard that is currently Firefox-only */
   scrollbar-color:  var(--primary-color-dark) var(--primary-color-light);
+}
+
+.--single-page .ev-main {
+  border-right: none;
 }
 
 /* Works on Chrome/Edge/Safari */

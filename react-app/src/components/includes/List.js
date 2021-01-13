@@ -7,7 +7,7 @@ import AddClaimForm from '../forms/AddClaimForm';
 import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 
-const ControlList = ({setDisplay, listType, linkPath, canAddItem=false}) => {
+const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -18,19 +18,19 @@ const ControlList = ({setDisplay, listType, linkPath, canAddItem=false}) => {
     switch (type) {
       case 'text':
         displayKey = 'title';
-        modalContent = <AddTextForm />;
+        modalContent = <AddTextForm currentUser={currentUser}/>;
         break;
       case 'claim':
         displayKey = 'assertion';
-        modalContent = <AddClaimForm />;
+        modalContent = <AddClaimForm urrentUser={currentUser}/>;
         break;
       case 'argument':
         displayKey = 'statement';
-        modalContent = <AddArgumentsForm />;
+        modalContent = <AddArgumentsForm urrentUser={currentUser} />;
         break;
       case 'key':
         displayKey = 'key';
-        modalContent = <AddKeysForm />;
+        modalContent = <AddKeysForm urrentUser={currentUser}/>;
         break;
       case 'rating':
         displayKey = 'rating';
@@ -86,7 +86,7 @@ const ControlList = ({setDisplay, listType, linkPath, canAddItem=false}) => {
       <header className="ev-list-header">
         <h2>
           {pluralType[0].toUpperCase()+pluralType.slice(1)}
-          {canAddItem &&
+          {canAddItem && currentUser &&
           <AddItemModalTrigger type={listType}>
             {modalContent}
           </AddItemModalTrigger>

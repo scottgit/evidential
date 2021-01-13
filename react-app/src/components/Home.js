@@ -15,8 +15,20 @@ const Home = (props) => {
     <SplitView {...props} {...addProps}>
       <header><h1>Home: {props.currentUser.firstName}</h1></header>
       <div className="ev-list-columns">
-        <List setDisplay={setDisplay} listType={"text"} linkPath={'/text/view/'} canAddItem={true}/>
-        <List setDisplay={setDisplay} listType={"claim"} linkPath={'/claim/'} canAddItem={true}/>
+        <List
+          setDisplay={setDisplay}
+          listType={"text"}
+          linkPath={'/text/view/'}
+          canAddItem={true}
+          currentUser={props.currentUser}
+        />
+        <List
+          setDisplay={setDisplay}
+          listType={"claim"}
+          linkPath={'/claim/'}
+          canAddItem={true}
+          currentUser={props.currentUser}
+        />
       </div>
       <div>Sidebar</div>
     </SplitView>
