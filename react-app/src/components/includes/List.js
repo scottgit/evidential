@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loader from "../includes/Loader";
+import AddItemModalTrigger from "../includes/AddItemModalTrigger";
+import AddTextForm from '../forms/AddTextForm';
+import AddClaimForm from '../forms/AddClaimForm';
+import AddArgumentsForm from '../forms/AddArgumentsForm';
+import AddKeysForm from '../forms/AddKeysForm';
 
-const ControlList = ({setDisplay, listType, linkPath}) => {
+const ControlList = ({setDisplay, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
   let pluralType;
-  let displayKey;
+  let displayKey = null;
+  let modalContent = null;
   ((type) => {
     switch (type) {
       case 'text':
         displayKey = 'title';
+        modalContent = <AddTextForm />;
         break;
       case 'claim':
         displayKey = 'assertion';
+        modalContent = <AddClaimForm />;
         break;
       case 'argument':
         displayKey = 'statement';
+        modalContent = <AddArgumentsForm />;
         break;
       case 'key':
         displayKey = 'key';
+        modalContent = <AddKeysForm />;
         break;
       case 'rating':
         displayKey = 'rating';
         break;
       default:
-        displayKey = null;
     }
     if (displayKey) pluralType = `${type}s`
   })(listType);
@@ -75,7 +84,14 @@ const ControlList = ({setDisplay, listType, linkPath}) => {
   return (
     <div className="ev-list">
       <header className="ev-list-header">
-        <h2>{pluralType[0].toUpperCase()+pluralType.slice(1)}</h2>
+        <h2>
+          {pluralType[0].toUpperCase()+pluralType.slice(1)}
+          {canAddItem &&
+          <AddItemModalTrigger type={listType}>
+            {modalContent}
+          </AddItemModalTrigger>
+          }
+        </h2>
       </header>
       { (isLoaded === 1 &&
           ((

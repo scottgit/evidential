@@ -14,3 +14,4 @@ An app to analyze the argument of texts for various claims
   * Bar charts (for Text profile display): [react-charts/bar-chart](https://canvasjs.com/react-charts/bar-chart/)
   * Icons [fontawesome with react](https://fontawesome.com/how-to-use/on-the-web/using-with/react)
   * HTML Sanitizing: [DOMPurify](https://github.com/cure53/DOMPurify)
+  * Modal support: [react-modal](https://github.com/reactjs/react-modal)

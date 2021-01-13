@@ -51,19 +51,23 @@ a:hover {
   color: white;
 }
 
-.ev-icon.loader {
-  color: var(--primary-color);
-  animation: rotate-loader 1s linear infinite;
+*:focus {
+  outline: dotted;
+  outline-width: 1px;
+  outline-color: rgba(var(--raw-rgb-primary-color), 0.5)
 }
 
-.ev-icon.loader.in-text {
+.ev-icon.in-text {
   display: inline-block;
   height: 1em;
   width: 1em;
   padding: 0;
   margin:  0 .1em -.1em .1em;
-  background-image: radial-gradient(circle at 50%, rgba(0,0,0,0) 1em, orange 3px);
-  border-radius: 50%;
+  color: var(--primary-color);
+}
+
+.ev-icon.loader {
+  animation: rotate-loader 1s linear infinite;
 }
 
 @keyframes rotate-loader {
@@ -74,6 +78,19 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+.ev-icon.in-text.add-item {
+  height: .9em;
+  width: .9em;
+  margin: 0 .1em 0 .3em;
+}
+
+.ev-icon.in-text.add-item:hover {
+  cursor: pointer;
+  transform: rotate(15deg);
+}
+
+
 
 .active .ev-icon {
   filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
@@ -120,7 +137,6 @@ button.in-text {
   padding: 3px 6px;
   margin: -.2em 3px 0;
   font-size: .7em;
-  position: relative;
   top: -.2em;
 }
 
@@ -156,4 +172,40 @@ form {
 
 input {
   padding: 4px;
+}
+
+
+/* Modals */
+
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: var(--secondary-color-white);
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  z-index: 1000;
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+.button.icon.ev-modal-close {
+  --icon-button-padding: 0 1px;
+  --icon-button-font-size: 1.5rem;
+  --icon-margin: 4px;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 1;
+}
+
+.button.icon.ev-modal-close:active {
+  top: 3px;
+  left: auto;
+  right: 1px;
 }

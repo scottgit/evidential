@@ -45,10 +45,12 @@ def create():
         NOTE: Arguments are coming in as a list of paired lists,
         the pair being the "id" of an existing Argument (or null if needing creation),
         and a "settings" dict for the data being set (null if the "id" was provided); e.g.
+
+        The "supports" needs to come as a digit 0/1 for false/true so that that wtforms can process it within the array (as apparently Booleans are not supported within a FieldSet). It will be converted to a boolean on DB save.
         [
             [id, settings], # representative names shown
             [7, None],      # expecting to pull an existing argument
-            [None, {"statement": "Blah!", "argumentNotes": "Blah, blah.", "supports": True}]
+            [None, {"statement": "Blah!", "argumentNotes": "Blah, blah.", "supports": 1}]
         ]
         '''
         # Second: Check for and create if needed Arguments (with two other steps within that)
@@ -63,6 +65,10 @@ def create():
 
     return {'errors': validation_messages(form.errors)}
 
+
+'''
+Helper functions for routes
+'''
 def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist=False):
     errors = {}
     found_support = None

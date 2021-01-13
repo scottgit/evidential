@@ -106,7 +106,6 @@ structure.css -- works with site layout wrappers
   padding: 5px;
   top: 0;
   position: sticky;
-  height: 1000px;
 }
 
 .ev-list > header {
