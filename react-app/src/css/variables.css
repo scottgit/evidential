@@ -12,6 +12,7 @@ html {
 
   --secondary-color: rgb(250, 211, 84);
   --secondary-color-light: rgb(255, 238, 181);
+  --raw-rgb-secondary-color-light: 255, 238, 181;
   --secondary-color-dark: rgb(189, 147, 9);
   --secondary-color-white: rgb(255, 251, 239);
 

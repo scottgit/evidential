@@ -23,6 +23,7 @@ const AddItemModalTrigger = ({type, children}) => {
       <ReactModal
         isOpen={showModal}
         closeTimeoutMS={500}
+        overlayClassName="ev-modal-overlay"
       >
         <button className="button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />

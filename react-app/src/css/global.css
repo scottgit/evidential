@@ -6,7 +6,8 @@ html {
   height: 100%;
 }
 
-div {
+div,
+input {
   box-sizing: border-box;
 }
 
@@ -177,10 +178,11 @@ input {
 
 /* Modals */
 
+
 .ReactModal__Overlay {
   position: fixed;
   inset: 0px;
-  background-color: var(--secondary-color-white);
+  background-color: rgba(var(--raw-rgb-secondary-color-light), 0.7);
   opacity: 0;
   transition: opacity 500ms ease-in-out;
 }
@@ -194,11 +196,32 @@ input {
   opacity: 0;
 }
 
+
+/* Works on Chrome/Edge/Safari */
+.ReactModal__Content::-webkit-scrollbar {
+  width: 12px; /* vertical bar */
+  height: 12px; /* horizontal bar */
+}
+.ReactModal__Content::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  border: 1px solid rgba(204, 203, 203, 0);
+  background-clip: padding-box;
+}
+
+.ReactModal__Content::-webkit-scrollbar-track,
+.ReactModal__Content::-webkit-scrollbar-corner {
+  background: var(--primary-color-white);
+}
+.ReactModal__Content::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-dark);
+}
+
 .button.icon.ev-modal-close {
   --icon-button-padding: 0 1px;
   --icon-button-font-size: 1.5rem;
   --icon-margin: 4px;
-  position: absolute;
+  position: fixed;
+  float: right;
   top: 2px;
   right: 2px;
   z-index: 1;
