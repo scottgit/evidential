@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
-import SplitView from "./structure/SplitView";
-import List from "./includes/List";
+import SplitView from "../structure/SplitView";
+import List from "../includes/List";
 
 const Home = ({authenticated, currentUser}) => {
   //props has: authenticated, currentUser
