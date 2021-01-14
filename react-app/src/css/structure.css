@@ -35,9 +35,9 @@ structure.css -- works with site layout wrappers
 }
 
 /* Works on Chrome/Edge/Safari */
-.ev-main::-webkit-scrollbar {
-  width: 12px; /* vertical bar */
-  height: 12px; /* horizontal bar */
+/*.ev-main::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 .ev-main::-webkit-scrollbar-track,
 .ev-main::-webkit-scrollbar-corner {
@@ -49,7 +49,7 @@ structure.css -- works with site layout wrappers
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
-}
+}*/
 
 .ev-main > header {
   position: sticky;

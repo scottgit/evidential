@@ -7,7 +7,8 @@ html {
 }
 
 div,
-input {
+input,
+label {
   box-sizing: border-box;
 }
 
@@ -98,7 +99,7 @@ a:hover {
   cursor: default;
 }
 
-nav .ev-icon:hover,
+.--direct-hover:hover,
 a:not(.active) > .ev-icon:hover {
   color: var(--primary-color);
   cursor: pointer;
@@ -111,11 +112,18 @@ a:not(.active) > .ev-icon:hover {
   scrollbar-width: 12px;
 }
 /* Works on Chrome/Edge/Safari */
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: var(--primary-color-light);
+}
+
 *::-webkit-scrollbar {
   width: 12px; /* vertical bar */
   height: 12px; /* horizontal bar */
 }
 *::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-dark);
   border-radius: 6px;
   border: 1px solid rgba(204, 203, 203, 0);
   background-clip: padding-box;
@@ -185,6 +193,7 @@ input {
   background-color: rgba(var(--raw-rgb-secondary-color-light), 0.7);
   opacity: 0;
   transition: opacity 500ms ease-in-out;
+  overflow: auto;
 }
 
 .ReactModal__Overlay--after-open {
@@ -196,6 +205,9 @@ input {
   opacity: 0;
 }
 
+.ReactModal__Content {
+  min-width: 200px;
+}
 
 /* Works on Chrome/Edge/Safari */
 .ReactModal__Content::-webkit-scrollbar {
@@ -231,4 +243,29 @@ input {
   top: 3px;
   left: auto;
   right: 1px;
+}
+
+
+.ev-confirm {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  padding-bottom: 20%;
+}
+
+.ev-confirm > div {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-around;
+}
+
+.ev-confirm button {
+  margin: 10px 5px;
+  padding: 1em 1.5em;
 }

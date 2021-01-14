@@ -5,7 +5,7 @@ from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import EditUserForm
 from datetime import datetime
-from .includes import validation_messages
+from .includes.validation_messages import validation_messages
 
 auth_routes = Blueprint('auth', __name__)
 

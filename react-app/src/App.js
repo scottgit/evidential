@@ -18,7 +18,7 @@ import Footer from "./components/structure/Footer";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [currentUser, setCurrentUser] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
     (async() => {
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} />
+      <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} setCurrentUser={setCurrentUser}/>
       <Switch>
         <Route path="/" exact={true}>
           <Home authenticated={authenticated} currentUser={currentUser} />
