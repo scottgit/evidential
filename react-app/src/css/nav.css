@@ -42,7 +42,7 @@ NavBar.css -- works with site layout wrappers
   position: absolute;
   bottom: -.25em;
   margin: 0 calc(-1*var(--letter-space));
-  opacity: 30%;
+  opacity: .3;
   z-index: -1;
   -webkit-transition: -webkit-transform .8s ease-in-out, opacity .8s ease-in-out;
   -ms-transition: -ms-transform .8s ease-in-out, opacity .8s ease-in-out;
@@ -62,7 +62,7 @@ NavBar.css -- works with site layout wrappers
 }
 
 .ev-main-nav:hover .logo > span {
-  opacity: 60%;
+  opacity: .6;
   -webkit-transform:rotate(15deg);
   -ms-transform:rotate(15deg);
   transform:rotate(15deg);

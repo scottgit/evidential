@@ -32,21 +32,23 @@ const Home = ({authenticated, currentUser}) => {
           <h1>Welcome to Evidential</h1>)
           }
         </header>
-        <div className="ev-list-columns">
-          <List
-            setDisplay={setDisplay}
-            listType={"text"}
-            linkPath={'/text/view/'}
-            canAddItem={authenticated ? true : false}
-            currentUser={currentUser}
-          />
-          <List
-            setDisplay={setDisplay}
-            listType={"claim"}
-            linkPath={'/claim/'}
-            canAddItem={authenticated ? true : false}
-            currentUser={currentUser}
-          />
+        <div>
+          <div className="ev-list-columns">
+            <List
+              setDisplay={setDisplay}
+              listType={"text"}
+              linkPath={'/text/view/'}
+              canAddItem={authenticated ? true : false}
+              currentUser={currentUser}
+            />
+            <List
+              setDisplay={setDisplay}
+              listType={"claim"}
+              linkPath={'/claim/'}
+              canAddItem={authenticated ? true : false}
+              currentUser={currentUser}
+            />
+          </div>
         </div>
         <div>Sidebar</div>
     </SplitView>
