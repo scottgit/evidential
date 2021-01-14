@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import SplitView from "../structure/SplitView";
 import List from "../includes/List";
+import HomeIntro from "./HomeIntro";
+import GeneralSidebar from "./GeneralSidebar";
 
 const Home = ({authenticated, currentUser}) => {
   //props has: authenticated, currentUser
@@ -32,7 +34,8 @@ const Home = ({authenticated, currentUser}) => {
           <h1>Welcome to Evidential</h1>)
           }
         </header>
-        <div>
+        <>
+          <HomeIntro display={display}/>
           <div className="ev-list-columns">
             <List
               setDisplay={setDisplay}
@@ -49,8 +52,12 @@ const Home = ({authenticated, currentUser}) => {
               currentUser={currentUser}
             />
           </div>
-        </div>
-        <div>Sidebar</div>
+        </>
+        <GeneralSidebar
+          display={display}
+          authenticated={authenticated}
+          currentUser={currentUser}
+        />
     </SplitView>
     )}
     </>

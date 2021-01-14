@@ -6,9 +6,9 @@ const HomeIntro = ({display}) => {
     <>
     { (display.main === "WELCOME" &&
       <div className="ev-welcome-intro">
-        <p>Evidential is here to help researchers understand and analyze the <strong>arguments</strong> authors make in their written works&mdash;books, journal articles, essays, opinion pieces&mdash;whatever type of <strong>text</strong> that makes a <strong>claim</strong> and then tries to back it up with arguments.</p>
+        <p>Evidential is here to help researchers understand and analyze written works&mdash;books, journal articles, essays, opinion pieces&mdash;whatever type of <strong>text</strong> that makes a <strong>claim</strong> and then tries to back it up with additional <strong>arguments</strong> (evidence).</p>
 
-        <p>The purpose is to <strong>rate</strong> the arguments against the claims in a text, building a body of metadata to <strong>profile</strong> how <em>much</em> a text covers a parituclar claim and its arguments, as well as how <em>effectively</em> it covers those things. Users here can:</p>
+        <p>The purpose is to create a space to collaboratively <strong>rate</strong> the arguments against the claims in a text, building a body of metadata to <strong>profile</strong> how <em>much</em> a text covers a parituclar claim and its arguments, as well as how <em>effectively</em> it covers those things. Users here can:</p>
 
         <ul>
           <li>Upload texts to be analyzed</li>
