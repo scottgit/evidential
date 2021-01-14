@@ -62,6 +62,10 @@ function App() {
                       exact={true}>
           <TextDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
+        <Route path={"/text/edit/:textId(\\d+)"}
+                      exact={true}>
+          <TextDetail authenticated={authenticated} currentUser={currentUser} />
+        </Route>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm
             authenticated={authenticated}

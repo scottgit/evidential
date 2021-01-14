@@ -21,9 +21,9 @@ def text(id):
 
 
 @text_routes.route('/upload', methods=['POST'])
-@text_routes.route('/upload/<int:id>', methods=['POST'])
+# @text_routes.route('/upload/<int:id>', methods=['POST'])
 @login_required
-def upload(id):
+def upload(id=0):
     """
     Creates (or with "id" and not a locked text, edits) a text for analysis
     """

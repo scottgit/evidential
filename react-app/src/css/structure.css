@@ -54,6 +54,7 @@ structure.css -- works with site layout wrappers
 .ev-main > header {
   position: sticky;
   top: 0;
+  left: 0;
   background-color: var(--lightest-white);
   border-bottom: 3px solid var(--primary-color-dark);
   z-index: 1;

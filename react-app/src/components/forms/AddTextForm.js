@@ -1,27 +1,40 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import  {Editor } from '@tinymce/tinymce-react';
 import {useDropzone} from 'react-dropzone';
 import DOMPurify from "dompurify";
-// import uploadText from
+import {uploadText} from '../../services/text';
+import FAI from '../includes/FAI';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
-const AddTextForm = ({currentUser}) => {
+const AddTextForm = ({currentUser, handleCloseModal}) => {
   const [editor, setEditor] = useState('');
+  const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
-    title: '',
     content: '',
-    source: '',
-    wordCount: ''
+    source: ''
   })
+  const [title, setTitle] = useState('');
+
   const setTextDetails = (details) => {
     _setTextDetails({...textDetails, ...details});
     return;
   };
-  console.log(textDetails)
+  const history =  useHistory();
+
+  useEffect(() => {
+    if (title && textDetails.content && textDetails.source) {
+      setReadyToSubmit(true);
+    } else {
+      setReadyToSubmit(false);
+    }
+  }, [title, textDetails])
+
+  // console.log(textDetails)
   // const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx, .md';
   const accepted = '.htm, .html, .txt, .md';
 
   const onDrop =  useCallback((acceptedFiles) => {
-
     acceptedFiles.forEach(async (file) => {
       const reader = new FileReader()
 
@@ -32,7 +45,6 @@ const AddTextForm = ({currentUser}) => {
         const res = reader.result
         const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img']});
         setTextDetails({
-          title: '',
           content,
           source: file.path,
         })
@@ -75,45 +87,64 @@ const AddTextForm = ({currentUser}) => {
    });
 
   const handleTitleInput = (e) => {
-    setTextDetails({title: e.target.value})
+    setTitle(e.target.value)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const createdByUserId = currentUser.id;
     const wordCount = editor.plugins.wordcount.body.getWordCount();
-    // const wordCount = editorWordCount.body.getWordCount();
-    // console.log({...textDetails, wordCount})
+    try {
+      const text = await uploadText({
+        title,
+        ...textDetails,
+        wordCount,
+        createdByUserId
+      })
+      if ('id' in text) {
+        handleCloseModal();
+        setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
+      }
+
+    } catch {
+      console.error('Failed to upload text.')
+    }
+
+
   }
 
   return (
-    <form className="ev-text-upload">
+    <form className="ev-text-upload" onSubmit={handleSubmit}>
       <h3>Text File Upload</h3>
+      <input type="text" className="ev-title-input" value={title} placeholder="Please input text title here." onChange={handleTitleInput} required={true} maxLength="200" />
       <div {...getRootProps({className: "ev-drop-zone"})}  >
-        <p className="ev-file-drop" >
-        {/* {isDragAccept && "All files will be accepted"}
-        {isDragReject && "Some files will be rejected"} */}
-        {"Drag'n'drop a local text file here or click to select one."}
-        </p>
+        <div className="ev-file-drop" >
+          Drag'n'drop a local text file here or click to select one.
+            <div className="ev-text-upload-status">
+          {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
+            {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
+          </div>
+        </div>
       </div>
       <input id="drop-input" {...getInputProps()} />
-      <div className="ev-text-upload-status">
-        {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
-          {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
-      </div>
-      <input type="text" value={textDetails.title} placeholder="Input title" onChange={handleTitleInput} required={true} maxLength="200" />
-      <button type='submit' onClick={handleSubmit}>Upload</button>
+      {readyToSubmit &&
+            <button className="icon submit" type="submit">
+              <FAI icon={faFileUpload} title={`Upload file`} tabIndex="0"/>
+            </button>
+          }
+
+
       <Editor
-         className
          apiKey={process.env.REACT_APP_TINY_API}
          initialValue={textDetails.content}
          value={textDetails.content}
          init={{
-           setup: (editor) => setEditor(editor),
-           height: 0,
+           setup: (editor) => {setEditor(editor); editor.hide()},
            menubar: false,
            plugins: ['wordcount'],
            toolbar: false,
+           body_id: 'ev-editor'
          }}
        />
     </form>

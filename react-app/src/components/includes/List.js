@@ -22,15 +22,15 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
         break;
       case 'claim':
         displayKey = 'assertion';
-        modalContent = <AddClaimForm urrentUser={currentUser}/>;
+        modalContent = <AddClaimForm currentUser={currentUser}/>;
         break;
       case 'argument':
         displayKey = 'statement';
-        modalContent = <AddArgumentsForm urrentUser={currentUser} />;
+        modalContent = <AddArgumentsForm currentUser={currentUser} />;
         break;
       case 'key':
         displayKey = 'key';
-        modalContent = <AddKeysForm urrentUser={currentUser}/>;
+        modalContent = <AddKeysForm currentUser={currentUser}/>;
         break;
       case 'rating':
         displayKey = 'rating';

@@ -1,16 +1,15 @@
-export const uploadText = async (title, content, source, wordCount) => {
-  const endPoint = edit ? 'edit' : 'signup';
-  const response = await fetch(`/api/auth/${endPoint}`, {
+export const uploadText = async ({title, content, source, wordCount, createdByUserId}) => {
+  const response = await fetch(`/api/texts/upload`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword
+      title,
+      content,
+      source,
+      wordCount,
+      createdByUserId
     }),
   });
   return await response.json();

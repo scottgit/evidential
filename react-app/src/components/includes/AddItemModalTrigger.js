@@ -28,7 +28,7 @@ const AddItemModalTrigger = ({type, children}) => {
         <button className="button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
-        {children}
+        {React.cloneElement(children, {handleCloseModal})}
       </ReactModal>
     </>
   )
