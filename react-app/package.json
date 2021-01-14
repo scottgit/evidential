@@ -16,6 +16,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.4",
     "react-html-parser": "^2.0.2",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
