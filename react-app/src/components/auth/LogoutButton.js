@@ -13,12 +13,6 @@ const LogoutButton = ({setAuthenticated, setCurrentUser, title}) => {
     setCurrentUser(null);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.target.id === 'nav-logout') {
-      onLogout();
-    }
-  }
-
   const handleShowModal = (e) => {
     setShowModal(true);
   }

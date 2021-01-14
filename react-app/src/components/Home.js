@@ -5,8 +5,6 @@ import List from "./includes/List";
 const Home = ({authenticated, currentUser}) => {
   //props has: authenticated, currentUser
   const [display, setDisplay] = useState(false);
-    console.log(display)
-    console.log(authenticated)
 
   useEffect(() => {
     function doDisplay() {
@@ -18,7 +16,6 @@ const Home = ({authenticated, currentUser}) => {
     }
     doDisplay();
   }, [authenticated])
-
 
 
   const sendProps = {display, setDisplay, authenticated, currentUser};

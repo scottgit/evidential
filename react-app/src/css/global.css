@@ -45,6 +45,10 @@ a:hover {
   color: var(--error-color);
 }
 
+.--hide {
+  display: none;
+}
+
 /* Icons */
 .ev-icon {
   display: block;
@@ -261,7 +265,7 @@ input {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-around;
 }
 
