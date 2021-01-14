@@ -1,6 +1,3 @@
-/****
-index.css -- imports other files
-****/
 @import './css/variables.css';
 @import './css/global.css';
 @import './css/structure.css';
