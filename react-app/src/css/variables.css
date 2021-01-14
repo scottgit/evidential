@@ -1,8 +1,8 @@
-html {
   /****
     variables.css -- setting variables for full page scope after normalizing
   ****/
 
+html {
   /* Colors */
   --primary-color: rgb(108, 77, 138);
   --raw-rgb-primary-color: 108, 77, 138;

@@ -57,5 +57,5 @@ auth.css
   z-index: 1;
   left: 95%;
   top: 50%;
-  margin-top: calc(var(--icon-button-font-size)/-2 - var(--icon-button-padding) - var(--icon-padding) - var(--icon-margin));
+  margin-top: calc(var(--icon-button-font-size) / -2 - var(--icon-button-padding) - var(--icon-padding) - var(--icon-margin));
 }
