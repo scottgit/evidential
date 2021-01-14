@@ -1,6 +1,6 @@
-@import './css/variables.css';
-@import './css/global.css';
-@import './css/structure.css';
-@import './css/nav.css';
-@import './css/auth.css';
-@import './css/forms.css';
+@import url('./css/variables.css');
+@import url('./css/global.css');
+@import url('./css/structure.css');
+@import url('./css/nav.css');
+@import url('./css/auth.css');
+@import url('./css/forms.css');
