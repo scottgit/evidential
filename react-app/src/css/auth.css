@@ -4,10 +4,11 @@ auth.css
 (NOTE: Used by LoginForm)
 ****/
 
-.ev-user-info-change > main {
+.ev-user-info-change > .ev-main {
   max-width: 500px;
   margin: 0 auto;
   --text-space: 9rem;
+  overflow: visible;
 }
 
 .ev-user-info-change form {

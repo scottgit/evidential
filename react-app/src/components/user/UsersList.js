@@ -22,8 +22,11 @@ function UsersList() {
   });
 
   return (
-    <div className="link-list">
-      <ul>{usersList}</ul>
+    <div className="ev-content-wrapper --single-page">
+      <main className="ev-main">
+        <header><h1>Users List</h1></header>
+        <ul>{usersList}</ul>
+      </main>
     </div>
   );
 }

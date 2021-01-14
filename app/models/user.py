@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
   @hybrid_property
   def texts_added(self):
     from app.models import Text
-    texts = Text.query.filter_by(created_by=self.id)
+    texts = Text.query.filter(Text._created_by==self.id).all()
     return texts
 
   @property

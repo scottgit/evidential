@@ -6,8 +6,10 @@ import NavBar from "./components/structure/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import {
   User,
+  UsersList,
   TextDetail,
-  Home
+  Home,
+  PageNotFound
 } from "./Pages";
 import { authenticate } from "./services/auth";
 import Footer from "./components/structure/Footer";
@@ -16,7 +18,7 @@ import Footer from "./components/structure/Footer";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [currentUser, setCurrentUser] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
     (async() => {
@@ -35,7 +37,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} />
+      <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} setCurrentUser={setCurrentUser}/>
       <Switch>
         <Route path="/" exact={true}>
           <Home authenticated={authenticated} currentUser={currentUser} />
@@ -69,14 +71,16 @@ function App() {
             edit={true}
           />
         </ProtectedRoute>
-        <ProtectedRoute path="/users/:userId(\\d+)" exact={true} authenticated={authenticated}>
+        <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
+          <UsersList />
+        </ProtectedRoute>
+        <ProtectedRoute path={"/users/:userId(\\d+)"} exact={true} authenticated={authenticated}>
           <User />
         </ProtectedRoute>
         <Route path="/page-not-found">
-          <div className="ev-content-wrapper">
-            <h1>We are sorry, the requested page was not found.</h1>
-          </div>
+          <PageNotFound />
         </Route>
+        <Redirect to='/page-not-found' />
       </Switch>
       <Footer />
     </BrowserRouter>

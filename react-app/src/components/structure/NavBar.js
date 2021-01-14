@@ -5,7 +5,7 @@ import LogoutButton from '../auth/LogoutButton';
 import FAI from '../includes/FAI';
 import Logo from '../includes/Logo';
 
-const NavBar = ({ setAuthenticated, authenticated }) => {
+const NavBar = ({ setAuthenticated, authenticated, setCurrentUser }) => {
   return (
     <nav className="ev-main-nav">
       <Logo />
@@ -37,7 +37,7 @@ const NavBar = ({ setAuthenticated, authenticated }) => {
               </NavLink>
             </li>
             <li>
-              <LogoutButton setAuthenticated={setAuthenticated} title="Log Out" />
+              <LogoutButton setAuthenticated={setAuthenticated} setCurrentUser={setCurrentUser} title="Log Out" />
             </li>
           </>
         }

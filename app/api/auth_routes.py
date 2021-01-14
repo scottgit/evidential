@@ -1,24 +1,13 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Blueprint, request
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import EditUserForm
 from datetime import datetime
+from .includes.validation_messages import validation_messages
 
 auth_routes = Blueprint('auth', __name__)
-
-
-def validation_errors_to_error_messages(validation_errors):
-    """
-    Simple function that turns the WTForms validation errors into a simple list
-    """
-    errorMessages = []
-    for field in validation_errors:
-        for error in validation_errors[field]:
-            errorMessages.append(f"{field} : {error}")
-    return errorMessages
-
 
 @auth_routes.route('')
 def authenticate():
@@ -44,7 +33,7 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.full_to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_messages(form.errors)}, 401
 
 @auth_routes.route('/recheck', methods=['POST'])
 @login_required
@@ -58,7 +47,7 @@ def recheck():
     if form.validate_on_submit():
         # if (form.data['recheck']):
         return {'validated': True}
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_messages(form.errors)}, 401
 
 
 @auth_routes.route('/logout')
@@ -92,7 +81,7 @@ def sign_up():
         db.session.commit()
         login_user(user)
         return user.full_to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}
+    return {'errors': validation_messages(form.errors)}
 
 
 @auth_routes.route('/edit', methods=['POST'])
@@ -120,7 +109,7 @@ def edit():
         user.updated_at = datetime.now()
         db.session.commit()
         return user.full_to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}
+    return {'errors': validation_messages(form.errors)}
 
 @auth_routes.route('/deactivate')
 @login_required

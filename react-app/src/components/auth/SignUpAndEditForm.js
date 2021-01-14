@@ -115,13 +115,14 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
 
 
   return (
-    <div className="ev-content-wrapper ev-user-info-change">
-      <h1>
+    <div className="ev-content-wrapper --single-page ev-user-info-change">
+      <main className="ev-main">
+      <header><h1>
       { (edit && `Edit ${currentUser.siteIdentifier}`)
         ||
         "Sign Up"
       }
-      </h1>
+      </h1></header>
       { (!!errors.length) &&
         <div className="ev-form-errors">
           {errors.map((error) => (
@@ -149,8 +150,10 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
       </section>
       }
       { verified &&
-        <main className="change-form">
+        <div className="change-form">
+          { edit &&
           <h2>Verified! {editSuccess && <span className="ev-success">and successful submission!</span>}</h2>
+          }
           <p>
           { (edit && "Leave blank any items not being updated.")
             ||
@@ -225,8 +228,9 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
               <button className="icon submit" type="submit">{edit ? <FAI icon={faSave} /> : <FAI icon={faSignInAlt} />}</button>
             }
           </form>
-        </main>
+        </div>
       }
+      </main>
     </div>
   );
 };

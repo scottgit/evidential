@@ -21,6 +21,7 @@ NavBar.css -- works with site layout wrappers
 }
 
 .ev-main-nav .logo {
+  white-space: nowrap;
   display: block;
   text-decoration: none;
   text-shadow: none;

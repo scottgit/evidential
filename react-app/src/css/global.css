@@ -6,7 +6,9 @@ html {
   height: 100%;
 }
 
-div {
+div,
+input,
+label {
   box-sizing: border-box;
 }
 
@@ -51,19 +53,23 @@ a:hover {
   color: white;
 }
 
-.ev-icon.loader {
-  color: var(--primary-color);
-  animation: rotate-loader 1s linear infinite;
+*:focus {
+  outline: dotted;
+  outline-width: 1px;
+  outline-color: rgba(var(--raw-rgb-primary-color), 0.5)
 }
 
-.ev-icon.loader.in-text {
+.ev-icon.in-text {
   display: inline-block;
   height: 1em;
   width: 1em;
   padding: 0;
   margin:  0 .1em -.1em .1em;
-  background-image: radial-gradient(circle at 50%, rgba(0,0,0,0) 1em, orange 3px);
-  border-radius: 50%;
+  color: var(--primary-color);
+}
+
+.ev-icon.loader {
+  animation: rotate-loader 1s linear infinite;
 }
 
 @keyframes rotate-loader {
@@ -75,12 +81,25 @@ a:hover {
   }
 }
 
+.ev-icon.in-text.add-item {
+  height: .9em;
+  width: .9em;
+  margin: 0 .1em 0 .3em;
+}
+
+.ev-icon.in-text.add-item:hover {
+  cursor: pointer;
+  transform: rotate(15deg);
+}
+
+
+
 .active .ev-icon {
   filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
   cursor: default;
 }
 
-nav .ev-icon:hover,
+.--direct-hover:hover,
 a:not(.active) > .ev-icon:hover {
   color: var(--primary-color);
   cursor: pointer;
@@ -93,11 +112,18 @@ a:not(.active) > .ev-icon:hover {
   scrollbar-width: 12px;
 }
 /* Works on Chrome/Edge/Safari */
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: var(--primary-color-light);
+}
+
 *::-webkit-scrollbar {
   width: 12px; /* vertical bar */
   height: 12px; /* horizontal bar */
 }
 *::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-dark);
   border-radius: 6px;
   border: 1px solid rgba(204, 203, 203, 0);
   background-clip: padding-box;
@@ -120,7 +146,6 @@ button.in-text {
   padding: 3px 6px;
   margin: -.2em 3px 0;
   font-size: .7em;
-  position: relative;
   top: -.2em;
 }
 
@@ -156,4 +181,91 @@ form {
 
 input {
   padding: 4px;
+}
+
+
+/* Modals */
+
+
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(var(--raw-rgb-secondary-color-light), 0.7);
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+  overflow: auto;
+}
+
+.ReactModal__Overlay--after-open {
+  z-index: 1000;
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+.ReactModal__Content {
+  min-width: 200px;
+}
+
+/* Works on Chrome/Edge/Safari */
+.ReactModal__Content::-webkit-scrollbar {
+  width: 12px; /* vertical bar */
+  height: 12px; /* horizontal bar */
+}
+.ReactModal__Content::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  border: 1px solid rgba(204, 203, 203, 0);
+  background-clip: padding-box;
+}
+
+.ReactModal__Content::-webkit-scrollbar-track,
+.ReactModal__Content::-webkit-scrollbar-corner {
+  background: var(--primary-color-white);
+}
+.ReactModal__Content::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-dark);
+}
+
+.button.icon.ev-modal-close {
+  --icon-button-padding: 0 1px;
+  --icon-button-font-size: 1.5rem;
+  --icon-margin: 4px;
+  position: fixed;
+  float: right;
+  top: 2px;
+  right: 2px;
+  z-index: 1;
+}
+
+.button.icon.ev-modal-close:active {
+  top: 3px;
+  left: auto;
+  right: 1px;
+}
+
+
+.ev-confirm {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  padding-bottom: 20%;
+}
+
+.ev-confirm > div {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-around;
+}
+
+.ev-confirm button {
+  margin: 10px 5px;
+  padding: 1em 1.5em;
 }

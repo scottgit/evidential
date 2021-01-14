@@ -41,7 +41,7 @@ const TextDetail = (props) => {
   const textProps = {textObj, handleRetry}
   return (
     <SplitView {...props} {...addProps}>
-        <h1>Text:
+        <header><h1>Text:
         {
           (!isLoaded && <> Loading <Loader className="in-text" /></>)
           ||
@@ -49,7 +49,7 @@ const TextDetail = (props) => {
           ||
           ` ${textObj.title}`
         }
-      </h1>
+      </h1></header>
       { (isLoaded === 1 && ("content" in textObj) && <Text  {...textProps} />)}
       <div>Sidebar</div>
     </SplitView>

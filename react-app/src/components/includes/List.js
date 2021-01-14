@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loader from "../includes/Loader";
+import AddItemModalTrigger from "../includes/AddItemModalTrigger";
+import AddTextForm from '../forms/AddTextForm';
+import AddClaimForm from '../forms/AddClaimForm';
+import AddArgumentsForm from '../forms/AddArgumentsForm';
+import AddKeysForm from '../forms/AddKeysForm';
 
-const ControlList = ({setDisplay, listType, links}) => {
+const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
   let pluralType;
-  let displayKey;
+  let displayKey = null;
+  let modalContent = null;
   ((type) => {
     switch (type) {
       case 'text':
         displayKey = 'title';
+        modalContent = <AddTextForm currentUser={currentUser}/>;
         break;
       case 'claim':
         displayKey = 'assertion';
+        modalContent = <AddClaimForm urrentUser={currentUser}/>;
         break;
       case 'argument':
         displayKey = 'statement';
+        modalContent = <AddArgumentsForm urrentUser={currentUser} />;
         break;
       case 'key':
         displayKey = 'key';
+        modalContent = <AddKeysForm urrentUser={currentUser}/>;
         break;
       case 'rating':
         displayKey = 'rating';
         break;
       default:
-        displayKey = null;
     }
     if (displayKey) pluralType = `${type}s`
   })(listType);
@@ -53,10 +62,11 @@ const ControlList = ({setDisplay, listType, links}) => {
 
   const list = listItems.map((item) => {
     const identifier = `${listType}-${item.id}`;
+
     return (
-      <li key={identifier} className={`ev-list ${linked ? 'ev-links-list' : ''}`}>
-        { (links &&
-            <NavLink to={`/${listType}/${item.id}`}>
+      <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
+        { (linkPath &&
+            <NavLink to={`${linkPath}${item.id}`}>
               {item[displayKey]}
             </NavLink>
           )
@@ -72,8 +82,17 @@ const ControlList = ({setDisplay, listType, links}) => {
   }
 
   return (
-    <div className="ev-control-list">
-      <h2>{pluralType}</h2>
+    <div className="ev-list">
+      <header className="ev-list-header">
+        <h2>
+          {pluralType[0].toUpperCase()+pluralType.slice(1)}
+          {canAddItem && currentUser &&
+          <AddItemModalTrigger type={listType}>
+            {modalContent}
+          </AddItemModalTrigger>
+          }
+        </h2>
+      </header>
       { (isLoaded === 1 &&
           ((
           !!list.length && displayKey &&

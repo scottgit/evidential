@@ -54,15 +54,18 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
   }
 
   return (
-    <div className="ev-content-wrapper ev-user-info-change">
-      <h1>Log In</h1>
-      <main>
+    <div className="ev-content-wrapper --single-page ev-user-info-change">
+      <main className="ev-main">
+      <header><h1>Log In</h1></header>
+      <div className="change-form">
         <form onSubmit={handleSubmit}>
+          {!!errors.length &&
           <div className="ev-form-errors">
             {errors.map((error) => (
               <div key={error}>{error}</div>
             ))}
           </div>
+          }
           <div>
             <label htmlFor="email">Email</label>
             <input
@@ -93,6 +96,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
             User Demo User Credentials
           </button>
         </form>
+        </div>
       </main>
     </div>
   );

@@ -3,6 +3,12 @@ from sqlalchemy.orm import relationship
 from .mixins.common_columns import CommonColumns
 
 class Text(db.Model, CommonColumns):
+  '''
+  Inherits from CommonColumns properties for
+      id          as primary key
+      created_at  as initial creation
+      created_by  as integer of userId
+  '''
   __tablename__ = 'texts'
 
   title = db.Column(db.String(200), nullable = False)
