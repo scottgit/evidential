@@ -4,7 +4,12 @@ import Sidebar from "./Sidebar";
 
 
 const SplitView = (props) => {
-  //Expects three children, first is page h1, 2nd is main content, 3rd is sidebar content
+  /*****
+   Expects three children:
+   1. A <header> for the page to be placed within the <main> by <MainDisplay>
+   2. A <div> or other wrapper to be CONTENT placed within a <main> by <MainDisplay>
+   3. A <div> or other wrapper to be the CONTENT placed with a <section> by <Sidebar>
+  ******/
 
   return (
     <div className="ev-content-wrapper">

@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 
 const PageNotFound = (props) => {
   const location = useLocation();
+  if (!location.state) location.state = {}
 
   return (
     <div className="ev-content-wrapper --single-page">

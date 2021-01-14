@@ -10,7 +10,7 @@ import {
   TextDetail,
   Home,
   PageNotFound
-} from "./Pages";
+} from "./services/pages";
 import { authenticate } from "./services/auth";
 import Footer from "./components/structure/Footer";
 
