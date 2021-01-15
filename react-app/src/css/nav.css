@@ -41,7 +41,7 @@ NavBar.css -- works with site layout wrappers
   font-size: 2em;
   position: absolute;
   bottom: -.25em;
-  margin: 0 calc(-1*var(--letter-space));
+  margin: 0 calc(var(--letter-space) * -1);
   opacity: .3;
   z-index: -1;
   -webkit-transition: -webkit-transform .8s ease-in-out, opacity .8s ease-in-out;
