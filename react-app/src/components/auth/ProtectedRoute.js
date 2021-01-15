@@ -1,13 +1,26 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 const ProtectedRoute = props => {
+  const isTextEditRoute = matchPath(props.location.pathname, {
+    path: "/text/edit/:textId",
+    exact: true
+  });
+
+  console.log(isTextEditRoute);
+
   return (
     <Route {...props}>
-      {(props.authenticated)? props.children  : <Redirect to="/login" />}
+      {(props.authenticated)
+        ? ( !isTextEditRoute || (isTextEditRoute && props.location.textUnlock)
+            ? props.children
+            : <Redirect to={`/text/view/${isTextEditRoute.params.textId}`} />
+          )
+        : <Redirect to="/login" />
+      }
     </Route>
   )
 };
 
 
-export default ProtectedRoute;
+export default withRouter(ProtectedRoute);

@@ -4,7 +4,7 @@ import SplitView from "../structure/SplitView";
 import Loader from "../includes/Loader";
 import Text from "./Text";
 
-const TextDetail = (props) => {
+const TextEdit = (props) => {
   //props has: authenticated, currentUser
   const [display, setDisplay] = useState("VIEW");
   const [textObj, setTextObj] = useState(null);
@@ -41,7 +41,7 @@ const TextDetail = (props) => {
   const textProps = {textObj, handleRetry}
   return (
     <SplitView {...props} {...addProps}>
-        <header><h1>Text:
+        <header><h1>Text (Edit):
         {
           (!isLoaded && <> Loading <Loader className="in-text" /></>)
           ||
@@ -56,4 +56,4 @@ const TextDetail = (props) => {
   )
 }
 
-export default TextDetail
+export default TextEdit

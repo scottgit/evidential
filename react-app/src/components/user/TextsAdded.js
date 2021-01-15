@@ -5,6 +5,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const TextsAdded = ({user, allowEdit}) => {
 
+
   const getTextsAdded = () => (
     <div>
       <h4>Texts Added</h4>
@@ -15,7 +16,15 @@ const TextsAdded = ({user, allowEdit}) => {
           return (
             <li key={'text-'+ text.id}>
               {canEdit &&
-              <NavLink to={`/text/edit/${text.id}`}><FAI icon={faEdit} className="ev-icon in-text --hover-flip" title={"Edit text"} /></NavLink>
+              <NavLink to={{
+                pathname: `/text/edit/${text.id}`,
+                textUnlock: true
+              }}>
+                <FAI  icon={faEdit}
+                      className="ev-icon in-text --hover-flip"
+                      title={"Edit text"}
+                />
+              </NavLink>
               }
               Added "{text.title}" on {text.createdAt}
             </li>

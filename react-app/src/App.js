@@ -8,6 +8,7 @@ import {
   User,
   UsersList,
   TextDetail,
+  TextEdit,
   Home,
   PageNotFound
 } from "./services/pages";
@@ -67,10 +68,13 @@ function App() {
                       exact={true}>
           <TextDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
-        <Route path={"/text/edit/:textId(\\d+)"}
-                      exact={true}>
-          <TextDetail authenticated={authenticated} currentUser={currentUser} />
-        </Route>
+        <ProtectedRoute
+          path={"/text/edit/:textId(\\d+)" }
+          exact={true}
+          authenticated={authenticated}
+          >
+          <TextEdit authenticated={authenticated} currentUser={currentUser} />
+        </ProtectedRoute>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm
             authenticated={authenticated}

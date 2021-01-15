@@ -81,7 +81,10 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
               {item[displayKey]}
             </NavLink>
             {canEditText(item) && (<> &#40;
-                <NavLink to={`/text/edit/${item.id}`}>
+                <NavLink to={{
+                      pathname: `/text/edit/${item.id}`,
+                      textUnlock: true
+                }}>
                   <FAI icon={faEdit} className="ev-icon in-text --hover-flip" title={"Edit text"} />
                 </NavLink>
             &#41;</>)}
