@@ -62,7 +62,7 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
           </ul>
 
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
-          {(currentUser.textsAdded && <TextsAdded user={currentUser} />)}
+          {(currentUser.textsAdded && <TextsAdded user={currentUser} allowEdit={true} />)}
       </div>
     )
     }

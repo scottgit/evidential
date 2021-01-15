@@ -1,15 +1,26 @@
-import React from 'react'
+import React from 'react';
+import {NavLink} from 'react-router-dom';
+import FAI from '../includes/FAI';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-const TextsAdded = ({user}) => {
+const TextsAdded = ({user, allowEdit}) => {
+
   const getTextsAdded = () => (
     <div>
       <h4>Texts Added</h4>
       <ul>
-        {user.textsAdded.map(text => (
-          <li key={'text-'+ text.id}>
-            Added "{text.title}" on {text.createdAt}
-          </li>
-        ))}
+        {user.textsAdded.map(text => {
+          const canEdit = !text.locked && allowEdit;
+
+          return (
+            <li key={'text-'+ text.id}>
+              {canEdit &&
+              <NavLink to={`/text/edit/${text.id}`}><FAI icon={faEdit} className="ev-icon in-text --hover-flip" title={"Edit text"} /></NavLink>
+              }
+              Added "{text.title}" on {text.createdAt}
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

@@ -105,9 +105,14 @@ a:hover {
   margin: 0 .1em 0 .3em;
 }
 
-.ev-icon.in-text.add-item:hover {
+.ev-icon.in-text.--hover-tilt:hover {
   cursor: pointer;
   transform: rotate(15deg);
+}
+
+.ev-icon.in-text.--hover-flip:hover {
+  cursor: pointer;
+  transform: scaleX(-1);
 }
 
 

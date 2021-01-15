@@ -22,12 +22,17 @@ function App() {
 
   useEffect(() => {
     (async() => {
-      const user = await authenticate();
-      if (user && !user.errors) {
-        setAuthenticated(true);
-        setCurrentUser(user);
+      try {
+        const user = await authenticate();
+        if (user && !user.errors) {
+          setAuthenticated(true);
+          setCurrentUser(user);
+        }
+        setLoaded(true);
+      } catch (err) {
+        setLoaded(true);
+        console.error(err);
       }
-      setLoaded(true);
     })();
   }, []);
 

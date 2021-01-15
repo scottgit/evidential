@@ -19,7 +19,7 @@ const AddItemModalTrigger = ({type, children}) => {
 
   return (
     <>
-      <FAI icon={faPlus} className="in-text add-item" title={`Add ${type}`} onClick={handleShowModal} tabIndex="0"/>
+      <FAI icon={faPlus} className="in-text add-item --hover-tilt" title={`Add ${type}`} onClick={handleShowModal} tabIndex="0"/>
       <ReactModal
         isOpen={showModal}
         closeTimeoutMS={500}
