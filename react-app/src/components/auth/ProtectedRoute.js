@@ -7,10 +7,12 @@ const ProtectedRoute = props => {
     exact: true
   });
 
+  const textUnlock = isTextEditRoute.params && props.registeredTextUnlocks.includes(parseInt(isTextEditRoute.params.textId))
+
   return (
     <Route {...props}>
       {(props.authenticated)
-        ? ( !isTextEditRoute || (isTextEditRoute && props.location.textUnlock)
+        ? ( !isTextEditRoute || (isTextEditRoute && textUnlock)
             ? props.children
             : <Redirect to={`/text/view/${isTextEditRoute.params.textId}`} />
           )

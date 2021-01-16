@@ -7,18 +7,21 @@ import {uploadText} from '../../services/text';
 import FAI from '../includes/FAI';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
-const AddTextForm = ({currentUser, handleCloseModal, textObj}) => {
+const EditTextForm = ({currentUser, handleCloseModal, textObj, title, handleTitleInput}) => {
   const [editor, setEditor] = useState('');
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
-    content: textObj ? textObj.content : '',
-    source: textObj ? textObj.source : ''
+    content: textObj.content,
+    source: textObj.source
   })
-  const [title, setTitle] = useState('');
+
+
+
   const setTextDetails = (details) => {
     _setTextDetails({...textDetails, ...details});
     return;
   };
+
   const history =  useHistory();
 
   useEffect(() => {
@@ -85,9 +88,7 @@ const AddTextForm = ({currentUser, handleCloseModal, textObj}) => {
     )
    });
 
-  const handleTitleInput = (e) => {
-    setTitle(e.target.value)
-  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,9 +115,7 @@ const AddTextForm = ({currentUser, handleCloseModal, textObj}) => {
   }
 
   return (
-    <form className="ev-text-upload" onSubmit={handleSubmit}>
-      <h3>Text File Upload</h3>
-      <input type="text" className="ev-title-input" value={title} placeholder="Please input text title here." onChange={handleTitleInput} required={true} maxLength="200" />
+    <form className="ev-text-edit" onSubmit={handleSubmit}>
       <div {...getRootProps({className: "ev-drop-zone"})}  >
         <div className="ev-file-drop" >
           Drag'n'drop a local text file here or click to select one.
@@ -139,15 +138,22 @@ const AddTextForm = ({currentUser, handleCloseModal, textObj}) => {
          initialValue={textDetails.content}
          value={textDetails.content}
          init={{
-           setup: (editor) => {setEditor(editor); editor.hide()},
-           menubar: false,
-           plugins: ['wordcount'],
-           toolbar: false,
-           body_id: 'ev-editor'
+           setup: (editor) => {setEditor(editor);},
+           height: 500,
+           menubar: true,
+           plugins: [
+             'advlist autolink lists charmap print preview anchor',
+             'searchreplace visualblocks code fullscreen',
+             'insertdatetime media table paste code help wordcount'
+           ],
+           toolbar:
+             'undo redo | formatselect | bold italic backcolor | \
+             alignleft aligncenter alignright alignjustify | \
+             bullist numlist outdent indent | removeformat | help'
          }}
        />
     </form>
   )
 }
 
-export default AddTextForm
+export default EditTextForm

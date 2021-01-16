@@ -65,6 +65,7 @@ a:hover {
 
 /* Icons */
 .ev-icon {
+  --base-transform: rotate(0);
   display: block;
   padding: var(--icon-padding);
   margin: var(--icon-margin);
@@ -95,8 +96,18 @@ a:hover {
   color: var(--primary-color);
 }
 
+.ev-icon.in-text.--stretch {
+  --base-transform: scaleY(1.15);
+  margin: 0 .1em;
+  transform: var(--base-transform);
+}
+
 .ev-icon.--dark {
   color: var(--primary-color);
+}
+
+.--hide {
+  display: none;
 }
 
 .ev-icon.loader {
@@ -124,11 +135,11 @@ a:hover {
 
 *:not(.active) > .ev-icon.--hover-tilt:hover,
 .--hover-sub-tilt:hover > .ev-icon.--sub {
-  transform: rotate(15deg);
+  transform: var(--base-transform) rotate(15deg);
 }
 
 *:not(.active) > .ev-icon.--hover-flip:hover {
-  transform: scaleX(-1);
+  transform: var(--base-transform) scaleX(-1);
 }
 
 .fa-layers .ev-icon.--lc {

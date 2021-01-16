@@ -7,8 +7,9 @@ import AddTextForm from '../forms/EditTextForm';
 
 ReactModal.setAppElement('#root');
 
-const AddTextButton = ({currentUser}) => {
+const AddTextButton = ({currentUser, hide=false}) => {
   const [showModal, setShowModal] = useState(false)
+  hide = hide ? '--hide' : '';
 
   const handleShowModal = (e) => {
     setShowModal(true);
@@ -20,7 +21,7 @@ const AddTextButton = ({currentUser}) => {
 
   return (
     <>
-      <span className="fa-layers fa-fw --hover-sub-tilt" onClick={handleShowModal} tabIndex="0" title={`Add Text`} >
+      <span className={`fa-layers fa-fw --hover-sub-tilt ${hide}`} onClick={handleShowModal} tabIndex="0" title={`Add Text`} >
         <FAI icon={faFile} className="ev-icon --dark" />
         <FAI icon={faPlus} className="ev-icon --sub --lc" />
       </span>

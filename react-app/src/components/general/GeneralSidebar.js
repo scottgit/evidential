@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
 import DataChanges from '../user/DataChanges';
 import AddTextButton from '../includes/AddTextButton';
+import TextEditLink from "../includes/TextEditLink";
+import TextViewLink from "../includes/TextViewLink";
 import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GeneralSidebar = ({display, authenticated, currentUser}) => {
+const GeneralSidebar = ({display, authenticated, currentUser, textObj}) => {
   const [showAbout, setShowAbout] = useState(false);
 
   const About = () => (
@@ -45,10 +47,22 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
     setShowAbout(!showAbout);
   }
 
+  const textOptionLinks = () => {
+    if (display.main && display.main.includes("-TEXT") && textObj) {
+      return (
+        <>
+          <TextEditLink text={textObj} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "EDIT-TEXT"}/>
+          <TextViewLink text={textObj} hide={display.main === "VIEW-TEXT"}/>
+        </>
+      )
+    }
+  }
+
   return (
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
+          {textOptionLinks()}
           <AddTextButton currentUser={currentUser} />
           <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
             { showAbout &&
@@ -71,7 +85,7 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
           </ul>
 
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
-          {(currentUser.textsAdded && <TextsAdded user={currentUser} allowEdit={true} />)}
+          {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
       </div>
     )
     }

@@ -3,22 +3,32 @@ import {NavLink} from 'react-router-dom';
 import FAI from '../includes/FAI';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-const TextEditLink = ({text, allowEdit}) => {
-  const canEdit = !text.locked && allowEdit;
+const TextEditLink = ({text, currentUser, noParenthesis=false, inNav=false, hide=false}) => {
+  const canEditText = () => {
+    if (currentUser) {
+      return (!text.locked && text.createdBy.id === currentUser.id)
+    } else {
+      return false;
+    }
+  }
+
+  hide = hide ? '--hide' : '';
+  const startParenthesis = noParenthesis ? "" : "(";
+  const endParenthesis = noParenthesis ? "" : ")";
+  const className = `ev-icon in-text ${(inNav && '--stretch --hover-tilt') || '--hover-flip'}`
 
   return (
     <>
-    {canEdit && (<> &#40;
+    {canEditText() && (<> {startParenthesis}
       <NavLink to={{
         pathname: `/text/edit/${text.id}`,
-        textUnlock: true
-      }}>
+        textObj: text
+      }} className={hide}>
         <FAI  icon={faEdit}
-              className="ev-icon in-text --hover-flip"
+              className={className}
               title={"Edit text"}
         />
-      </NavLink>
-      &#41; </>)}
+      </NavLink>{endParenthesis}</>)}
     </>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import TextEditLink from '../includes/TextEditLink';
 
-const TextsAdded = ({user, allowEdit}) => {
+const TextsAdded = ({user, currentUser}) => {
 
 
   const getTextsAdded = () => (
@@ -12,7 +12,7 @@ const TextsAdded = ({user, allowEdit}) => {
         {user.textsAdded.map(text => {
           return (
             <li key={'text-'+ text.id}>
-              Added "<NavLink to={`/text/view/${text.id}`}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} allowEdit={allowEdit}/>
+              Added "<NavLink to={`/text/view/${text.id}`}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} currentUser={currentUser}/>
             </li>
           )
         })}

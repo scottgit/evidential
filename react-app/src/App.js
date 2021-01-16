@@ -20,6 +20,7 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [registeredTextUnlocks, setRegisteredTextUnlocks] = useState([]);
 
 
   useEffect(() => {
@@ -31,6 +32,17 @@ function App() {
           if (user && !user.errors) {
             setAuthenticated(true);
             setCurrentUser(user);
+
+            const getTextUnlocks = (user) => {
+              if (!user) return [];
+              return user.textsAdded.reduce((array, text) => {
+                if (!text.locked) {
+                  array.push(text.id);
+                }
+                return array;
+              }, []);
+            }
+            setRegisteredTextUnlocks(getTextUnlocks(user));
           }
           setLoaded(true);
         }
@@ -49,6 +61,8 @@ function App() {
   if (!loaded) {
     return null;
   }
+
+
 
   return (
     <BrowserRouter>
@@ -79,6 +93,7 @@ function App() {
           path={"/text/edit/:textId(\\d+)" }
           exact={true}
           authenticated={authenticated}
+          registeredTextUnlocks={registeredTextUnlocks}
           >
           <TextEdit authenticated={authenticated} currentUser={currentUser} />
         </ProtectedRoute>
@@ -95,7 +110,7 @@ function App() {
           <UsersList />
         </ProtectedRoute>
         <ProtectedRoute path={"/users/:userId(\\d+)"} exact={true} authenticated={authenticated}>
-          <User />
+          <User currentUser={currentUser} />
         </ProtectedRoute>
         <Route path="/page-not-found">
           <PageNotFound />

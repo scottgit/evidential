@@ -1,10 +1,10 @@
 import React, {useState, useEffect } from "react";
 import {useParams} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
-import Loader from "../includes/Loader";
 import Text from "./Text";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
+import TextHeader from "./TextHeader";
 
 const TextDetail = (props) => {
   const {authenticated, currentUser} = props;
@@ -26,24 +26,15 @@ const TextDetail = (props) => {
   }
 
   const addProps = {display, setDisplay, textObj, setTextObj, isLoaded, handleRetry}
-  const textProps = {textObj, handleRetry}
+  const headerProps = {display, textObj, handleRetry, isLoaded, currentUser};
+  const textProps = {currentUser, textObj, handleRetry};
+  const sideBarProps = {display, authenticated, currentUser, textObj};
+
   return (
     <SplitView {...props} {...addProps}>
-        <header><h1>Text (View):
-        {
-          (!isLoaded && <> Loading <Loader className="in-text" /></>)
-          ||
-          (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
-          ||
-          ` ${textObj.title}`
-        }
-      </h1></header>
+      <TextHeader {...headerProps} />
       { (isLoaded === 1 && ("content" in textObj) && <Text  {...textProps} />)}
-      <GeneralSidebar
-          display={display}
-          authenticated={authenticated}
-          currentUser={currentUser}
-        />
+      <GeneralSidebar {...sideBarProps} />
     </SplitView>
   )
 }

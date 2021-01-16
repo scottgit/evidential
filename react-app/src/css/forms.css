@@ -65,3 +65,45 @@ forms.css -- imports other files
 .ev-text-upload .tox-tinymce {
   display: none !important;
 }
+
+.ev-edit-title-input {
+  font-size: 1em;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  width: 100%;
+  /* border: 1px solid transparent;*/
+  padding: 1px;
+}
+
+.ev-edit-title-input:hover,
+.ev-edit-title-input:active {
+  outline: 1px dashed var(--primary-color-dark)
+}
+
+.ev-edit-title-input:focus {
+  color: var(--primary-color-dark);
+  outline: 1px solid var(--primary-color);
+  box-shadow: inset 0 0 5px rgba(var(--raw-rgb-primary-color), 0.3);
+}
+
+.ev-heading-input-wrapper:first-child {
+  float: left;
+}
+
+.ev-heading-input-wrapper + .ev-heading-input-wrapper {
+  overflow: hidden;
+  padding: 1px 1px 5px 1px;
+  margin: -1px -1px 0;
+  position: relative;
+}
+
+.ev-heading-input-wrapper + .ev-heading-input-wrapper:hover::after {
+  content: '(Click to edit)';
+  font-size: .7em;
+  color: var(--primary-color-light);
+  position: absolute;
+  right: 3px;
+}

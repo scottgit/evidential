@@ -65,15 +65,6 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
 
     const identifier = `${listType}-${item.id}`;
 
-    const canEditText = (item) => {
-      if (listType === 'text' && currentUser) {
-        return (!item.locked && item.createdBy.id === currentUser.id)
-      } else {
-        return false;
-      }
-
-    }
-
     return (
       <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
         { (linkPath &&
@@ -81,8 +72,8 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
             <NavLink to={`${linkPath}${item.id}`} >
               {item[displayKey]}
             </NavLink>
-            {canEditText(item) &&
-              <TextEditLink text={item} allowEdit={true}/>
+            {listType === 'text' &&
+              <TextEditLink text={item} currentUser={currentUser}/>
             }
             </>
           )
