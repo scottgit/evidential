@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
 import DataChanges from '../user/DataChanges';
 import AddTextButton from '../includes/AddTextButton';
+import FAI from '../includes/FAI';
+import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const GeneralSidebar = ({display, authenticated, currentUser}) => {
   const [showAbout, setShowAbout] = useState(false);
@@ -48,7 +50,12 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
       { authenticated &&
         <nav className="ev-sidebar-nav">
           <AddTextButton currentUser={currentUser} />
-          <button type="button" onClick={toggleAbout}>Show {showAbout ? 'User' : 'About'}</button>
+          <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
+            { showAbout &&
+              <FAI icon={faUserCircle} className="ev-icon --dark --hover-tilt" title={`Show User`}/> }
+            { !showAbout && <FAI icon={faInfoCircle} className="ev-icon --dark --hover-tilt" title={`Show About`}/>
+            }
+          </span>
         </nav>
       }
     { ((display.sidebar === "ABOUT" || !currentUser || showAbout) &&

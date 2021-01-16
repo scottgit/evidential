@@ -1,8 +1,8 @@
 import React, {useState, useEffect } from "react";
 import {useParams} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
-import Loader from "../includes/Loader";
-import Text from "./Text";
+import TextHeader from "./TextHeader";
+import EditTextForm from "../forms/EditTextForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
 
@@ -25,25 +25,20 @@ const TextEdit = (props) => {
     setIsLoaded(0)
   }
 
-  const addProps = {display, setDisplay, textObj, setTextObj, isLoaded, handleRetry}
-  const textProps = {textObj, handleRetry}
+  const viewProps = {...props, display, setDisplay, textObj, setTextObj, isLoaded, handleRetry}
+  const headerProps = {display, textObj, handleRetry, isLoaded};
+  const textProps = {textObj, handleRetry};
+  const sideBarProps = {display, authenticated, currentUser};
+
   return (
-    <SplitView {...props} {...addProps}>
-        <header><h1>Text (Edit):
-        {
-          (!isLoaded && <> Loading <Loader className="in-text" /></>)
-          ||
-          (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
-          ||
-          ` ${textObj.title}`
-        }
-      </h1></header>
-      { (isLoaded === 1 && ("content" in textObj) && <Text  {...textProps} />)}
-      <GeneralSidebar
-          display={display}
-          authenticated={authenticated}
-          currentUser={currentUser}
-        />
+    <SplitView {...viewProps}>
+      <TextHeader {...headerProps} />
+      { (isLoaded === 1 && ("content" in textObj) &&
+        <EditTextForm  {...textProps} />)
+        ||
+        <>{/* Failed to load */}</>
+      }
+      <GeneralSidebar {...sideBarProps} />
     </SplitView>
   )
 }

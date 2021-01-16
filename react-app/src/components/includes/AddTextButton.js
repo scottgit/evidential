@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import FAI from './FAI';
 import { faFile, faPlus, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import AddTextForm from '../forms/AddTextForm';
+import AddTextForm from '../forms/EditTextForm';
 
 
 ReactModal.setAppElement('#root');

@@ -7,12 +7,12 @@ import {uploadText} from '../../services/text';
 import FAI from '../includes/FAI';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
-const AddTextForm = ({currentUser, handleCloseModal}) => {
+const AddTextForm = ({currentUser, handleCloseModal, textObj}) => {
   const [editor, setEditor] = useState('');
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
-    content: '',
-    source: ''
+    content: textObj ? textObj.content : '',
+    source: textObj ? textObj.source : ''
   })
   const [title, setTitle] = useState('');
   const setTextDetails = (details) => {
