@@ -91,6 +91,9 @@ structure.css -- works with site layout wrappers
   border-bottom: 0.5px solid var(--primary-color-light);
 }
 
+.ev-sidebar-nav .fa-layers {
+  font-size: 2.5em;
+}
 /* Sets sidebar scroll position next to main's */
 .ev-rtl {
   direction: rtl;

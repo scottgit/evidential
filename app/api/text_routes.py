@@ -14,7 +14,6 @@ def texts():
 
 
 @text_routes.route('/<int:id>')
-@login_required
 def text(id):
     text = Text.query.get(id)
     return text.full_to_dict()

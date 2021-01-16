@@ -1,36 +1,24 @@
 import React, {useState, useEffect } from "react";
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
 import Loader from "../includes/Loader";
 import Text from "./Text";
+import GeneralSidebar from "../general/GeneralSidebar";
+import {fetchText} from "../../services/text";
 
 const TextEdit = (props) => {
-  //props has: authenticated, currentUser
-  const [display, setDisplay] = useState("VIEW");
-  const [textObj, setTextObj] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(0);
+  const {authenticated, currentUser} = props;
   const {textId} = useParams();
-  const history = useHistory();
-  if (!props.authenticated && history.pathname.contains('analyze')) history.replace(`/text/view/${textId}`)
+  const [display, setDisplay] = useState({main: "EDIT-TEXT", sidebar: "USER"});
+  const [textObj, setTextObj] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(0)
 
   useEffect(() => {
-    async function fetchData() {
-      if (isLoaded) return; //Only load if nothing is loaded and no error
-      try {
-        const response = await fetch(`/api/texts/${textId}`);
-        if (response.ok) {
-          const responseData = await response.json();
-          setTextObj(responseData);
-          setIsLoaded(1);
-        } else {
-          throw Error('Failed to load content.');
-        }
-      } catch (e) {
-        console.log("in error", e)
-        setIsLoaded(-1);
-      }
+    let stillMounted = true;
+    fetchText(textId, stillMounted, setTextObj, setIsLoaded);
+    return function cleanUp() {
+      stillMounted = false;
     }
-    fetchData();
   }, [isLoaded, textId]);
 
   const handleRetry = (e) => {
@@ -51,7 +39,11 @@ const TextEdit = (props) => {
         }
       </h1></header>
       { (isLoaded === 1 && ("content" in textObj) && <Text  {...textProps} />)}
-      <div>Sidebar</div>
+      <GeneralSidebar
+          display={display}
+          authenticated={authenticated}
+          currentUser={currentUser}
+        />
     </SplitView>
   )
 }

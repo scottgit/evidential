@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
 import DataChanges from '../user/DataChanges';
+import AddTextButton from '../includes/AddTextButton';
 
 const GeneralSidebar = ({display, authenticated, currentUser}) => {
   const [showAbout, setShowAbout] = useState(false);
@@ -46,12 +47,13 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
-        <button type="button" onClick={toggleAbout}>Show {showAbout ? 'User' : 'About'}</button>
+          <AddTextButton currentUser={currentUser} />
+          <button type="button" onClick={toggleAbout}>Show {showAbout ? 'User' : 'About'}</button>
         </nav>
       }
-    { ((display.main === "WELCOME" || showAbout) &&
+    { ((display.sidebar === "ABOUT" || !currentUser || showAbout) &&
       <About />
-    ) || ((display.main === "HOME" && !showAbout) &&
+    ) || ((display.sidebar === "USER" && currentUser && !showAbout) &&
       <div className="ev-user-sidebar">
           <header><h3>Logged in as: {currentUser.siteIdentifier}</h3></header>
           <ul>

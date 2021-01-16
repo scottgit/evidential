@@ -6,8 +6,7 @@ import AddTextForm from '../forms/AddTextForm';
 import AddClaimForm from '../forms/AddClaimForm';
 import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
-import FAI from '../includes/FAI';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import TextEditLink from '../includes/TextEditLink';
 
 const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
@@ -63,9 +62,11 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
   }, [isLoaded, pluralType]);
 
   const list = listItems.map((item) => {
+
     const identifier = `${listType}-${item.id}`;
+
     const canEditText = (item) => {
-      if (listType === 'text') {
+      if (listType === 'text' && currentUser) {
         return (!item.locked && item.createdBy.id === currentUser.id)
       } else {
         return false;
@@ -77,17 +78,12 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
       <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
         { (linkPath &&
             <>
-            <NavLink to={`${linkPath}${item.id}`}>
+            <NavLink to={`${linkPath}${item.id}`} >
               {item[displayKey]}
             </NavLink>
-            {canEditText(item) && (<> &#40;
-                <NavLink to={{
-                      pathname: `/text/edit/${item.id}`,
-                      textUnlock: true
-                }}>
-                  <FAI icon={faEdit} className="ev-icon in-text --hover-flip" title={"Edit text"} />
-                </NavLink>
-            &#41;</>)}
+            {canEditText(item) &&
+              <TextEditLink text={item} allowEdit={true}/>
+            }
             </>
           )
           ||

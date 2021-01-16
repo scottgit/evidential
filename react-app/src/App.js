@@ -22,19 +22,27 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
+    let stillMounted = true;
     (async() => {
       try {
         const user = await authenticate();
-        if (user && !user.errors) {
-          setAuthenticated(true);
-          setCurrentUser(user);
+        if (stillMounted) {
+          if (user && !user.errors) {
+            setAuthenticated(true);
+            setCurrentUser(user);
+          }
+          setLoaded(true);
         }
-        setLoaded(true);
       } catch (err) {
-        setLoaded(true);
-        console.error(err);
+        if (stillMounted) {
+          setLoaded(true);
+          console.error(err);
+        }
       }
     })();
+    return function cleanUp() {
+      stillMounted = false;
+    }
   }, []);
 
   if (!loaded) {
@@ -63,9 +71,7 @@ function App() {
             edit={false}
           />
         </Route>
-        <Route path={["/text/view/:textId(\\d+)",
-                      "/text/analyze/:textId(\\d+)"]}
-                      exact={true}>
+        <Route path={"/text/view/:textId(\\d+)"} exact={true}>
           <TextDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
         <ProtectedRoute

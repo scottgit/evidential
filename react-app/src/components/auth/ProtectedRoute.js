@@ -7,8 +7,6 @@ const ProtectedRoute = props => {
     exact: true
   });
 
-  console.log(isTextEditRoute);
-
   return (
     <Route {...props}>
       {(props.authenticated)

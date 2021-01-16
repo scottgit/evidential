@@ -67,7 +67,7 @@ a:hover {
 .ev-icon {
   display: block;
   padding: var(--icon-padding);
-  margin: var(--icon-margin);;
+  margin: var(--icon-margin);
   color: white;
 }
 
@@ -83,6 +83,10 @@ a:hover {
   width: 1em;
   padding: 0;
   margin:  0 .1em -.1em .1em;
+  color: var(--primary-color);
+}
+
+.ev-icon.--dark {
   color: var(--primary-color);
 }
 
@@ -105,16 +109,23 @@ a:hover {
   margin: 0 .1em 0 .3em;
 }
 
-.ev-icon.in-text.--hover-tilt:hover {
+.ev-icon.--hover-tilt:hover {
   cursor: pointer;
   transform: rotate(15deg);
 }
 
-.ev-icon.in-text.--hover-flip:hover {
+.ev-icon.--hover-flip:hover {
   cursor: pointer;
   transform: scaleX(-1);
 }
 
+.fa-layers .ev-icon.--lc {
+  font-size: .5em;
+  top: auto;
+  bottom: 0;
+  left: calc( var(--icon-padding) + 2px ) ;
+  right: auto;
+}
 
 
 .active .ev-icon {
