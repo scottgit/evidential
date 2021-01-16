@@ -13,13 +13,20 @@ const AddItemModalTrigger = ({type, children}) => {
     setShowModal(true);
   }
 
+  const checkShowModal = (e) => {
+    let key = e.keyCode ? e.keyCode : e.which;
+    if (key === 13) /* enter */ {
+      setShowModal(true);
+    }
+  }
+
   const handleCloseModal = (e) => {
     setShowModal(false);
   }
 
   return (
     <>
-      <FAI icon={faPlus} className="in-text add-item --hover-tilt" title={`Add ${type}`} onClick={handleShowModal} tabIndex="0"/>
+      <FAI icon={faPlus} className="in-text add-item --hover-tilt" title={`Add ${type}`} onClick={handleShowModal} onKeyDown={checkShowModal} tabIndex="0"/>
       <ReactModal
         isOpen={showModal}
         closeTimeoutMS={500}

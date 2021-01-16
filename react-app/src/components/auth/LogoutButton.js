@@ -17,6 +17,13 @@ const LogoutButton = ({setAuthenticated, setCurrentUser, title}) => {
     setShowModal(true);
   }
 
+  const checkShowModal = (e) => {
+    let key = e.keyCode ? e.keyCode : e.which;
+    if (key === 13) /* enter */ {
+      setShowModal(true);
+    }
+  }
+
   const handleCloseModal = (e) => {
     setShowModal(false);
   }
@@ -28,7 +35,7 @@ const LogoutButton = ({setAuthenticated, setCurrentUser, title}) => {
       <FAI id="nav-logout"
       icon={faSignOutAlt}
       onClick={handleShowModal}
-      onKeyDown={handleShowModal}
+      onKeyDown={checkShowModal}
       tabIndex="0"
       title={title}
       className="--direct-hover"

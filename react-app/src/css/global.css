@@ -72,9 +72,18 @@ a:hover {
 }
 
 *:focus {
+  outline: none;
+}
+
+.do-focus-outline a:focus,
+.do-focus-outline button:focus,
+.do-focus-outline [tabindex]:focus,
+.do-focus-outline *:focus > .ev-icon
+ {
   outline: dotted;
-  outline-width: 1px;
-  outline-color: rgba(var(--raw-rgb-primary-color), 0.5)
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--primary-color-dark);
 }
 
 .ev-icon.in-text {
@@ -109,13 +118,16 @@ a:hover {
   margin: 0 .1em 0 .3em;
 }
 
-.ev-icon.--hover-tilt:hover {
+.ev-icon:hover {
   cursor: pointer;
+}
+
+*:not(.active) > .ev-icon.--hover-tilt:hover,
+.--hover-sub-tilt:hover > .ev-icon.--sub {
   transform: rotate(15deg);
 }
 
-.ev-icon.--hover-flip:hover {
-  cursor: pointer;
+*:not(.active) > .ev-icon.--hover-flip:hover {
   transform: scaleX(-1);
 }
 
@@ -127,16 +139,9 @@ a:hover {
   right: auto;
 }
 
-
 .active .ev-icon {
-  filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
+  color: #ccc;
   cursor: default;
-}
-
-.--direct-hover:hover,
-a:not(.active) > .ev-icon:hover {
-  color: var(--primary-color);
-  cursor: pointer;
 }
 
 /* Scroll Bar standards */
@@ -173,7 +178,6 @@ button {
   border-radius: 4px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
   position: relative;
-  outline: none;
 }
 
 button.in-text {

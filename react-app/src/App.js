@@ -19,7 +19,8 @@ import Footer from "./components/structure/Footer";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
     let stillMounted = true;

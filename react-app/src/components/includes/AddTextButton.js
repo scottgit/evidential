@@ -20,9 +20,9 @@ const AddTextButton = ({currentUser}) => {
 
   return (
     <>
-      <span className="fa-layers fa-fw" onClick={handleShowModal} tabIndex="0" title={`Add Text`} >
+      <span className="fa-layers fa-fw --hover-sub-tilt" onClick={handleShowModal} tabIndex="0" title={`Add Text`} >
         <FAI icon={faFile} className="ev-icon --dark" />
-        <FAI icon={faPlus} className="ev-icon --lc --hover-tilt" />
+        <FAI icon={faPlus} className="ev-icon --sub --lc" />
       </span>
       <ReactModal
         isOpen={showModal}
