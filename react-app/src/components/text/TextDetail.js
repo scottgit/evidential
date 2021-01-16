@@ -15,7 +15,11 @@ const TextDetail = (props) => {
   // const [display, setDisplay] = useState({main: "EDIT-TEXT", sidebar: "USER"});
   const [itemData, setTextObj] = useState(getTextObj);
   const [title, setTitle] = useState(itemData ? itemData.title : '');
-  const display = {main: "VIEW-TEXT", sidebar: "USER"};
+
+  const display = (() => {
+    const show = ["view", "edit", "analyze"].filter((str) => location.pathname.includes(str))
+    return {main: `${show[0].toUpperCase()}-TEXT`, sidebar: "USER"};
+  })()
 
   useEffect(() => {
     let stillMounted = true;
@@ -50,9 +54,16 @@ const TextDetail = (props) => {
 
   return (
     <SplitView {...viewProps}>
-    <TextHeader key={`text-viewheader-${!!itemData ? itemData.id : 0}`} {...headerProps} />
-    { (itemData &&
-        <Text key={`text-viewbody-${itemData.id}`} {...textProps} />
+    <TextHeader key={`${display.main}-header-${!!itemData ? itemData.id : 0}`} {...headerProps} />
+    { (itemData && (
+          (display.main === "VIEW-TEXT" &&
+            <Text key={`${display.main}-body-${itemData.id}`} {...textProps} />
+          )
+          ||
+          (display.main === "EDIT-TEXT" &&
+            <EditTextForm key={`textbody-${itemData.id}`} {...textProps} />
+          )
+        )
       )
       ||
       <>{/* Failed to load */}</>

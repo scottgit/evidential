@@ -8,7 +8,6 @@ import {
   User,
   UsersList,
   TextDetail,
-  TextEdit,
   Home,
   PageNotFound
 } from "./services/pages";
@@ -95,7 +94,7 @@ function App() {
           authenticated={authenticated}
           registeredTextUnlocks={registeredTextUnlocks}
           >
-          <TextEdit authenticated={authenticated} currentUser={currentUser} />
+          <TextDetail authenticated={authenticated} currentUser={currentUser} />
         </ProtectedRoute>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm
