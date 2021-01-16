@@ -22,7 +22,7 @@ const TextEditLink = ({text, currentUser, noParenthesis=false, inNav=false, hide
     {canEditText() && (<> {startParenthesis}
       <NavLink to={{
         pathname: `/text/edit/${text.id}`,
-        textObj: text
+        itemData: text
       }} className={hide}>
         <FAI  icon={faEdit}
               className={className}

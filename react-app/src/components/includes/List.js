@@ -69,7 +69,10 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
       <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
         { (linkPath &&
             <>
-            <NavLink to={`${linkPath}${item.id}`} >
+            <NavLink to={{
+              pathname: `${linkPath}${item.id}`,
+              itemData: item
+              }} >
               {item[displayKey]}
             </NavLink>
             {listType === 'text' &&

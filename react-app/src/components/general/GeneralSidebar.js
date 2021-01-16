@@ -7,7 +7,7 @@ import TextViewLink from "../includes/TextViewLink";
 import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GeneralSidebar = ({display, authenticated, currentUser, textObj}) => {
+const GeneralSidebar = ({display, authenticated, currentUser, itemData}) => {
   const [showAbout, setShowAbout] = useState(false);
 
   const About = () => (
@@ -48,11 +48,11 @@ const GeneralSidebar = ({display, authenticated, currentUser, textObj}) => {
   }
 
   const textOptionLinks = () => {
-    if (display.main && display.main.includes("-TEXT") && textObj) {
+    if (display.main && display.main.includes("-TEXT") && itemData) {
       return (
         <>
-          <TextEditLink text={textObj} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "EDIT-TEXT"}/>
-          <TextViewLink text={textObj} hide={display.main === "VIEW-TEXT"}/>
+          <TextEditLink text={itemData} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "EDIT-TEXT"}/>
+          <TextViewLink text={itemData} hide={display.main === "VIEW-TEXT"}/>
         </>
       )
     }

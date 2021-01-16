@@ -12,7 +12,10 @@ const TextsAdded = ({user, currentUser}) => {
         {user.textsAdded.map(text => {
           return (
             <li key={'text-'+ text.id}>
-              Added "<NavLink to={`/text/view/${text.id}`}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} currentUser={currentUser}/>
+              Added "<NavLink to={{
+                pathname: `/text/view/${text.id}`,
+                itemData: text
+              }}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} currentUser={currentUser}/>
             </li>
           )
         })}

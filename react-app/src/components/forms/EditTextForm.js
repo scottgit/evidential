@@ -7,12 +7,12 @@ import {uploadText} from '../../services/text';
 import FAI from '../includes/FAI';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
-const EditTextForm = ({currentUser, handleCloseModal, textObj, title, handleTitleInput}) => {
+const EditTextForm = ({currentUser, handleCloseModal, itemData, title, handleTitleInput}) => {
   const [editor, setEditor] = useState('');
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
-    content: textObj.content,
-    source: textObj.source
+    content: itemData.content,
+    source: itemData.source
   })
 
 

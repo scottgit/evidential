@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from "../includes/Loader";
 
-const TextHeader = ({display, textObj, handleRetry, isLoaded, title, handleTitleInput}) => {
+const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput}) => {
   const formName = {
     "VIEW-TEXT": "View",
     "EDIT-TEXT": "Edit",
@@ -12,7 +12,7 @@ const TextHeader = ({display, textObj, handleRetry, isLoaded, title, handleTitle
   const headingClass = display.main !== "EDIT-TEXT" ? "" : "ev-heading-input-wrapper";
 
   const titleText = () => (
-      (display.main !== "EDIT-TEXT" && `${textObj.title}`)
+      (display.main !== "EDIT-TEXT" && `${itemData.title}`)
       ||
       <div className={headingClass}>
         <input type="text" className="ev-edit-title-input" value={title} onChange={handleTitleInput} required={true} maxLength="200" />
@@ -23,9 +23,9 @@ const TextHeader = ({display, textObj, handleRetry, isLoaded, title, handleTitle
   return (
     <header><h1><span className={headingClass}>Text ({formName}):&nbsp;</span>
     {
-      (!isLoaded && <> Loading <Loader className="in-text" /></>)
+      (!itemData && <> Loading <Loader className="in-text" /></>)
       ||
-      (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
+      (itemData === {} && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
       ||
       titleText()
     }

@@ -7,52 +7,61 @@ import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
 
 const TextEdit = (props) => {
-  const location = useLocation();
-  const getTextObj = location.textObj ? location.textObj : window.history.state;
   const {authenticated, currentUser} = props;
+  const location = useLocation();
+  let getTextObj = location.itemData ? location.itemData : null
   const {textId} = useParams();
-  const [display, setDisplay] = useState({main: "EDIT-TEXT", sidebar: "USER"});
-  const [textObj, setTextObj] = useState(
-    getTextObj ? getTextObj : null
-  );
-  const [isLoaded, setIsLoaded] = useState(0);
-  const [title, setTitle] = useState(
-    getTextObj ? getTextObj.title : ''
-    );
-
-  //Preserve location state information on hard refresh
-  window.history.replaceState(textObj, 'textObj');
+  // const [display, setDisplay] = useState({main: "EDIT-TEXT", sidebar: "USER"});
+  const [itemData, setTextObj] = useState(getTextObj);
+  const [title, setTitle] = useState(itemData ? itemData.title : '');
+  const display = {main: "EDIT-TEXT", sidebar: "USER"};
 
   useEffect(() => {
     let stillMounted = true;
-    fetchText(textId, stillMounted, setTextObj, setIsLoaded);
+    if (!getTextObj) {
+      (async () => {
+        const text = await fetchText(textId, stillMounted);
+        setTextObj(text);
+        setTitle(text.title);
+      })();
+    }
+    else if (getTextObj !== itemData) {
+      setTextObj(getTextObj);
+      setTitle(getTextObj.title)
+    }
     return function cleanUp() {
       stillMounted = false;
     }
-  }, [isLoaded, textId]);
+  }, [textId]);
 
   const handleRetry = (e) => {
-    setIsLoaded(0)
+    getTextObj = null;
   }
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value)
   }
 
-  const viewProps = {...props, display, setDisplay, textObj, setTextObj, isLoaded, handleRetry}
-  const headerProps = {display, textObj, handleRetry, isLoaded, currentUser, title, handleTitleInput};
-  const textProps = {currentUser, textObj, handleRetry, handleTitleInput, title};
-  const sideBarProps = {display, authenticated, currentUser, textObj};
+  const viewProps = {...props, display, itemData, handleRetry}
+  const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput};
+  const textProps = {currentUser, itemData, handleRetry, handleTitleInput, title};
+  const sideBarProps = {display, authenticated, currentUser, itemData};
 
   return (
     <SplitView {...viewProps}>
-      <TextHeader {...headerProps} />
-      { (isLoaded === 1 && ("content" in textObj) &&
-        <EditTextForm  {...textProps} />)
+      <TextHeader key={`textheader-${!!itemData ? itemData.id : 0}`} {...headerProps} />
+      { (itemData &&
+          <EditTextForm key={`textbody-${itemData.id}`} {...textProps} />
+        )
         ||
         <>{/* Failed to load */}</>
       }
-      <GeneralSidebar {...sideBarProps} />
+      { (itemData &&
+          <GeneralSidebar {...sideBarProps} />
+        )
+        ||
+        <>{/* Failed to load */}</>
+      }
     </SplitView>
   )
 }
