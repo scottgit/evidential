@@ -16,12 +16,14 @@
   </body>
   <script type="application/javascript">
     document.body.addEventListener('keyup', function(e) {
-      let key = e.keyCode ? e.keyCode : e.which;
-      if (key === 9) /* tab */ {
+      if (e.key === 'Tab')  {
         document.documentElement.classList.add('do-focus-outline');
-      } else {
+      } else if (e.key !== 'Shift') {
         document.documentElement.classList.remove('do-focus-outline');
       }
+    });
+    document.body.addEventListener('click', function(e) {
+      document.documentElement.classList.remove('do-focus-outline');
     });
   </script>
 </html>

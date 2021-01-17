@@ -79,7 +79,8 @@ a:hover {
 .do-focus-outline a:focus,
 .do-focus-outline button:focus,
 .do-focus-outline [tabindex]:focus,
-.do-focus-outline *:focus > .ev-icon
+.do-focus-outline .ev-main-nav *:focus > .ev-icon,
+.do-focus-outline *:focus
  {
   outline: dotted;
   outline-width: 2px;

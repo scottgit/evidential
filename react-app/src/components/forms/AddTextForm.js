@@ -15,25 +15,18 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
     source: ''
   })
   const [title, setTitle] = useState('');
-  const setTextDetails = (details) => {
+  const setTextDetails = useCallback((details) => {
     _setTextDetails({...textDetails, ...details});
     return;
-  };
+  }, [textDetails]);
   const history =  useHistory();
 
-  useEffect(() => {
-    if (title && textDetails.content && textDetails.source) {
-      setReadyToSubmit(true);
-    } else {
-      setReadyToSubmit(false);
-    }
-  }, [title, textDetails])
 
-  // console.log(textDetails)
+  // GOAL is to support these document types at least
   // const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx, .md';
   const accepted = '.htm, .html, .txt, .md';
 
-  const onDrop =  useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach(async (file) => {
       const reader = new FileReader()
 
@@ -50,10 +43,8 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
 
       }
       reader.readAsText(file)
-
     })
-
-  }, [])
+  }, [setTextDetails])
 
   const {
     acceptedFiles,
@@ -63,6 +54,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
   } = useDropzone({
     accept: accepted,
     maxFiles: 1,
+    minSize: 1,
     maxSize: 1000000,
     onDrop,
     multiple: false,
@@ -85,6 +77,14 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
     )
    });
 
+   useEffect(() => {
+    if (title && textDetails.content && textDetails.source && acceptedFiles.length) {
+      setReadyToSubmit(true);
+    } else {
+      setReadyToSubmit(false);
+    }
+  }, [title, textDetails, acceptedFiles])
+
   const handleTitleInput = (e) => {
     setTitle(e.target.value)
   }
@@ -106,8 +106,8 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
         setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
       }
 
-    } catch {
-      console.error('Failed to upload text.')
+    } catch (err) {
+      console.error('Failed to upload text:' + err)
     }
 
 
@@ -121,7 +121,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
         <div className="ev-file-drop" >
           Drag'n'drop a local text file here or click to select one.
             <div className="ev-text-upload-status">
-          {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
+            {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
             {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
           </div>
         </div>

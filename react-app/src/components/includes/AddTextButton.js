@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import FAI from './FAI';
 import { faFile, faPlus, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import AddTextForm from '../forms/EditTextForm';
+import AddTextForm from '../forms/AddTextForm';
 
 
 ReactModal.setAppElement('#root');
@@ -33,7 +33,7 @@ const AddTextButton = ({currentUser, hide=false}) => {
         <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
-          <AddTextForm currentUser={currentUser}/>
+          <AddTextForm currentUser={currentUser} handleCloseModal={handleCloseModal}/>
       </ReactModal>
     </>
   )

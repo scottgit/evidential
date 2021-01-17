@@ -60,7 +60,7 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
             'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
             setup: (editor) => {
               EDITOR.current = editor;
-              // console.log(editor.plugins.wordcount.body.getWordCount());
+
               // Custom Icons for Menu
               editor.ui.registry.addIcon('save', ReactDOMServer.renderToString(<FontAwesomeIcon icon={faSave} />));
               editor.ui.registry.addIcon('trash', ReactDOMServer.renderToString(<FontAwesomeIcon icon={faTrash} />));
@@ -85,10 +85,44 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
   )
 
   useEffect(() => {
-    if (feedback === '' || feedback === 'Saved!') return;
-    // setTextDetails(EDITOR.current.getContent())
+
+    const handleSave = async () => {
+      if (feedback === '' || feedback === 'Saved!') return;
+      setErrors([]);
+
+      try {
+        const source = (textDetails.source.includes('(with additional edits)')
+                      ? textDetails.source
+                      : textDetails.source + ' (with additional edits)');
+        const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
+
+        const text = await editText({
+          ...textDetails,
+          title,
+          content,
+          source,
+          createdByUserId: currentUser.id
+        })
+
+        if (!text.errors) {
+          setFeedback('Saved!');
+          // setTextDetails({...text});
+          // Save at a higher level to update all links
+          setTimeout(() => setItemData({...text}), 500);
+          // setTitle(text.title);
+        } else {
+          throw Error(text.errors)
+        }
+
+      } catch (err) {
+        setFeedback('***ERROR***: Failed to save! ');
+        console.error(err)
+        setErrors(err)
+      }
+    }
+
     handleSave()
-  }, [editorKey])
+  }, [editorKey]) //Editor key change is triggered on a save action
 
   useEffect(() => {
     let stillMounted = true;
@@ -108,46 +142,13 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
   }, [title, textDetails])
 
 
-  const handleSave = async () => {
-    if (feedback === '' || feedback === 'Saved!') return;
-    setErrors([]);
 
-    try {
-      const source = (textDetails.source.includes('(with additional edits)')
-                    ? textDetails.source
-                    : textDetails.source + ' (with additional edits)');
-      const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
-
-      const text = await editText({
-        ...textDetails,
-        title,
-        content,
-        source,
-        createdByUserId: currentUser.id
-      })
-
-      if (!text.errors) {
-        setFeedback('Saved!');
-        // setTextDetails({...text});
-        // Save at a higher level to update all links
-        setTimeout(() => setItemData({...text}), 500);
-        // setTitle(text.title);
-      } else {
-        throw Error(text.errors)
-      }
-
-    } catch (err) {
-      setFeedback('***ERROR***: Failed to save! ');
-      console.error(err)
-      setErrors(err)
-    }
-  }
 
   return (
     <div className="ev-text-edit">
       {feedback && <div className={feedback === 'Saved!' ? 'ev-success' : 'ev-error'}>{feedback}</div>}
       { (!!errors.length) &&
-        <div className="ev-form-errors">
+        <div className="ev-form-errors" key={`${errors}`}>
           {errors.map((error) => (
             <div key={error}>{error}</div>
           ))}
