@@ -13,7 +13,7 @@ const TextDetail = (props) => {
   let getTextObj = location.itemData ? location.itemData : null
   const {textId} = useParams();
   // const [display, setDisplay] = useState({main: "EDIT-TEXT", sidebar: "USER"});
-  const [itemData, setTextObj] = useState(getTextObj);
+  const [itemData, setItemData] = useState(getTextObj);
   const [title, setTitle] = useState(itemData ? itemData.title : '');
 
   const display = (() => {
@@ -26,12 +26,12 @@ const TextDetail = (props) => {
     if (!getTextObj) {
       (async () => {
         const text = await fetchText(textId, stillMounted);
-        setTextObj(text);
+        setItemData(text);
         setTitle(text.title);
       })();
     }
     else if (getTextObj !== itemData) {
-      setTextObj(getTextObj);
+      setItemData(getTextObj);
       setTitle(getTextObj.title)
     }
     return function cleanUp() {
@@ -49,7 +49,7 @@ const TextDetail = (props) => {
 
   const viewProps = {...props, display, itemData, handleRetry}
   const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput};
-  const textProps = {currentUser, itemData, handleRetry, handleTitleInput, title};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title};
   const sideBarProps = {display, authenticated, currentUser, itemData};
 
   return (

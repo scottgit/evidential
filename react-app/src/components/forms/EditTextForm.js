@@ -1,159 +1,145 @@
-import React, {useCallback, useState, useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
+import ReactDOMServer from 'react-dom/server';
 import  {Editor } from '@tinymce/tinymce-react';
-import {useDropzone} from 'react-dropzone';
 import DOMPurify from "dompurify";
-import {uploadText} from '../../services/text';
+import {editText} from '../../services/text';
 import FAI from '../includes/FAI';
-import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
-const EditTextForm = ({currentUser, handleCloseModal, itemData, title, handleTitleInput}) => {
-  const [editor, setEditor] = useState('');
-  const [readyToSubmit, setReadyToSubmit] = useState(false);
+const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => {
+  const EDITOR = useRef();
+  const [feedback, setFeedback] = useState('');
   const [textDetails, _setTextDetails] = useState({
+    id: itemData.id,
+    title: itemData.title,
     content: itemData.content,
-    source: itemData.source
+    source: itemData.source,
+    wordCount: itemData.wordCount
   })
-
-
+  const initialState = useRef({...itemData});
+  const [editorKey, setEditorKey] = useState(itemData.content);
 
   const setTextDetails = (details) => {
-    _setTextDetails({...textDetails, ...details});
-    return;
+    const newData = {...textDetails, ...details};
+    _setTextDetails(newData);
+    setItemData({...itemData, ...newData})
   };
 
-  const history =  useHistory();
+  useEffect(() => {
+    if (feedback !== 'You have unsaved changes.') return;
+    handleSave()
+  }, [editorKey])
 
   useEffect(() => {
-    if (title && textDetails.content && textDetails.source) {
-      setReadyToSubmit(true);
+    const init = initialState.current;
+    const content = textDetails.content;
+    if (title && content
+        && (title !== init.title || content !== init.content)
+      ) {
+      setFeedback('You have unsaved changes.');
     } else {
-      setReadyToSubmit(false);
+      setFeedback('');
     }
   }, [title, textDetails])
 
-  // console.log(textDetails)
-  // const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx, .md';
-  const accepted = '.htm, .html, .txt, .md';
+  const getTextDetails = () => textDetails;
+  const getEditor = () => EDITOR;
 
-  const onDrop =  useCallback((acceptedFiles) => {
-    acceptedFiles.forEach(async (file) => {
-      const reader = new FileReader()
-
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
-      reader.onload = () => {
-      // Do whatever you want with the file contents
-        const res = reader.result
-        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img']});
-        setTextDetails({
-          content,
-          source: file.path,
-        })
-
-      }
-      reader.readAsText(file)
-
-    })
-
-  }, [])
-
-  const {
-    acceptedFiles,
-    fileRejections,
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
-    accept: accepted,
-    maxFiles: 1,
-    maxSize: 1000000,
-    onDrop,
-    multiple: false,
-  });
-
-  const acceptedFileItem = acceptedFiles.map(file => (
-    <span key={file.path}>
-      {file.path} - {file.size} bytes
-    </span>
-  ));
-
-  const rejectedFileItem = fileRejections.map(({ file, errors  }) => {
-    return (
-      <span key={file.path}>
-           {file.path} - {file.size} bytes
-           <ul>
-             {errors.map(e => <li key={e.code}>{e.message}</li>)}
-          </ul>
-      </span>
-    )
-   });
-
-
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const createdByUserId = currentUser.id;
-    const wordCount = editor.plugins.wordcount.body.getWordCount();
+  const handleSave = async () => {
+    const wordCount = EDITOR.current.plugins.wordcount.body.getWordCount();
+    const source = (textDetails.source.includes('(with additional edits)')
+                    ? textDetails.source
+                    : textDetails.source + ' (with additional edits)');
+    const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
+    console.log('HANDLE', textDetails);
     try {
-      const text = await uploadText({
+      const text = await editText({
+        id: textDetails.id,
         title,
-        ...textDetails,
+        content: DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']}),
         wordCount,
-        createdByUserId
+        source,
+        createdByUserId: currentUser.id
       })
-      if ('id' in text) {
-        handleCloseModal();
-        setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
-      }
-
+      setTextDetails({...text});
+      setItemData({...text});
+      setTitle(text.title);
+      setFeedback('Saved!');
     } catch {
-      console.error('Failed to upload text.')
+      setFeedback('***ERROR***: Failed to save! ');
     }
-
-
   }
 
+
+  const handleDelete = (e) => {
+    alert('You tried to delete!')
+  }
+
+  const handleEditorChange = (content, editor) => {
+    setTextDetails({content});
+  }
+  // setTimeout(handleSave, 100);
   return (
-    <form className="ev-text-edit" onSubmit={handleSubmit}>
-      <div {...getRootProps({className: "ev-drop-zone"})}  >
-        <div className="ev-file-drop" >
-          Drag'n'drop a local text file here or click to select one.
-            <div className="ev-text-upload-status">
-          {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
-            {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
-          </div>
-        </div>
-      </div>
-      <input id="drop-input" {...getInputProps()} />
-      {readyToSubmit &&
-            <button className="icon submit" type="submit">
-              <FAI icon={faFileUpload} title={`Upload file`} tabIndex="0"/>
-            </button>
-          }
-
-
+    <div className="ev-text-edit">
+      {feedback && <span className={feedback === 'Saved!' ? 'ev-success' : 'ev-error'}>{feedback}</span>}
+      <button onClick={handleSave}>TEST</button>
       <Editor
-         apiKey={process.env.REACT_APP_TINY_API}
-         initialValue={textDetails.content}
-         value={textDetails.content}
-         init={{
-           setup: (editor) => {setEditor(editor);},
-           height: 500,
-           menubar: true,
-           plugins: [
-             'advlist autolink lists charmap print preview anchor',
-             'searchreplace visualblocks code fullscreen',
-             'insertdatetime media table paste code help wordcount'
-           ],
-           toolbar:
-             'undo redo | formatselect | bold italic backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat | help'
-         }}
+        key={editorKey}
+        apiKey={process.env.REACT_APP_TINY_API}
+        initialValue={textDetails.content}
+        value={textDetails.content}
+        onEditorChange={handleEditorChange}
+        init={{
+          setup: (editor) => {
+          EDITOR.current = editor;
+
+          // Custom Icons for Menu
+          editor.ui.registry.addIcon('save', ReactDOMServer.renderToString(<FontAwesomeIcon icon={faSave} />));
+          editor.ui.registry.addIcon('trash', ReactDOMServer.renderToString(<FontAwesomeIcon icon={faTrash} />));
+
+          // Custom Menu Items
+          editor.ui.registry.addMenuItem('save', {
+            icon: 'save',
+            text: `Save`,
+            onAction: () => {
+              // This callback was enclosing handleSave and not updating textDetails data, so I needed to have it set its own key property on save to update it and push the handleSave out of the Editor component to get a true update.
+              setEditorKey(editor.getContent());
+            }
+          });
+          editor.ui.registry.addMenuItem('delete', {
+            icon: 'trash',
+            text: 'Delete',
+            onAction: () => handleDelete()
+          });
+
+        },
+          height: 500,
+          menu: {
+          file: {title: 'File', items: 'save delete | preview | print'},
+          edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace' },
+          view: { title: 'View', items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen' },
+          insert: { title: 'Insert', items: 'link  template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime' },
+          format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align lineheight | forecolor backcolor | removeformat' },
+          tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | code wordcount' },
+          table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' },
+          help: { title: 'Help', items: 'help' }
+          },
+          plugins: [
+            'advlist autolink lists charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime table paste code help wordcount'
+          ],
+          toolbar:
+            'undo redo | formatselect | bold italic backcolor | \
+            alignleft aligncenter alignright alignjustify | \
+            bullist numlist outdent indent | removeformat | help'
+        }}
        />
-    </form>
+    </div>
   )
+
 }
 
 export default EditTextForm
