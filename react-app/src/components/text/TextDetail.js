@@ -52,16 +52,18 @@ const TextDetail = (props) => {
   const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title};
   const sideBarProps = {display, authenticated, currentUser, itemData};
 
+  const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
+
   return (
     <SplitView {...viewProps}>
-    <TextHeader key={`${display.main}-header-${!!itemData ? itemData.title : 0}`} {...headerProps} />
+    <TextHeader key={`${display.main}-header-${itemKey}`} {...headerProps} />
     { (itemData && (
           (display.main === "VIEW-TEXT" &&
-            <Text key={`${display.main}-body-${itemData.content}`} {...textProps} />
+            <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
           )
           ||
           (display.main === "EDIT-TEXT" &&
-            <EditTextForm key={`textbody-${itemData.id}`} {...textProps} />
+            <EditTextForm key={`${display.main}-editbody-${itemKey}`} {...textProps} />
           )
         )
       )
@@ -69,7 +71,7 @@ const TextDetail = (props) => {
       <>{/* Failed to load */}</>
     }
     { (itemData &&
-        <GeneralSidebar {...sideBarProps} />
+        <GeneralSidebar key={`${display}-sidebar-${itemKey}`} {...sideBarProps} />
       )
       ||
       <>{/* Failed to load */}</>

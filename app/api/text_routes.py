@@ -54,7 +54,6 @@ def edit_text(id):
     if form.validate_on_submit():
         useId = form.data['createdByUserId']
         text = Text.query.get(id)
-        print('****USERTEST****', useId, text.created_by, '***LOCK***', not text.locked)
         created_by = text.created_by['id']
         if (text and (not text.locked) and (useId == created_by)):
             text.title = form.data['title'],
@@ -71,11 +70,10 @@ def edit_text(id):
         else:
             db.session.rollback()
             return {'errors': 'Unknown error.'}
-        print('***UPDATING***')
         db.session.commit()
 
         return text.full_to_dict()
-    print('***SENDING ERROR***', form.errors)
+
     return {'errors': validation_messages(form.errors)}
 
 @text_routes.route('/delete/<int:id>')

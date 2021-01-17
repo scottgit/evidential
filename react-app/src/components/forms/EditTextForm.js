@@ -20,7 +20,6 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
     _setTextDetails({...textDetails, ...details});
   };
   if (!textDetails.content) {
-    console.log('RESETTING TO INITIAL')
     setTextDetails(initialState.current);
   }
 
@@ -60,7 +59,6 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
           toolbar:
             'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
             setup: (editor) => {
-              console.log('SETTING UP')
               EDITOR.current = editor;
               // console.log(editor.plugins.wordcount.body.getWordCount());
               // Custom Icons for Menu
@@ -93,15 +91,19 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
   }, [editorKey])
 
   useEffect(() => {
+    let stillMounted = true;
     const init = initialState.current;
     const content = textDetails.content;
     if (title && content
         && (title !== init.title || content !== init.content)
+        && stillMounted
       ) {
-      console.log('IN EFFECT')
       setFeedback('You have unsaved changes.');
-    } else {
+    } else if (stillMounted) {
       setFeedback('');
+    }
+    return function cleanUp() {
+      stillMounted = false;
     }
   }, [title, textDetails])
 
@@ -109,45 +111,37 @@ const EditTextForm = ({currentUser, itemData, title, setTitle, setItemData}) => 
   const handleSave = async () => {
     if (feedback === '' || feedback === 'Saved!') return;
     setErrors([]);
-    console.log(textDetails)
+
     try {
       const source = (textDetails.source.includes('(with additional edits)')
                     ? textDetails.source
                     : textDetails.source + ' (with additional edits)');
       const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
-      console.log('TEST IN TRY',
-        {
-          ...textDetails,
-          content,
-          source,
-          createdByUserId: currentUser.id
-        }
-      )
+
       const text = await editText({
         ...textDetails,
+        title,
         content,
         source,
         createdByUserId: currentUser.id
       })
-      console.log('RETURNED', text)
+
       if (!text.errors) {
-        setTextDetails({...text});
-        setItemData({...text});
-        setTitle(text.title);
         setFeedback('Saved!');
+        // setTextDetails({...text});
+        // Save at a higher level to update all links
+        setTimeout(() => setItemData({...text}), 500);
+        // setTitle(text.title);
       } else {
         throw Error(text.errors)
       }
 
     } catch (err) {
       setFeedback('***ERROR***: Failed to save! ');
-      console.log(err)
+      console.error(err)
       setErrors(err)
     }
   }
-
-
-
 
   return (
     <div className="ev-text-edit">
