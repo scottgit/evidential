@@ -90,9 +90,9 @@ const LoginForm = ({ authenticated, setAuthenticated, setCurrentUser }) => {
           </div>
           {/* TODO Fade button in/out */}
           { filled &&
-              <button className="icon submit" type="submit"><FAI icon={faSignInAlt} /></button>
+              <button className="ev-button icon submit" type="submit"><FAI icon={faSignInAlt} /></button>
           }
-          <button type="button" onClick={handleDemoLogin}>
+          <button className="ev-button" type="button" onClick={handleDemoLogin}>
             User Demo User Credentials
           </button>
         </form>

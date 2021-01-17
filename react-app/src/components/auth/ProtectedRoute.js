@@ -7,7 +7,7 @@ const ProtectedRoute = props => {
     exact: true
   });
 
-  const textUnlock = isTextEditRoute.params && props.registeredTextUnlocks.includes(parseInt(isTextEditRoute.params.textId))
+  const textUnlock = isTextEditRoute && props.registeredTextUnlocks.includes(parseInt(isTextEditRoute.params.textId))
 
   return (
     <Route {...props}>

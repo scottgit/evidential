@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import login_required
 from app.models import Claim, SupportRebut, Argument, db
 from app.forms import CreateClaimForm
-from .includes import validation_messages
+from .includes.validation_messages import validation_messages
 
 claim_routes = Blueprint('claims', __name__)
 

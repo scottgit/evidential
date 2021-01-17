@@ -118,7 +118,7 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
           {
            (!isLoaded && <Loader className="in-text" />)
            ||
-           (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
+           (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="ev-button in-text">Retry?</button></>)
           }
         </p>
       }

@@ -35,6 +35,7 @@ export const uploadText = async ({title, content, source, wordCount, createdByUs
 }
 
 export const editText = async ({id, title, content, source, wordCount, createdByUserId}) => {
+  console.log('WC', wordCount)
   const response = await fetch(`/api/texts/upload/${id}`, {
     method: "POST",
     headers: {
@@ -48,5 +49,7 @@ export const editText = async ({id, title, content, source, wordCount, createdBy
       createdByUserId
     }),
   });
-  return await response.json();
+  const data = await response.json();
+  console.log('FETCH', data);
+  return data;
 }

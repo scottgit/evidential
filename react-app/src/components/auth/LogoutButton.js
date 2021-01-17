@@ -45,14 +45,14 @@ const LogoutButton = ({setAuthenticated, setCurrentUser, title}) => {
         closeTimeoutMS={500}
         overlayClassName="ev-modal-overlay"
       >
-        <button className="button icon ev-modal-close" onClick={handleCloseModal}>
+        <button className="ev-button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
         <div className="ev-confirm">
           <p>Please confirm you wish to logout.</p>
           <div>
-            <button type="button" onClick={onLogout}>Yes</button>
-            <button type="button" onClick={handleCloseModal}>No</button>
+            <button className="ev-button" type="button" onClick={onLogout}>Yes</button>
+            <button className="ev-button" type="button" onClick={handleCloseModal}>No</button>
           </div>
         </div>
       </ReactModal>

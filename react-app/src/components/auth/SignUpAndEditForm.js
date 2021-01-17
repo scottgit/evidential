@@ -145,7 +145,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
               value={verificationPassword}
               required={edit}
             ></input>
-          <button type="submit">Verify Identity</button>
+          <button className="ev-button" type="submit">Verify Identity</button>
         </form>
       </section>
       }
@@ -225,7 +225,7 @@ const SignUpAndEditForm = ({authenticated, setAuthenticated, edit, currentUser, 
               }
             </div>
             { filled &&
-              <button className="icon submit" type="submit">{edit ? <FAI icon={faSave} /> : <FAI icon={faSignInAlt} />}</button>
+              <button className="ev-button icon submit" type="submit">{edit ? <FAI icon={faSave} /> : <FAI icon={faSignInAlt} />}</button>
             }
           </form>
         </div>

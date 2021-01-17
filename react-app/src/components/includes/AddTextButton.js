@@ -30,7 +30,7 @@ const AddTextButton = ({currentUser, hide=false}) => {
         closeTimeoutMS={500}
         overlayClassName="ev-modal-overlay"
       >
-        <button className="button icon ev-modal-close" onClick={handleCloseModal}>
+        <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
           <AddTextForm currentUser={currentUser}/>

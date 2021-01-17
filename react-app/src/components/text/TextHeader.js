@@ -25,7 +25,7 @@ const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput}) =
     {
       (!itemData && <> Loading <Loader className="in-text" /></>)
       ||
-      (itemData === {} && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
+      (itemData === {} && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="ev-button in-text">Retry?</button></>)
       ||
       titleText()
     }

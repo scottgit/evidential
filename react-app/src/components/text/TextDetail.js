@@ -54,10 +54,10 @@ const TextDetail = (props) => {
 
   return (
     <SplitView {...viewProps}>
-    <TextHeader key={`${display.main}-header-${!!itemData ? itemData.id : 0}`} {...headerProps} />
+    <TextHeader key={`${display.main}-header-${!!itemData ? itemData.title : 0}`} {...headerProps} />
     { (itemData && (
           (display.main === "VIEW-TEXT" &&
-            <Text key={`${display.main}-body-${itemData.id}`} {...textProps} />
+            <Text key={`${display.main}-body-${itemData.content}`} {...textProps} />
           )
           ||
           (display.main === "EDIT-TEXT" &&

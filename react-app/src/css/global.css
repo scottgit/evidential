@@ -180,7 +180,7 @@ a:hover {
 }
 
 /* Buttons */
-button {
+.ev-button {
   color: white;
   display: inline-block;
   padding: 6px 12px;
@@ -191,29 +191,29 @@ button {
   position: relative;
 }
 
-button.in-text {
+.ev-button.in-text {
   padding: 3px 6px;
   margin: -.2em 3px 0;
   font-size: .7em;
   top: -.2em;
 }
 
-button.icon {
+.ev-button.icon {
   padding: var(--icon-button-padding);
   font-size: var(--icon-button-font-size);
   background: var(--icon-button-primary-background);
 }
 
-button:hover,
-button:active,
-button.icon:hover,
-button.icon:active {
+.ev-button:hover,
+.ev-button:active,
+.ev-button.icon:hover,
+.ev-button.icon:active {
   cursor: pointer;
   color: var(--primary-color-white);
   background: var(--button-primary-background-hover);
 }
 
-button:active {
+.ev-button:active {
   top: 1px;
   left: 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);

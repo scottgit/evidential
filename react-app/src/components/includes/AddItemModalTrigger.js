@@ -32,7 +32,7 @@ const AddItemModalTrigger = ({type, children}) => {
         closeTimeoutMS={500}
         overlayClassName="ev-modal-overlay"
       >
-        <button className="button icon ev-modal-close" onClick={handleCloseModal}>
+        <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
         {React.cloneElement(children, {handleCloseModal})}

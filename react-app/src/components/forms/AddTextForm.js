@@ -128,7 +128,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
       </div>
       <input id="drop-input" {...getInputProps()} />
       {readyToSubmit &&
-            <button className="icon submit" type="submit">
+            <button className="ev-button icon submit" type="submit">
               <FAI icon={faFileUpload} title={`Upload file`} tabIndex="0"/>
             </button>
           }
