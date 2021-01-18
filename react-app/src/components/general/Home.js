@@ -4,7 +4,7 @@ import List from "../includes/List";
 import HomeIntro from "./HomeIntro";
 import GeneralSidebar from "./GeneralSidebar";
 
-const Home = ({authenticated, currentUser}) => {
+const Home = ({authenticated, currentUser, setCurrentUser}) => {
   //props has: authenticated, currentUser
   const [display, setDisplay] = useState(false);
 
@@ -43,6 +43,7 @@ const Home = ({authenticated, currentUser}) => {
               linkPath={'/text/view/'}
               canAddItem={authenticated ? true : false}
               currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
             />
             <List
               setDisplay={setDisplay}
@@ -50,6 +51,7 @@ const Home = ({authenticated, currentUser}) => {
               linkPath={'/claim/'}
               canAddItem={authenticated ? true : false}
               currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
             />
           </div>
         </>
@@ -57,6 +59,7 @@ const Home = ({authenticated, currentUser}) => {
           display={display}
           authenticated={authenticated}
           currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
         />
     </SplitView>
     )}

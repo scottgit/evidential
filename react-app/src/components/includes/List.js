@@ -8,7 +8,7 @@ import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 import TextEditLink from '../includes/TextEditLink';
 
-const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=false}) => {
+const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -19,19 +19,19 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
     switch (type) {
       case 'text':
         displayKey = 'title';
-        modalContent = <AddTextForm currentUser={currentUser}/>;
+        modalContent = <AddTextForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'claim':
         displayKey = 'assertion';
-        modalContent = <AddClaimForm currentUser={currentUser}/>;
+        modalContent = <AddClaimForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'argument':
         displayKey = 'statement';
-        modalContent = <AddArgumentsForm currentUser={currentUser} />;
+        modalContent = <AddArgumentsForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'key':
         displayKey = 'key';
-        modalContent = <AddKeysForm currentUser={currentUser}/>;
+        modalContent = <AddKeysForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'rating':
         displayKey = 'rating';
@@ -126,4 +126,4 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
   );
 }
 
-export default ControlList
+export default List

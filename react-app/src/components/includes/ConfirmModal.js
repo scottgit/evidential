@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 import FAI from "../includes/FAI";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
-const ConfirmModal = ({showModal, handleCloseModal, affirmAction, message, closeDelay=0}) => {
+const ConfirmModal = ({modalMsgRef, showModal, handleCloseModal, affirmAction, message, closeDelay=0}) => {
   return (
     <ReactModal
     isOpen={showModal}
@@ -14,7 +14,7 @@ const ConfirmModal = ({showModal, handleCloseModal, affirmAction, message, close
     <button className="ev-button icon ev-modal-close" onClick={handleCloseModal}>
       <FAI icon={faWindowClose} />
     </button>
-    <div className="ev-confirm">
+    <div className="ev-confirm" ref={modalMsgRef}>
       <p>{message}</p>
       <div>
         <button className="ev-button" type="button" onClick={affirmAction}>Yes</button>

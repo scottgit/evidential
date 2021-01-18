@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Sidebar = ({currentUser, display, setDisplay, children}) => {
+const Sidebar = ({currentUser,  display, setDisplay, children}) => {
 
   return (
     <section className="ev-sidebar ev-rtl">

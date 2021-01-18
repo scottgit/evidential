@@ -19,7 +19,6 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [registeredTextUnlocks, setRegisteredTextUnlocks] = useState([]);
 
 
   useEffect(() => {
@@ -31,17 +30,6 @@ function App() {
           if (user && !user.errors) {
             setAuthenticated(true);
             setCurrentUser(user);
-
-            const getTextUnlocks = (user) => {
-              if (!user) return [];
-              return user.textsAdded.reduce((array, text) => {
-                if (!text.locked) {
-                  array.push(text.id);
-                }
-                return array;
-              }, []);
-            }
-            setRegisteredTextUnlocks(getTextUnlocks(user));
           }
           setLoaded(true);
         }
@@ -68,7 +56,11 @@ function App() {
       <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} setCurrentUser={setCurrentUser}/>
       <Switch>
         <Route path="/" exact={true}>
-          <Home authenticated={authenticated} currentUser={currentUser} />
+          <Home
+            authenticated={authenticated}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
         </Route>
         <Route path="/login" exact={true}>
           <LoginForm
@@ -93,9 +85,12 @@ function App() {
           exact={true}
           authenticated={authenticated}
           currentUser={currentUser}
-          registeredTextUnlocks={registeredTextUnlocks}
           >
-          <TextDetail authenticated={authenticated} currentUser={currentUser} />
+          <TextDetail
+            authenticated={authenticated}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
         </ProtectedRoute>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm

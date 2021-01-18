@@ -7,7 +7,7 @@ import TextViewLink from "../includes/TextViewLink";
 import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GeneralSidebar = ({display, authenticated, currentUser, itemData}) => {
+const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
   const [showAbout, setShowAbout] = useState(false);
 
   const About = () => (
@@ -63,7 +63,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, itemData}) => {
       { authenticated &&
         <nav className="ev-sidebar-nav">
           {textOptionLinks()}
-          <AddTextButton currentUser={currentUser} />
+          <AddTextButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
             { showAbout &&
               <FAI icon={faUserCircle} className="ev-icon --dark --hover-tilt" title={`Show User`}/> }

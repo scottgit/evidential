@@ -5,7 +5,7 @@ import DOMPurify from "dompurify";
 const Text = ({itemData, setContentDisplayed}) => {
   const [content, _setContent] = useState('');
   // Make sure any content change is cleaned before display in browser
-  const setContent = (content) => _setContent(DOMPurify.sanitize(content, {FORBID_TAGS: ['img']}));
+  const setContent = (content) => _setContent(DOMPurify.sanitize(content, {FORBID_TAGS: ['img', 'input', 'form']}));
 
   useEffect(() => {
     let stillMounted = true;

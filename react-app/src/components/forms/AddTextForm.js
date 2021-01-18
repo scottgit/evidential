@@ -6,8 +6,9 @@ import DOMPurify from "dompurify";
 import {uploadText} from '../../services/text';
 import FAI from '../includes/FAI';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { updateCurrentUserInfo } from '../../services/user';
 
-const AddTextForm = ({currentUser, handleCloseModal}) => {
+const AddTextForm = ({currentUser, setCurrentUser, handleCloseModal}) => {
   const [editor, setEditor] = useState('');
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
@@ -35,7 +36,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
       reader.onload = () => {
       // Do whatever you want with the file contents
         const res = reader.result
-        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img']});
+        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img', 'form', 'input']});
         setTextDetails({
           content,
           source: file.path,
@@ -101,8 +102,9 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
         wordCount,
         createdByUserId
       })
-      if ('id' in text) {
+      if (!text.errors) {
         handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
         setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
       }
 
@@ -119,7 +121,9 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
       <input type="text" className="ev-title-input" value={title} placeholder="Please input text title here." onChange={handleTitleInput} required={true} maxLength="200" />
       <div {...getRootProps({className: "ev-drop-zone"})}  >
         <div className="ev-file-drop" >
-          Drag'n'drop a local text file here or click to select one.
+          <span>Drag'n'drop a local text file here or click to select one.</span>
+          <div>Currently supported types are:</div>
+          <div style={{fontWeight: 'bold'}}>{accepted}</div>
             <div className="ev-text-upload-status">
             {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
             {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}

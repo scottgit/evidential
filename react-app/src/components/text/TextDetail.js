@@ -5,11 +5,11 @@ import TextHeader from "./TextHeader";
 import EditTextForm from "../forms/EditTextForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
-import useEffectAsyncSafeFetch from "../../services/useEffectAsyncSafeFetch";
+import useEffectAsyncSafeFetch from "../includes/useEffectAsyncSafeFetch";
 import Text from "./Text";
 
 const TextDetail = (props) => {
-  const {authenticated, currentUser} = props;
+  const {authenticated, currentUser, setCurrentUser} = props;
   const location = useLocation();
   let getTextObj = location.itemData ? location.itemData : null;
   const {textId} = useParams();
@@ -76,7 +76,7 @@ const TextDetail = (props) => {
 
   const viewProps = {...props, display, itemData, handleRetry}
   const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed,                    contentDisplayed};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser};
   const sideBarProps = {display, authenticated, currentUser, itemData};
 
   const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;

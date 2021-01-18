@@ -7,7 +7,7 @@ import AddTextForm from '../forms/AddTextForm';
 
 ReactModal.setAppElement('#root');
 
-const AddTextButton = ({currentUser, hide=false}) => {
+const AddTextButton = ({currentUser, setCurrentUser, hide=false}) => {
   const [showModal, setShowModal] = useState(false)
   hide = hide ? '--hide' : '';
 
@@ -33,7 +33,7 @@ const AddTextButton = ({currentUser, hide=false}) => {
         <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
-          <AddTextForm currentUser={currentUser} handleCloseModal={handleCloseModal}/>
+          <AddTextForm currentUser={currentUser} setCurrentUser={setCurrentUser} handleCloseModal={handleCloseModal}/>
       </ReactModal>
     </>
   )
