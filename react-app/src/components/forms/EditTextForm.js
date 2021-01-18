@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import ReactDOMServer from 'react-dom/server';
 import {useHistory} from 'react-router-dom';
 import  {Editor } from '@tinymce/tinymce-react';
@@ -10,16 +10,22 @@ import ConfirmModal from '../includes/ConfirmModal';
 import useEffectAsyncSafeFetch from "../../services/useEffectAsyncSafeFetch";
 
 
-const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisplayed}) => {
+const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisplayed
+
+, contentDisplayed
+
+
+}) => {
   const EDITOR = useRef();
   const [feedback, setFeedback] = useState('');
   const [textDetails, _setTextDetails] = useState({})
   const initialState = useRef({...itemData});
-  const [editorKey, setEditorKey] = useState(0);
+  // const [editorKey, setEditorKey] = useState(0);
   const [errors, setErrors] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-
+  const redirect = useRef(null);
+  // const [editorKey, setEditorKey] = useState('editorKey-'+Date.now());
+  const doSaveRef = useRef(null);
   const savedMsg = 'Saved! (Message removed in 1 second.)';
 
   // Code for Delete of the text item, with modal confirmation
@@ -28,23 +34,26 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
 
   useEffect(() => {
     let stillMounted = true;
-    if (redirect) {
-      setTimeout(() => {
-        if (stillMounted) {
-          history.push('/');
-        }
-      }, 2000);
+    console.log('IN REDIRECT', redirect.current)
+    if (redirect === true) {
+      redirect.current = false;
+      alert('done')
+      // setTimeout(() => {
+      //   if (stillMounted) {
+      //     history.push('');
+      //   }
+      // }, 2000);
     }
-    return () => {
+    return function cleanUp() {
       stillMounted = false;
     }
   }, [redirect, history])
 
-  const handleShowModal = (e) => {
+  const handleShowModal = () => {
     setShowModal(true);
   }
 
-  const handleCloseModal = (e) => {
+  const handleCloseModal = () => {
     setShowModal(false);
   }
 
@@ -63,10 +72,51 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
     const sendData = {createdByUserId: currentUser.id};
     try {
       const msg = await deleteText(pathInfo, sendData);
-      console.log('msg', msg)
       if (msg.success) {
         setFeedback("File deleted! Redirecting in 2 seconds.");
-        setRedirect(true);
+        // handleCloseModal();
+        setTimeout(() => {
+          if (true) {
+            history.push('');
+          }
+        }, 2000);
+      }
+    } catch (err) {
+      setErrors(err.errors)
+    }
+  }
+
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (feedback === '' || feedback === savedMsg) return;
+
+    setErrors([]);
+    const wordCount = EDITOR.current.plugins.wordcount.body.getWordCount();
+    const source = (textDetails.source.includes('(with additional edits)')
+    ? textDetails.source
+    : textDetails.source + ' (with additional edits)');
+    const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
+
+    const newData ={
+            ...textDetails,
+            title,
+            content,
+            source,
+            wordCount,
+            createdByUserId: currentUser.id
+          }
+
+    try {
+      const data = await editText(textDetails.id, newData);
+      if(data.errors) {
+        throw data;
+      }
+      else {
+        setFeedback(savedMsg);
+        setTimeout(() => setItemData({...data}), 1000);
       }
     } catch (err) {
       console.log('err', err)
@@ -74,24 +124,25 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
     }
   }
 
+
+
   const modalProps = {showModal, handleCloseModal, affirmAction: handleDelete, message: `Delete file titled "${title}"?`}
 
   // Code for Edit of text item
   // Initiated via the Editor Save action (triggered by Editor rerender because of bugs otherwise)
   const handleEditorChange = (content, editor) => {
-    const wordCount = EDITOR.current.plugins.wordcount.body.getWordCount();
-    setTextDetails({content, wordCount});
+    setTextDetails({content});
   }
 
   const EditorComp = (
     <Editor
-        key={editorKey}
         apiKey={process.env.REACT_APP_TINY_API}
         initialValue={null}
         value={textDetails.content}
         onEditorChange={handleEditorChange}
         init={{
-          height: 500,
+          height: '100%',
+          resize: false,
           menu: {
           file: {title: 'File', items: 'save delete | preview | print'},
           edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace' },
@@ -121,8 +172,8 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
                 icon: 'save',
                 text: `Save`,
                 onAction: (editor) => {
-                  // This callback was enclosing handleSave and not passing updated textDetails data on save, so I needed to have it set its own key property on save to update it and push the handleSave into the setup of the editor.
-                  setEditorKey(Date.now());
+                  // This callback was enclosing handleSave and not passing updated textDetails data on save, so I needed to have it use a button element outside itself handle the save event.
+                  doSaveRef.current.click();
                 }
               });
               editor.ui.registry.addMenuItem('delete', {
@@ -131,47 +182,52 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
                 onAction: () => handleShowModal()
               });
               // Let header know editor is setup to display
-              setContentDisplayed(true);
+              editor.on('LoadContent', function(e) {
+                setContentDisplayed(true);
+              });
             }
         }}
        />
   )
 
-  useEffectAsyncSafeFetch( (() => { // Wrapping IIFE to preprocess data
-    if (feedback === '' || feedback === savedMsg) return {} //Set nothing to run no effect
-    // Process needed values to pass to the data object
-    const source = (textDetails.source.includes('(with additional edits)')
-    ? textDetails.source
-    : textDetails.source + ' (with additional edits)');
-    const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
-    // Return the settings object for useEffectAsyncSafeFetch
-    return {
-      initCb: () => setErrors([]),
-      //actionCondition: true,    // use default to make fetch call automatic
-      fetchFn: editText,
-      pathEndpoint: textDetails.id,
-      fetchData: {
-        ...textDetails,
-        title,
-        content,
-        source,
-        createdByUserId: currentUser.id
-      },
-      successCb: (data) => {
-        setFeedback(savedMsg);
-        // Save at a higher level to update all links
-        // This redraws component after showing feedback for 1 second
-        setTimeout(() => setItemData({...data}), 1000);
-      },
-      // backupCondition: false,   //use bypass default
-      // backupCb=() => null,      //use backup default (not executed per condition)
-      // defaultCb=() => null,     //use default which is do nothing if actionCondition not passed
-      errorCb: (err) => {
-        setFeedback('***ERROR***: Failed to save! ');
-        setErrors(err.errors)
-      }
-    }
-  })(), [editorKey])
+  // useEffectAsyncSafeFetch( (() => { // Wrapping IIFE to preprocess data
+  //   if (feedback === '' || feedback === savedMsg || !doSaveRef.current) return {} //Set nothing to run no effect
+  //   // Process needed values to pass to the data object
+  //   const source = (textDetails.source.includes('(with additional edits)')
+  //   ? textDetails.source
+  //   : textDetails.source + ' (with additional edits)');
+  //   const content = DOMPurify.sanitize(textDetails.content, {FORBID_TAGS: ['img']});
+  //   // Return the settings object for useEffectAsyncSafeFetch
+  //   return {
+  //     initCb: () => setErrors([]),
+  //     //actionCondition: true,    // use default to make fetch call automatic
+  //     fetchFn: editText,
+  //     pathEndpoint: textDetails.id,
+  //     fetchData: {
+  //       ...textDetails,
+  //       title,
+  //       content,
+  //       source,
+  //       createdByUserId: currentUser.id
+  //     },
+  //     successCb: (data) => {
+  //       setFeedback(savedMsg);
+  //       // Save at a higher level to update all links
+  //       // This redraws component after showing feedback for 1 second
+  //       doSaveRef.current = false
+  // debugger
+  //       setTimeout(() => setItemData({...data}), 1000);
+  //     },
+  //     // backupCondition: false,   //use bypass default
+  //     // backupCb=() => null,      //use backup default (not executed per condition)
+  //     // defaultCb=() => null,     //use default which is do nothing if actionCondition not passed
+  //     errorCb: (err) => {
+  //       setFeedback('***ERROR***: Failed to save! ');
+  //       setErrors(err.errors);
+  //       doSaveRef.current = false
+  //     }
+  //   }
+  // })(), [doSaveRef.current])
 
   useEffect(() => {
     let stillMounted = true;
@@ -206,6 +262,7 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
   return (
     <div className="ev-text-edit">
       {feedback && <div className={feedback === savedMsg ? 'ev-success' : 'ev-error'}>{feedback}</div>}
+      <button ref={doSaveRef} style={{display: 'none', visibility: 'hidden'}} onClick={handleSave}></button>
       { (!!errors.length) &&
         <div className="ev-form-errors" key={`${errors}`}>
           {errors.map((error) => (
