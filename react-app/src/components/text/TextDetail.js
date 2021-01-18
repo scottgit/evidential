@@ -1,11 +1,10 @@
-import React, {useState, useMemo, useRef } from "react";
+import React, {useState, useMemo, useRef, useEffect } from "react";
 import {useParams, useLocation, useHistory} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
 import TextHeader from "./TextHeader";
 import EditTextForm from "../forms/EditTextForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
-import useEffectAsyncSafeFetch from "../includes/useEffectAsyncSafeFetch";
 import Text from "./Text";
 
 const TextDetail = (props) => {
@@ -29,45 +28,56 @@ const TextDetail = (props) => {
   const retry = useRef(false);
 
 
-  useEffectAsyncSafeFetch(
-    {
-      //ininitCb: () => null Using default "do nothing"
-      // If not text data came, go fetch it
-      actionCondition: !getTextObj,
-      fetchFn: fetchText,
-      pathEndpoint: textId,
-      //fetchData,  No data sent for GET
-      successCb: (data) => {
-        setItemData(data);
-        setTitle(data.title);
-      },
-      // We have data sent, but it does not match current view item, so update
-      backupCondition: getTextObj !== itemData,
-      backupCb: () => {
+  const handleTextLoad = () => {
+    try {
+      // Check if the effect should actually run
+      if (!getTextObj) {
+        // Perform the fetch request
+        (async () => {
+          const data = await fetchText(textId);
+          // DB errors come through as "clean" from fetch and need handled here
+          if (data.errors) {
+            throw data
+          }
+          else {
+          // Process successful fetch
+            setItemData(data);
+            setTitle(data.title);
+          }
+        })();
+      }
+      else if (getTextObj !== itemData) {
+        // Process passed data
         setItemData(getTextObj);
         setTitle(getTextObj.title)
-      },
-      //defaultCb: () => null,  Using default "do nothing"
-      errorCb: (err) => {
-        if (!retry.current) { //Allow a retry message to be displayed once
-          setContentDisplayed(true);
-        } else { // After retry send 404
-          retry.current = false;
-          history.push('/page-not-found')
-        }
       }
+    } catch (err) {
+      // Other errors get handled here
+      if (!retry.current) { //Allow a retry message to be displayed once
+        setContentDisplayed(true);
+      } else { // After retry send 404
+        retry.current = false;
+        history.push('/page-not-found')
+      }
+    }
+  }
 
-      // The useMemo's dependecy array functions as the updating array for the
-      // nested useEffect, triggering a change in value for
-      // the useEffect on the Memo's dependency array change by updating the string value
-      // for the useEffect dep
-    }, useMemo(() => `${priorState}${retry.current}`, [priorState, retry.current]))
-
+  useEffect(() => {
+    let stillMounted = true;
+    if (stillMounted) {
+      handleTextLoad()
+    }
+    return function cleanUp() {
+      stillMounted = false
+    }
+    // eslint-disable-next-line
+  }, [priorState]) //Only do textload if prior textId changed
 
   const handleRetry = (e) => {
     getTextObj = null;
     retry.current = true;
     setContentDisplayed(false);
+    handleTextLoad();
   }
 
   const handleTitleInput = (e) => {
