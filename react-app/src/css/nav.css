@@ -49,14 +49,6 @@ NavBar.css -- works with site layout wrappers
   transition: transform .8s ease-in-out, opacity .8s ease-in-out;
 }
 
-/* .ev-main-nav .logo::first-line {
-  color: rgba(var(--raw-rgb-primary-color), 1);;
-  transition: color .8s ease-in-out;
-}
-.ev-main-nav:hover .logo::first-line {
-  color: rgba(var(--raw-rgb-primary-color), .7);
-} */
-
 .ev-main-nav .logo:hover::first-line {
   text-shadow: 0px 0px 1px var(--primary-color);
 }
@@ -66,4 +58,17 @@ NavBar.css -- works with site layout wrappers
   -webkit-transform:rotate(15deg);
   -ms-transform:rotate(15deg);
   transform:rotate(15deg);
+}
+
+/* Icons */
+
+.ev-main-nav .active .ev-icon {
+  filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
+  cursor: default;
+}
+
+.ev-main-nav .--direct-hover:hover,
+.ev-main-nav a:not(.active) > .ev-icon:hover {
+  color: var(--primary-color);
+  cursor: pointer;
 }

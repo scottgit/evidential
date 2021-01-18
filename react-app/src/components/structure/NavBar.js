@@ -13,12 +13,12 @@ const NavBar = ({ setAuthenticated, authenticated, setCurrentUser }) => {
         { !authenticated &&
           <>
             <li>
-              <NavLink to="/sign-up" exact={true} activeClassName="active">
+              <NavLink to="/sign-up" exact={true} >
                 <FAI icon={faUserPlus} title="Sign Up"/>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/login" exact={true} activeClassName="active">
+              <NavLink to="/login" exact={true} >
                 <FAI icon={faSignInAlt} title="Log In"/>
               </NavLink>
             </li>
@@ -27,12 +27,12 @@ const NavBar = ({ setAuthenticated, authenticated, setCurrentUser }) => {
         { authenticated &&
           <>
             <li>
-              <NavLink to="/users" exact={true} activeClassName="active">
+              <NavLink to="/users" exact={true} >
                 <FAI icon={faUsers} title="Users List"/>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/edit-your-info" exact={true} activeClassName="active">
+              <NavLink to="/edit-your-info" exact={true} >
                 <FAI icon={faUserEdit} title="Edit User"/>
               </NavLink>
             </li>
@@ -42,7 +42,7 @@ const NavBar = ({ setAuthenticated, authenticated, setCurrentUser }) => {
           </>
         }
         <li>
-          <NavLink to="/" exact={true} activeClassName="active">
+          <NavLink to="/" exact={true} >
             <FAI icon={faHome} title="Home"/>
           </NavLink>
         </li>

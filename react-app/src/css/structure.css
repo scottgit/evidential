@@ -34,6 +34,11 @@ structure.css -- works with site layout wrappers
   border-right: none;
 }
 
+.ev-main.--editor-grid {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
 /* Works on Chrome/Edge/Safari */
 /*.ev-main::-webkit-scrollbar {
   width: 12px;
@@ -91,6 +96,9 @@ structure.css -- works with site layout wrappers
   border-bottom: 0.5px solid var(--primary-color-light);
 }
 
+.ev-sidebar-nav {
+  font-size: 2em;
+}
 /* Sets sidebar scroll position next to main's */
 .ev-rtl {
   direction: rtl;

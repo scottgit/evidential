@@ -6,8 +6,9 @@ import DOMPurify from "dompurify";
 import {uploadText} from '../../services/text';
 import FAI from '../includes/FAI';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { updateCurrentUserInfo } from '../../services/user';
 
-const AddTextForm = ({currentUser, handleCloseModal}) => {
+const AddTextForm = ({currentUser, setCurrentUser, handleCloseModal}) => {
   const [editor, setEditor] = useState('');
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [textDetails, _setTextDetails] = useState({
@@ -15,26 +16,18 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
     source: ''
   })
   const [title, setTitle] = useState('');
-
-  const setTextDetails = (details) => {
+  const setTextDetails = useCallback((details) => {
     _setTextDetails({...textDetails, ...details});
     return;
-  };
+  }, [textDetails]);
   const history =  useHistory();
 
-  useEffect(() => {
-    if (title && textDetails.content && textDetails.source) {
-      setReadyToSubmit(true);
-    } else {
-      setReadyToSubmit(false);
-    }
-  }, [title, textDetails])
 
-  // console.log(textDetails)
+  // GOAL is to support these document types at least
   // const accepted = '.htm, .html, .txt, .rtf, .pdf, .doc, .docx, .md';
   const accepted = '.htm, .html, .txt, .md';
 
-  const onDrop =  useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach(async (file) => {
       const reader = new FileReader()
 
@@ -43,7 +36,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
       reader.onload = () => {
       // Do whatever you want with the file contents
         const res = reader.result
-        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img']});
+        const content = DOMPurify.sanitize(res, {FORBID_TAGS: ['img', 'form', 'input']});
         setTextDetails({
           content,
           source: file.path,
@@ -51,10 +44,8 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
 
       }
       reader.readAsText(file)
-
     })
-
-  }, [])
+  }, [setTextDetails])
 
   const {
     acceptedFiles,
@@ -64,6 +55,7 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
   } = useDropzone({
     accept: accepted,
     maxFiles: 1,
+    minSize: 1,
     maxSize: 1000000,
     onDrop,
     multiple: false,
@@ -86,6 +78,14 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
     )
    });
 
+   useEffect(() => {
+    if (title && textDetails.content && textDetails.source && acceptedFiles.length) {
+      setReadyToSubmit(true);
+    } else {
+      setReadyToSubmit(false);
+    }
+  }, [title, textDetails, acceptedFiles])
+
   const handleTitleInput = (e) => {
     setTitle(e.target.value)
   }
@@ -102,13 +102,14 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
         wordCount,
         createdByUserId
       })
-      if ('id' in text) {
+      if (!text.errors) {
         handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
         setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
       }
 
-    } catch {
-      console.error('Failed to upload text.')
+    } catch (err) {
+      console.error('Failed to upload text:' + err)
     }
 
 
@@ -120,16 +121,18 @@ const AddTextForm = ({currentUser, handleCloseModal}) => {
       <input type="text" className="ev-title-input" value={title} placeholder="Please input text title here." onChange={handleTitleInput} required={true} maxLength="200" />
       <div {...getRootProps({className: "ev-drop-zone"})}  >
         <div className="ev-file-drop" >
-          Drag'n'drop a local text file here or click to select one.
+          <span>Drag'n'drop a local text file here or click to select one.</span>
+          <div>Currently supported types are:</div>
+          <div style={{fontWeight: 'bold'}}>{accepted}</div>
             <div className="ev-text-upload-status">
-          {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
+            {!!acceptedFileItem.length && <span className="ev-success">File accepted: {acceptedFileItem}</span>}
             {!!rejectedFileItem.length && <span className="ev-error">File rejected: {rejectedFileItem}</span>}
           </div>
         </div>
       </div>
       <input id="drop-input" {...getInputProps()} />
       {readyToSubmit &&
-            <button className="icon submit" type="submit">
+            <button className="ev-button icon submit" type="submit">
               <FAI icon={faFileUpload} title={`Upload file`} tabIndex="0"/>
             </button>
           }

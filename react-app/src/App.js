@@ -18,29 +18,49 @@ import Footer from "./components/structure/Footer";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
+    let stillMounted = true;
     (async() => {
-      const user = await authenticate();
-      if (user && !user.errors) {
-        setAuthenticated(true);
-        setCurrentUser(user);
+      try {
+        const user = await authenticate();
+        if (stillMounted) {
+          if (user && !user.errors) {
+            setAuthenticated(true);
+            setCurrentUser(user);
+          }
+          setLoaded(true);
+        }
+      } catch (err) {
+        if (stillMounted) {
+          setLoaded(true);
+          console.error(err);
+        }
       }
-      setLoaded(true);
     })();
+    return function cleanUp() {
+      stillMounted = false;
+    }
   }, []);
 
   if (!loaded) {
     return null;
   }
 
+
+
   return (
     <BrowserRouter>
       <NavBar authenticated={authenticated} setAuthenticated={setAuthenticated} setCurrentUser={setCurrentUser}/>
       <Switch>
         <Route path="/" exact={true}>
-          <Home authenticated={authenticated} currentUser={currentUser} />
+          <Home
+            authenticated={authenticated}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
         </Route>
         <Route path="/login" exact={true}>
           <LoginForm
@@ -57,15 +77,21 @@ function App() {
             edit={false}
           />
         </Route>
-        <Route path={["/text/view/:textId(\\d+)",
-                      "/text/analyze/:textId(\\d+)"]}
-                      exact={true}>
+        <Route path={"/text/view/:textId(\\d+)"} exact={true}>
           <TextDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
-        <Route path={"/text/edit/:textId(\\d+)"}
-                      exact={true}>
-          <TextDetail authenticated={authenticated} currentUser={currentUser} />
-        </Route>
+        <ProtectedRoute
+          path={"/text/edit/:textId(\\d+)" }
+          exact={true}
+          authenticated={authenticated}
+          currentUser={currentUser}
+          >
+          <TextDetail
+            authenticated={authenticated}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
+        </ProtectedRoute>
         <ProtectedRoute path="/edit-your-info" exact={true} authenticated={authenticated}>
           <SignUpAndEditForm
             authenticated={authenticated}
@@ -79,7 +105,7 @@ function App() {
           <UsersList />
         </ProtectedRoute>
         <ProtectedRoute path={"/users/:userId(\\d+)"} exact={true} authenticated={authenticated}>
-          <User />
+          <User currentUser={currentUser} />
         </ProtectedRoute>
         <Route path="/page-not-found">
           <PageNotFound />

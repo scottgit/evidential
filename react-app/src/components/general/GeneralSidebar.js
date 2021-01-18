@@ -1,8 +1,13 @@
 import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
 import DataChanges from '../user/DataChanges';
+import AddTextButton from '../includes/AddTextButton';
+import TextEditLink from "../includes/TextEditLink";
+import TextViewLink from "../includes/TextViewLink";
+import FAI from '../includes/FAI';
+import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GeneralSidebar = ({display, authenticated, currentUser}) => {
+const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
   const [showAbout, setShowAbout] = useState(false);
 
   const About = () => (
@@ -42,16 +47,34 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
     setShowAbout(!showAbout);
   }
 
+  const textOptionLinks = () => {
+    if (display.main && display.main.includes("-TEXT") && itemData) {
+      return (
+        <>
+          <TextEditLink text={itemData} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "EDIT-TEXT"}/>
+          <TextViewLink text={itemData} hide={display.main === "VIEW-TEXT"}/>
+        </>
+      )
+    }
+  }
+
   return (
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
-        <button type="button" onClick={toggleAbout}>Show {showAbout ? 'User' : 'About'}</button>
+          {textOptionLinks()}
+          <AddTextButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
+            { showAbout &&
+              <FAI icon={faUserCircle} className="ev-icon --dark --hover-tilt" title={`Show User`}/> }
+            { !showAbout && <FAI icon={faInfoCircle} className="ev-icon --dark --hover-tilt" title={`Show About`}/>
+            }
+          </span>
         </nav>
       }
-    { ((display.main === "WELCOME" || showAbout) &&
+    { ((display.sidebar === "ABOUT" || !currentUser || showAbout) &&
       <About />
-    ) || ((display.main === "HOME" && !showAbout) &&
+    ) || ((display.sidebar === "USER" && currentUser && !showAbout) &&
       <div className="ev-user-sidebar">
           <header><h3>Logged in as: {currentUser.siteIdentifier}</h3></header>
           <ul>
@@ -62,7 +85,7 @@ const GeneralSidebar = ({display, authenticated, currentUser}) => {
           </ul>
 
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
-          {(currentUser.textsAdded && <TextsAdded user={currentUser} />)}
+          {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
       </div>
     )
     }

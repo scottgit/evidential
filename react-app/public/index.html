@@ -14,4 +14,16 @@
   <body class="body">
     <div id="root" class="ev-page-wrapper"></div>
   </body>
+  <script type="application/javascript">
+    document.body.addEventListener('keyup', function(e) {
+      if (e.key === 'Tab')  {
+        document.documentElement.classList.add('do-focus-outline');
+      } else if (e.key !== 'Shift') {
+        document.documentElement.classList.remove('do-focus-outline');
+      }
+    });
+    document.body.addEventListener('click', function(e) {
+      document.documentElement.classList.remove('do-focus-outline');
+    });
+  </script>
 </html>

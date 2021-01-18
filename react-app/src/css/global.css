@@ -65,16 +65,27 @@ a:hover {
 
 /* Icons */
 .ev-icon {
+  --base-transform: rotate(0);
   display: block;
   padding: var(--icon-padding);
-  margin: var(--icon-margin);;
+  margin: var(--icon-margin);
   color: white;
 }
 
 *:focus {
+  outline: none;
+}
+
+.do-focus-outline a:focus,
+.do-focus-outline button:focus,
+.do-focus-outline [tabindex]:focus,
+.do-focus-outline .ev-main-nav *:focus > .ev-icon,
+.do-focus-outline *:focus
+ {
   outline: dotted;
-  outline-width: 1px;
-  outline-color: rgba(var(--raw-rgb-primary-color), 0.5)
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--primary-color-dark);
 }
 
 .ev-icon.in-text {
@@ -84,6 +95,20 @@ a:hover {
   padding: 0;
   margin:  0 .1em -.1em .1em;
   color: var(--primary-color);
+}
+
+.ev-icon.in-text.--stretch {
+  --base-transform: scaleY(1.15);
+  margin: 0 .1em;
+  transform: var(--base-transform);
+}
+
+.ev-icon.--dark {
+  color: var(--primary-color);
+}
+
+.--hide {
+  display: none;
 }
 
 .ev-icon.loader {
@@ -105,22 +130,30 @@ a:hover {
   margin: 0 .1em 0 .3em;
 }
 
-.ev-icon.in-text.add-item:hover {
+.ev-icon:hover {
   cursor: pointer;
-  transform: rotate(15deg);
 }
 
+*:not(.active) > .ev-icon.--hover-tilt:hover,
+.--hover-sub-tilt:hover > .ev-icon.--sub {
+  transform: var(--base-transform) rotate(15deg);
+}
 
+*:not(.active) > .ev-icon.--hover-flip:hover {
+  transform: var(--base-transform) scaleX(-1);
+}
+
+.fa-layers .ev-icon.--lc {
+  font-size: .5em;
+  top: auto;
+  bottom: 0;
+  left: calc( var(--icon-padding) + 2px ) ;
+  right: auto;
+}
 
 .active .ev-icon {
-  filter:drop-shadow(3px 3px 2px var(--primary-color-dark));
+  color: #ccc;
   cursor: default;
-}
-
-.--direct-hover:hover,
-a:not(.active) > .ev-icon:hover {
-  color: var(--primary-color);
-  cursor: pointer;
 }
 
 /* Scroll Bar standards */
@@ -148,7 +181,7 @@ a:not(.active) > .ev-icon:hover {
 }
 
 /* Buttons */
-button {
+.ev-button {
   color: white;
   display: inline-block;
   padding: 6px 12px;
@@ -157,32 +190,31 @@ button {
   border-radius: 4px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
   position: relative;
-  outline: none;
 }
 
-button.in-text {
+.ev-button.in-text {
   padding: 3px 6px;
   margin: -.2em 3px 0;
   font-size: .7em;
   top: -.2em;
 }
 
-button.icon {
+.ev-button.icon {
   padding: var(--icon-button-padding);
   font-size: var(--icon-button-font-size);
   background: var(--icon-button-primary-background);
 }
 
-button:hover,
-button:active,
-button.icon:hover,
-button.icon:active {
+.ev-button:hover,
+.ev-button:active,
+.ev-button.icon:hover,
+.ev-button.icon:active {
   cursor: pointer;
   color: var(--primary-color-white);
   background: var(--button-primary-background-hover);
 }
 
-button:active {
+.ev-button:active {
   top: 1px;
   left: 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -246,7 +278,22 @@ input {
   background-color: var(--primary-color-dark);
 }
 
-.button.icon.ev-modal-close {
+.ev-modal-content {
+  position: absolute;
+  inset: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 20px;
+  outline: none;
+  padding: 20px;
+}
+
+.ev-modal-content.--small {
+  inset: 25%;
+}
+
+.ev-button.icon.ev-modal-close {
   --icon-button-padding: 0 1px;
   --icon-button-font-size: 1.5rem;
   --icon-margin: 4px;
@@ -257,7 +304,7 @@ input {
   z-index: 1;
 }
 
-.button.icon.ev-modal-close:active {
+.ev-button.icon.ev-modal-close:active {
   top: 3px;
   left: auto;
   right: 1px;
@@ -270,9 +317,13 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: 2em;
-  padding-bottom: 20%;
+  justify-content: space-evenly;
+  font-size: 1.5em;
+}
+
+.ev-confirm p {
+  margin-block-start: .75em;
+  margin-block-end: .75em;
 }
 
 .ev-confirm > div {
@@ -283,7 +334,7 @@ input {
   justify-content: space-around;
 }
 
-.ev-confirm button {
+.ev-confirm .ev-button {
   margin: 10px 5px;
   padding: 1em 1.5em;
 }

@@ -1,15 +1,24 @@
-import React from 'react'
+import React from 'react';
+import {NavLink} from 'react-router-dom';
+import TextEditLink from '../includes/TextEditLink';
 
-const TextsAdded = ({user}) => {
+const TextsAdded = ({user, currentUser}) => {
+
+
   const getTextsAdded = () => (
     <div>
       <h4>Texts Added</h4>
       <ul>
-        {user.textsAdded.map(text => (
-          <li key={'text-'+ text.id}>
-            Added "{text.title}" on {text.createdAt}
-          </li>
-        ))}
+        {user.textsAdded.map(text => {
+          return (
+            <li key={'text-'+ text.id}>
+              Added "<NavLink to={{
+                pathname: `/text/view/${text.id}`,
+                itemData: text
+              }}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} currentUser={currentUser}/>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

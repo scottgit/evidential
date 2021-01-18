@@ -6,8 +6,9 @@ import AddTextForm from '../forms/AddTextForm';
 import AddClaimForm from '../forms/AddClaimForm';
 import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
+import TextEditLink from '../includes/TextEditLink';
 
-const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=false}) => {
+const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canAddItem=false}) => {
   const [listItems, setListItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -18,19 +19,19 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
     switch (type) {
       case 'text':
         displayKey = 'title';
-        modalContent = <AddTextForm currentUser={currentUser}/>;
+        modalContent = <AddTextForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'claim':
         displayKey = 'assertion';
-        modalContent = <AddClaimForm currentUser={currentUser}/>;
+        modalContent = <AddClaimForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'argument':
         displayKey = 'statement';
-        modalContent = <AddArgumentsForm currentUser={currentUser} />;
+        modalContent = <AddArgumentsForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'key':
         displayKey = 'key';
-        modalContent = <AddKeysForm currentUser={currentUser}/>;
+        modalContent = <AddKeysForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'rating':
         displayKey = 'rating';
@@ -61,14 +62,23 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
   }, [isLoaded, pluralType]);
 
   const list = listItems.map((item) => {
+
     const identifier = `${listType}-${item.id}`;
 
     return (
       <li key={identifier} className={`ev-list-item ${linkPath ? 'ev-links-list' : ''}`}>
         { (linkPath &&
-            <NavLink to={`${linkPath}${item.id}`}>
+            <>
+            <NavLink to={{
+              pathname: `${linkPath}${item.id}`,
+              itemData: item
+              }} >
               {item[displayKey]}
             </NavLink>
+            {listType === 'text' &&
+              <TextEditLink text={item} currentUser={currentUser}/>
+            }
+            </>
           )
           ||
           item[displayKey]
@@ -108,7 +118,7 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
           {
            (!isLoaded && <Loader className="in-text" />)
            ||
-           (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="in-text">Retry?</button></>)
+           (isLoaded === -1 && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="ev-button in-text">Retry?</button></>)
           }
         </p>
       }
@@ -116,4 +126,4 @@ const ControlList = ({setDisplay, currentUser, listType, linkPath, canAddItem=fa
   );
 }
 
-export default ControlList
+export default List

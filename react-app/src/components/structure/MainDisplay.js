@@ -5,7 +5,7 @@ const MainView = ({currentUser, display, setDisplay, children}) => {
 
   return (
     <>
-      <main className="ev-main">
+      <main className={`ev-main ${display.main === 'EDIT-TEXT' ? '--editor-grid' : ''}`}>
         <header>{children[0]}</header>
         {children[1]}
       </main>
