@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from "../includes/Loader";
 
-const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput, contentDisplayed}) => {
+const PageHeader = ({display, itemData, handleRetry, title, handleTitleInput, contentDisplayed}) => {
   const formName = {
     "VIEW-TEXT": "View",
     "EDIT-TEXT": "Edit",
@@ -17,7 +17,6 @@ const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput, co
       <div className={headingClass}>
         <input type="text" className="ev-edit-title-input" value={title} onChange={handleTitleInput} required={true} maxLength="200" />
       </div>
-
   )
 
   return (
@@ -33,4 +32,4 @@ const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput, co
   )
 }
 
-export default TextHeader
+export default PageHeader
