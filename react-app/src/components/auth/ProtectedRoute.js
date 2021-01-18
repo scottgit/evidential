@@ -6,7 +6,9 @@ const ProtectedRoute = props => {
     path: "/text/edit/:textId",
     exact: true
   });
-
+  console.log(props.registeredTextUnlocks, isTextEditRoute)
+  console.log(props.currentUser)
+  // TODO USE currentUser for this directly
   const textUnlock = isTextEditRoute && props.registeredTextUnlocks.includes(parseInt(isTextEditRoute.params.textId))
 
   return (

@@ -1,15 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactHtmlParser from 'react-html-parser';
 import DOMPurify from "dompurify";
 
-const Text = ({itemData}) => {
-  const cleanContent = DOMPurify.sanitize(itemData.content, {FORBID_TAGS: ['img']});
-  const [content, _setContent] = useState(cleanContent);
+const Text = ({itemData, setContentDisplayed}) => {
+  const [content, _setContent] = useState('');
+  // Make sure any content change is cleaned before display in browser
   const setContent = (content) => _setContent(DOMPurify.sanitize(content, {FORBID_TAGS: ['img']}));
 
   useEffect(() => {
-    setContent(cleanContent);
-  }, [cleanContent])
+    let stillMounted = true;
+    if (stillMounted) {
+      setContent(itemData.content);
+    }
+    return function cleanUp() {
+      stillMounted = false;
+    }
+  }, [itemData])
+
+  useEffect(() => {
+    let stillMounted = true;
+    if (stillMounted) {
+      // When rendering of text content is done of content, then show the title loaded
+      setContentDisplayed(true);
+    }
+    return function cleanUp() {
+      stillMounted = false;
+    }
+  }, [content, setContentDisplayed])
 
   return (
     <div className="ev-text-content">

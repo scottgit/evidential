@@ -5,7 +5,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const TextEditLink = ({text, currentUser, noParenthesis=false, inNav=false, hide=false}) => {
   const canEditText = () => {
-    if (currentUser) {
+    if (currentUser && text) {
       return (!text.locked && text.createdBy.id === currentUser.id)
     } else {
       return false;

@@ -62,32 +62,32 @@ def edit_text(id):
             text.source=form.data['source']
             # only original users can edit, so no need to set created_by
         elif (not text):
-            return {'errors': 'Text id mismatch; requested text not found in the database.'}
+            return {'errors': ['Text id mismatch; requested text not found in the database.']}
         elif (text.locked):
-            return {'errors': 'Text is locked and cannot be unlocked or edited.'}
+            return {'errors': ['Text is locked and cannot be unlocked or edited.']}
         elif (useId == created_by):
-            return {'errors': 'Text can only be edited by original creator.'}
+            return {'errors': ['Text can only be edited by original creator.']}
         else:
             db.session.rollback()
-            return {'errors': 'Unknown error.'}
+            return {'errors': ['Unknown error.']}
         db.session.commit()
 
         return text.full_to_dict()
 
     return {'errors': validation_messages(form.errors)}
 
-@text_routes.route('/delete/<int:id>')
+@text_routes.route('/delete/<int:id>', methods=['DELETE'])
 @login_required
-def delete(id):
+def delete_text(id):
     """
     Deletes unlocked text's (locked cannot be deleted)
     """
     text = Text.query.get(id)
     if (text and not text.locked):
-        text.delete()
+        db.session.delete(text)
         db.session.commit()
-        return {'message': 'Text deleted'}
-    return {'errors': 'Text is locked and cannot be unlocked or deleted.'}
+        return {'success': 'Text deleted'}
+    return {'errors': ['Text is locked and cannot be unlocked or deleted.']}
 
 
 @text_routes.route('/<int:id>/add/<int:claim_id>', methods=['POST'])

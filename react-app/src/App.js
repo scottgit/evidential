@@ -92,6 +92,7 @@ function App() {
           path={"/text/edit/:textId(\\d+)" }
           exact={true}
           authenticated={authenticated}
+          currentUser={currentUser}
           registeredTextUnlocks={registeredTextUnlocks}
           >
           <TextDetail authenticated={authenticated} currentUser={currentUser} />

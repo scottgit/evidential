@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from "../includes/Loader";
 
-const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput}) => {
+const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput, contentDisplayed}) => {
   const formName = {
     "VIEW-TEXT": "View",
     "EDIT-TEXT": "Edit",
@@ -23,7 +23,7 @@ const TextHeader = ({display, itemData, handleRetry, title, handleTitleInput}) =
   return (
     <header><h1><span className={headingClass}>Text ({formName}):&nbsp;</span>
     {
-      (!itemData && <> Loading <Loader className="in-text" /></>)
+      ((!itemData || !contentDisplayed) && <> Loading <Loader className="in-text" /></>)
       ||
       (itemData === {} && <><span className="ev-error"> **ERROR!**</span> <button type="button" onClick={handleRetry} className="ev-button in-text">Retry?</button></>)
       ||
