@@ -1,0 +1,23 @@
+/* Scroll Bar standards */
+
+iframe body * {
+  /* The emerging W3C standard that is currently Firefox-only */
+    scrollbar-width: 12px;
+  }
+  /* Works on Chrome/Edge/Safari */
+
+  iframe body  *::-webkit-scrollbar-track,
+  iframe body  *::-webkit-scrollbar-corner {
+    background: var(--primary-color-light);
+  }
+
+  iframe body  *::-webkit-scrollbar {
+    width: 12px; /* vertical bar */
+    height: 12px; /* horizontal bar */
+  }
+  iframe body  *::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color-dark);
+    border-radius: 6px;
+    border: 1px solid rgba(204, 203, 203, 0);
+    background-clip: padding-box;
+  }

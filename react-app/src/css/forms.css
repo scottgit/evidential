@@ -95,8 +95,7 @@ forms.css -- imports other files
 
 .ev-heading-input-wrapper + .ev-heading-input-wrapper {
   overflow: hidden;
-  padding: 1px 1px 5px 1px;
-  margin: -1px -1px 0;
+  margin: -1px -1px;
   position: relative;
 }
 
