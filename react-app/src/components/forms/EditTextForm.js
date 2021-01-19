@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
 import ConfirmModal from '../includes/ConfirmModal';
 import { updateCurrentUserInfo } from '../../services/user';
+import tinyCSS from '../../css/tinymce.css.js';
 
 
 const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisplayed, setCurrentUser}) => {
@@ -127,8 +128,20 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
     return function cleanUp() {
       stillMounted = false;
     }
-  }, [title, textDetails])
+  }, [title, textDetails]);
 
+  //Editor styling injection
+  useEffect(() => {
+    const cssLink = document.createElement("style");
+    cssLink.setAttribute('type', 'text/css');
+    cssLink.innerHTML = tinyCSS;
+
+    const iframe = document.querySelector('iframe[id^="tiny"]');
+    if (iframe) {
+      iframe.contentDocument.head.appendChild(cssLink);
+    }
+
+  }, [])
 
   return (
     <div className="ev-text-edit">

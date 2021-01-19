@@ -38,7 +38,6 @@ const Home = ({authenticated, currentUser, setCurrentUser}) => {
           <HomeIntro display={display}/>
           <div className="ev-list-columns">
             <List
-              setDisplay={setDisplay}
               listType={"text"}
               linkPath={'/text/view/'}
               canAddItem={authenticated ? true : false}
@@ -46,9 +45,8 @@ const Home = ({authenticated, currentUser, setCurrentUser}) => {
               setCurrentUser={setCurrentUser}
             />
             <List
-              setDisplay={setDisplay}
               listType={"claim"}
-              linkPath={'/claim/'}
+              linkPath={'/claim/view/'}
               canAddItem={authenticated ? true : false}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
