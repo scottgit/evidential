@@ -106,3 +106,12 @@ forms.css -- imports other files
   position: absolute;
   right: 3px;
 }
+
+.ev-claim-create {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+  text-align: center;
+  padding: 10px 50px;
+}

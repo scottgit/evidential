@@ -2,7 +2,7 @@ import React, {useState, useMemo, useRef, useEffect } from "react";
 import {useParams, useLocation, useHistory} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
 import PageHeader from "../structure/PageHeader";
-import CreateClaimForm from "../forms/CreateClaimForm";
+import AddClaimForm from "../forms/AddClaimForm";
 import EditClaimForm from "../forms/EditClaimForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchClaim} from "../../services/claim";
@@ -95,7 +95,7 @@ const ClaimDetail = (props) => {
           )
           ||
           (display.main === "CREATE-CLAIM" &&
-            <CreateClaimForm key={`${display.main}-editbody-${itemKey}`} {...claimProps} />
+            <AddClaimForm key={`${display.main}-editbody-${itemKey}`} {...claimProps} />
           )
           ||
           (display.main === "EDIT-CLAIM" &&
