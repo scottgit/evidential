@@ -12,7 +12,7 @@ const HomeIntro = ({display}) => {
 
         <ul>
           <li>Upload texts to be analyzed</li>
-          <li>(Upcoming) Edit thost texts for any grammar or encoding issues prior to running an analysis (which locks the text from editing)</li>
+          <li>Edit those texts for any grammar or encoding issues prior to running an analysis (after which run, the text is locked from editing; this also includes Delete capability)</li>
           <li>(Upcoming) Define claims to be applied in analysis against any text</li>
           <li>(Upcoming) Define arguments supporting and rebutting to a claim</li>
           <li>(Upcoming) Define "hit keys" (keywords) for a claim to assist in finding relevant portions of the text to analyze it's arguments against the claim</li>
