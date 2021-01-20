@@ -1,11 +1,16 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import bookExamined from '../../images/book-examined.jpg';
 
 const HomeIntro = ({display}) => {
   return (
     <>
     { (display.main === "WELCOME" &&
       <div className="ev-welcome-intro">
+<<<<<<< Updated upstream
+=======
+        <img src={bookExamined} alt="book with magnifiying glass" />
+>>>>>>> Stashed changes
         <p>Evidential is here to help researchers understand and analyze written works&mdash;books, journal articles, essays, opinion pieces&mdash;whatever type of <strong>text</strong> that makes a <strong>claim</strong> and then tries to back it up with additional <strong>arguments</strong> (evidence).</p>
 
         <p>The purpose is to create a space to collaboratively <strong>rate</strong> the arguments against the claims in a text, building a body of metadata to <strong>profile</strong> how <em>much</em> a text covers a parituclar claim and its arguments, as well as how <em>effectively</em> it covers those things. Users here can:</p>
