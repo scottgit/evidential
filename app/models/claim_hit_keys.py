@@ -13,6 +13,9 @@ class ClaimHitKeys(db.Model, CommonColumns, TrackUpdates):
   claim = relationship('Claim', back_populates='hit_keys')
   hit_key = relationship('HitKey', back_populates='claims')
 
+  def get_key_name(self):
+    return self.hit_key.to_dict()['key']
+
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
   def to_history(self):
     return {
@@ -26,6 +29,7 @@ class ClaimHitKeys(db.Model, CommonColumns, TrackUpdates):
       "id": self.id,
       "claimId": self.claim_id,
       "keyId": self.key_id,
+      "key": self.get_key_name(),
       "createdBy": self.created_by,
       "createdAt": self.created_at,
     }

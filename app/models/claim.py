@@ -10,7 +10,7 @@ class Claim(db.Model, CommonColumns, TrackUpdates):
   assertion = db.Column(db.String(200), nullable = False, unique=True)
   notes = db.Column(db.Text)
 
-  hit_keys = relationship('ClaimHitKeys',back_populates='claim')
+  hit_keys = relationship('ClaimHitKeys', back_populates='claim')
 
   argument_relations = relationship('SupportRebut', back_populates='claim')
   hits = relationship('Hit', back_populates='claim', order_by='Hit.text_id')

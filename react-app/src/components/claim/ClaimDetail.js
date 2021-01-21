@@ -2,39 +2,39 @@ import React, {useState, useMemo, useRef, useEffect } from "react";
 import {useParams, useLocation, useHistory} from 'react-router-dom';
 import SplitView from "../structure/SplitView";
 import PageHeader from "../structure/PageHeader";
-import EditTextForm from "../forms/EditTextForm";
+import AddClaimForm from "../forms/AddClaimForm";
+import EditClaimForm from "../forms/EditClaimForm";
 import GeneralSidebar from "../general/GeneralSidebar";
-import {fetchText} from "../../services/text";
-import Text from "./Text";
+import {fetchClaim} from "../../services/claim";
+import Claim from "./Claim";
 
-const TextDetail = (props) => {
+const ClaimDetail = (props) => {
   const {authenticated, currentUser, setCurrentUser} = props;
   const location = useLocation();
-  let getTextObj = location.itemData ? location.itemData : null;
-  const {textId} = useParams();
-  const [itemData, setItemData] = useState(getTextObj);
-  const [title, setTitle] = useState(itemData ? itemData.title : '');
+  let getClaimObj = location.itemData ? location.itemData : null;
+  const {claimId} = useParams();
+  const [itemData, setItemData] = useState(getClaimObj);;
   const [contentDisplayed, setContentDisplayed] = useState(false);
   const history = useHistory();
 
   // Setup the display of main and sidebar
   const display = (() => {
-    const show = ["view", "edit", "analyze"].filter((str) => location.pathname.includes(str))
-    return {main: `${show[0].toUpperCase()}-TEXT`, sidebar: "USER"};
+    const show = ["view", "create", "edit"].filter((str) => location.pathname.includes(str))
+    return {main: `${show[0].toUpperCase()}-CLAIM`, sidebar: "USER"};
   })()
 
   // Track text state change and revisce content display retry attempt to load allowed
-  const priorState = useMemo(() => {setContentDisplayed(false); return textId}, [textId])
+  const priorState = useMemo(() => {setContentDisplayed(false); return claimId}, [claimId])
   const retry = useRef(false);
 
 
-  const handleTextLoad = () => {
+  const handleClaimLoad = () => {
     try {
       // Check if the effect should actually run
-      if (!getTextObj) {
+      if (!getClaimObj) {
         // Perform the fetch request
         (async () => {
-          const data = await fetchText(textId);
+          const data = await fetchClaim(claimId);
           // DB errors come through as "clean" from fetch and need handled here
           if (data.errors) {
             throw data
@@ -42,14 +42,12 @@ const TextDetail = (props) => {
           else {
           // Process successful fetch
             setItemData(data);
-            setTitle(data.title);
           }
         })();
       }
-      else if (getTextObj !== itemData) {
+      else if (getClaimObj !== itemData) {
         // Process passed data
-        setItemData(getTextObj);
-        setTitle(getTextObj.title)
+        setItemData(getClaimObj);
       }
     } catch (err) {
       // Other errors get handled here
@@ -65,42 +63,43 @@ const TextDetail = (props) => {
   useEffect(() => {
     let stillMounted = true;
     if (stillMounted) {
-      handleTextLoad()
+      handleClaimLoad()
     }
     return function cleanUp() {
       stillMounted = false
     }
     // eslint-disable-next-line
-  }, [priorState]) //Only do textload if prior textId changed
+  }, [priorState]) //Only do textload if prior claimId changed
 
   const handleRetry = (e) => {
-    getTextObj = null;
+    getClaimObj = null;
     retry.current = true;
     setContentDisplayed(false);
-    handleTextLoad();
+    handleClaimLoad();
   }
 
-  const handleTitleInput = (e) => {
-    setTitle(e.target.value)
-  }
 
   const viewProps = {...props, display, itemData, handleRetry}
-  const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser};
+  const headerProps = {display, itemData, handleRetry, currentUser, contentDisplayed};
+  const claimProps = {currentUser, itemData, setItemData, handleRetry, setContentDisplayed, setCurrentUser};
   const sideBarProps = {display, authenticated, currentUser, itemData};
 
-  const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
+  const itemKey = itemData ? `${itemData.assertion}-${itemData.notes}` : `initial`;
 
   return (
     <SplitView {...viewProps}>
     <PageHeader key={`${display.main}-header-${itemKey}`} {...headerProps} />
     { (itemData && (
-          (display.main === "VIEW-TEXT" &&
-            <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
+          (display.main === "VIEW-CLAIM" &&
+            <Claim key={`${display.main}-viewbody-${itemKey}`} {...claimProps} />
           )
           ||
-          (display.main === "EDIT-TEXT" &&
-            <EditTextForm key={`${display.main}-editbody-${itemKey}`} {...textProps} />
+          (display.main === "CREATE-CLAIM" &&
+            <AddClaimForm key={`${display.main}-editbody-${itemKey}`} {...claimProps} />
+          )
+          ||
+          (display.main === "EDIT-CLAIM" &&
+            <EditClaimForm key={`${display.main}-editbody-${itemKey}`} {...claimProps} />
           )
         )
       )
@@ -117,4 +116,4 @@ const TextDetail = (props) => {
   )
 }
 
-export default TextDetail
+export default ClaimDetail

@@ -34,8 +34,9 @@ structure.css -- works with site layout wrappers
   border-right: none;
 }
 
-.ev-main.--editor-grid {
+.ev-main.--grid {
   display: grid;
+  padding: 0px 0px 0px 20px;
   grid-template-rows: auto 1fr;
 }
 
@@ -141,4 +142,21 @@ structure.css -- works with site layout wrappers
   top: 3.4em;
   position: sticky;
   background-color: var(--lightest-white);
+}
+
+.ev-list > header > * {
+  margin-block-start: .25em;
+  margin-block-end: .25em;
+}
+
+.ev-claim-info.--columns {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr;
+}
+
+.ev-claim-info.--columns .hit-keys-list {
+  padding: 10px;
+  border-left: 1px solid var(--primary-color-light);
+  background-color: var(--primary-color-white);
 }

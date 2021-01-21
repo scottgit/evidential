@@ -8,8 +8,8 @@ import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 import TextEditLink from '../includes/TextEditLink';
 
-const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canAddItem=false}) => {
-  const [listItems, setListItems] = useState([]);
+const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=false, listData=[], heading='h2'}) => {
+  const [listItems, setListItems] = useState(listData);
   const [isLoaded, setIsLoaded] = useState(0);
 
   let pluralType;
@@ -26,10 +26,12 @@ const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canA
         modalContent = <AddClaimForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
       case 'argument':
+      case 'supporting argument':
+      case 'rebutting argument':
         displayKey = 'statement';
         modalContent = <AddArgumentsForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
-      case 'key':
+      case 'hit key':
         displayKey = 'key';
         modalContent = <AddKeysForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
         break;
@@ -43,6 +45,10 @@ const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canA
 
 
   useEffect(() => {
+    if (listItems.length) {
+      setIsLoaded(1);
+      return;
+    };
     async function fetchData() {
       if (isLoaded) return; //Only load if nothing is loaded and no error
       try {
@@ -59,7 +65,7 @@ const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canA
       }
     }
     fetchData();
-  }, [isLoaded, pluralType]);
+  }, [isLoaded, pluralType, listItems.length]);
 
   const list = listItems.map((item) => {
 
@@ -91,17 +97,19 @@ const List = ({setDisplay, currentUser, setCurrentUser, listType, linkPath, canA
     setIsLoaded(0)
   }
 
+  const HTag = `${heading}`;
+
   return (
     <div className="ev-list">
       <header className="ev-list-header">
-        <h2>
-          {pluralType[0].toUpperCase()+pluralType.slice(1)}
+        <HTag>
+          {pluralType.replace(/\b[a-z]/g, char => char.toUpperCase())}
           {canAddItem && currentUser &&
           <AddItemModalTrigger type={listType}>
             {modalContent}
           </AddItemModalTrigger>
           }
-        </h2>
+        </HTag>
       </header>
       { (isLoaded === 1 &&
           ((

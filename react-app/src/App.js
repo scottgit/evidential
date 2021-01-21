@@ -8,6 +8,7 @@ import {
   User,
   UsersList,
   TextDetail,
+  ClaimDetail,
   Home,
   PageNotFound
 } from "./services/pages";
@@ -79,6 +80,9 @@ function App() {
         </Route>
         <Route path={"/text/view/:textId(\\d+)"} exact={true}>
           <TextDetail authenticated={authenticated} currentUser={currentUser} />
+        </Route>
+        <Route path={"/claim/view/:claimId(\\d+)"} exact={true}>
+          <ClaimDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
         <ProtectedRoute
           path={"/text/edit/:textId(\\d+)" }

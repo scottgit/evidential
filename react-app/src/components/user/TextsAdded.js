@@ -1,9 +1,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import TextEditLink from '../includes/TextEditLink';
-import {updateCurrentUserInfo} from '../../services/user';
 
-const TextsAdded = ({user, currentUser, setCurrentUser}) => {
+const TextsAdded = ({user, currentUser}) => {
 
 
   const getTextsAdded = () => (
