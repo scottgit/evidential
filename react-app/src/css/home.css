@@ -1,0 +1,17 @@
+.ev-home-book-examined {
+  width: 50%;
+  max-width: 300px;
+  float: right;
+  margin: 0 0 .5em .5em;
+}
+
+.ev-home-crop-wrapper {
+  overflow: hidden;
+  height: auto;
+  max-height: 200px;
+  text-align: center;
+}
+
+.ev-home-library {
+  width: 100%;
+}

@@ -1,13 +1,13 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import bookExamined from '../../images/book-examined.jpg';
+import {bookExamined, library} from '../../images/';
 
 const HomeIntro = ({display}) => {
   return (
     <>
     { (display.main === "WELCOME" &&
       <div className="ev-welcome-intro">
-        <img src={bookExamined} alt="book with magnifiying glass" />
+        <img src={bookExamined} alt="Book with magnifiying glass" className="ev-home-book-examined" />
         <p>Evidential is here to help researchers understand and analyze written works&mdash;books, journal articles, essays, opinion pieces&mdash;whatever type of <strong>text</strong> that makes a <strong>claim</strong> and then tries to back it up with additional <strong>arguments</strong> (evidence).</p>
 
         <p>The purpose is to create a space to collaboratively <strong>rate</strong> the arguments against the claims in a text, building a body of metadata to <strong>profile</strong> how <em>much</em> a text covers a particular claim and its arguments, as well as how <em>effectively</em> it covers those things. Users here can (or will be able to in upcoming releases):</p>
@@ -24,6 +24,9 @@ const HomeIntro = ({display}) => {
         </ul>
 
         <p>If you want to <NavLink to="/sign-up" exact={true}>join the community of analyzers</NavLink>, great! But even if not, still feel free to view the analysis work that has been done.</p>
+        <div className="ev-home-crop-wrapper">
+        <img  src={library} alt="broad view of a library" className="ev-home-library"/>
+        </div>
       </div>
     ) || ( display.main === "HOME" &&
       <div className="ev-home-intro">
