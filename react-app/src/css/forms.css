@@ -126,6 +126,21 @@ forms.css -- imports other files
 .ev-claim-create {
   padding: 5px;
 }
+.ev-claim-create h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin: 0;
+  position: sticky;
+  top: -20px;
+}
+
+
+.ev-claim-info {
+  margin: 0 10px;
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 12px;
+}
 
 .ev-data-label {
   display: block;
@@ -242,6 +257,7 @@ forms.css -- imports other files
 .ev-claim-form-split {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .ev-claim-form-split .ev-group-heading {
@@ -250,8 +266,11 @@ forms.css -- imports other files
 }
 
 .ev-claim-form-split .ev-argument-group {
-  margin: 0 10px;
+  margin: 10px;
   padding: 10px;
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 50%;
 }
 
 .ev-claim-form-split .ev-data-label {
@@ -261,4 +280,24 @@ forms.css -- imports other files
 .ev-argument-group {
   border: 1px solid var(--primary-color);
   border-radius: 12px;
+}
+
+.ev-argument-group.--adder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8em;
+  color: var(--primary-color-light);
+}
+
+.ev-argument-group.--adder:hover {
+  cursor: pointer;
+  color: var(--primary-color-dark);
+  background-color: var(--secondary-color-white);
+}
+
+.ev-argument-group.--adder > * {
+  text-align: center;
+  margin: 0;
 }

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ClaimSection from './groupings/ClaimSection';
-import RequiredArgumentSection from './groupings/ClaimRequiredArgumentsSection';
+import ClaimArgumentsSections from './groupings/ClaimArgumentsSections';
 import UIDProvider from '../includes/UIDProvider';
 
 const AddClaimForm = () => {
@@ -23,7 +23,7 @@ const AddClaimForm = () => {
         <h2>Create Claim</h2>
           <UIDProvider passToGroup={true}>
             <ClaimSection setClaimAssertion={setClaimAssertion} setClaimNotes={setClaimNotes}/>
-            <RequiredArgumentSection argStatements={argStatements} setArgStatements={setArgStatements}/>
+            <ClaimArgumentsSections argStatements={argStatements} setArgStatements={setArgStatements}/>
           </UIDProvider>
       </form>
     </div>

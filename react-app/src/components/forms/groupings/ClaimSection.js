@@ -35,10 +35,12 @@ const ClaimSection = ({uniqueIdRef, setClaimAssertion, setClaimNotes}) => {
   )
 
   return (
-    <section className="ev-claim-info">
+    <section >
       <h3>Claim Info</h3>
-      {AddClaimAssertionComponent()}
-      {AddClaimNotesComponent()}
+      <div className="ev-claim-info">
+        {AddClaimAssertionComponent()}
+        {AddClaimNotesComponent()}
+      </div>
     </section>
   )
 }

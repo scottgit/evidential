@@ -136,6 +136,7 @@ a:hover {
 
 *:not(.active) > .ev-icon.--hover-tilt:hover,
 .--hover-sub-tilt:hover > .ev-icon.--sub {
+  -webkit-backface-visibility: hidden;
   transform: var(--base-transform) rotate(15deg);
 }
 

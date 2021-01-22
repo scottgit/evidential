@@ -14,9 +14,10 @@ export const createClaim = async (data) => {
         arguments,       //See further explanation
       }
 
-      The "arguments" should be coming in as an array of paired arrays,
-      the pair being the "id" of an existing Argument (or null if needing creation),
-      and a "settings" object for the data being set (null if the "id" was provided). So if argument data is new, it should be sending this "settings" object:
+      The "arguments" should be coming in as an array of integers and/or objects,
+      an integer being the "id" of an existing Argument,
+      and a "settings" object for the data being set on a new Argument.
+      So if argument data is new, it should be sending this object:
 
           {
             statement: "Blah!",
@@ -28,9 +29,12 @@ export const createClaim = async (data) => {
 
       So a final example of what an "arguments" array might look like:
       [
-          [id, settings], // representative names shown
-          [7, None],      // expecting to pull an existing argument
-          [None, {"statement": "Blah!", "argumentNotes": "Blah, blah.", "supports": 1}] // setting up a new argument
+          7,      // expecting to pull an existing argument
+          { "statement": "Blah!",
+            "argumentNotes": "Blah, blah.",
+            "supports": 1
+          },      // setting up a new argument
+          3,      // expecting to pull an existing argument
       ]
   */
   const request = {path: `/claims/create`, errorMsg: 'Failed to create claim.', data, method: 'POST'}
