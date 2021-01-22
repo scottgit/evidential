@@ -1,6 +1,20 @@
 /****
 forms.css -- imports other files
 ****/
+
+.ev-text-area {
+  resize: none;
+  box-sizing: border-box;
+  padding: 4px;
+  width: 100%;
+  border: 1px solid var(--primary-color-light);
+  border-radius: 3px;
+}
+
+.ev-text-area:focus {
+  background-color: var(--secondary-color-white);
+}
+
 .ev-text-upload {
   height: 90%;
 }
@@ -107,11 +121,144 @@ forms.css -- imports other files
   right: 3px;
 }
 
+/* Claims */
+
 .ev-claim-create {
+  padding: 5px;
+}
+
+.ev-data-label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.ev-data-label > h4 {
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+.ev-characters-remaining {
+  padding-left: 5px;
+  font-size: .7em;
+}
+
+.ev-explanation-control {
+  font-size: .8em;
+  padding: 3px;
+  margin-bottom: -1px;
+}
+
+.ev-explanation-control:hover,
+.ev-explanation-control.--show {
+  cursor: pointer;
+  color: var(--primary-color);
+  background-color: var(--primary-color-white);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.ev-explanation-control:hover {
+  cursor: pointer;
+}
+
+.ev-data-explanation {
+  display: grid;
+  overflow: hidden;
+  clear: left;
+  font-size: .8em;
+}
+
+.ev-data-explanation.--unclicked {
+  grid-template-rows: minmax(0,  0fr)
+}
+
+.ev-data-explanation:not(.--unclicked) {
+  animation: hide-content;
+  animation-duration: 200ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-delay: 200ms;
+  animation-direction: reverse;
+}
+
+.ev-data-explanation > p {
+  margin: 0;
+  padding: 6px;
+  background-color: var(--primary-color-white);
+}
+
+.ev-data-explanation.--show {
+  animation: show-content;
+  animation-duration: 200ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: backwards;
+  animation-iteration-count: 1;
+  animation-delay: 200ms;
+}
+
+
+@keyframes show-content {
+   0% {grid-template-rows: minmax(0,  0fr)}
+  10% {grid-template-rows: minmax(0, .1fr)}
+  20% {grid-template-rows: minmax(0, .2fr)}
+  30% {grid-template-rows: minmax(0, .3fr)}
+  40% {grid-template-rows: minmax(0, .4fr)}
+  50% {grid-template-rows: minmax(0, .5fr)}
+  60% {grid-template-rows: minmax(0, .6fr)}
+  70% {grid-template-rows: minmax(0, .7fr)}
+  80% {grid-template-rows: minmax(0, .8fr)}
+  90% {grid-template-rows: minmax(0, .9fr)}
+ 100% {grid-template-rows: minmax(0,  1fr)}
+}
+
+@keyframes hide-content {
+  /* matches show-content, but needs to change names
+  in order to reset iteration count to 1 */
+  0% {grid-template-rows: minmax(0,  0fr)}
+ 10% {grid-template-rows: minmax(0, .1fr)}
+ 20% {grid-template-rows: minmax(0, .2fr)}
+ 30% {grid-template-rows: minmax(0, .3fr)}
+ 40% {grid-template-rows: minmax(0, .4fr)}
+ 50% {grid-template-rows: minmax(0, .5fr)}
+ 60% {grid-template-rows: minmax(0, .6fr)}
+ 70% {grid-template-rows: minmax(0, .7fr)}
+ 80% {grid-template-rows: minmax(0, .8fr)}
+ 90% {grid-template-rows: minmax(0, .9fr)}
+100% {grid-template-rows: minmax(0,  1fr)}
+}
+
+/* Arguments */
+
+.ev-sup-reb {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 4em;
-  text-align: center;
-  padding: 10px 50px;
+  justify-content: space-evenly;
+}
+
+.ev-sup-reb input[type="radio"] {
+  margin: 0 5px -.2em 0;
+}
+
+.ev-claim-form-split {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ev-claim-form-split .ev-group-heading {
+  margin: 0 10px 5px 0;
+  float: left;
+}
+
+.ev-claim-form-split .ev-argument-group {
+  margin: 0 10px;
+  padding: 10px;
+}
+
+.ev-claim-form-split .ev-data-label {
+  clear: left;
+}
+
+.ev-argument-group {
+  border: 1px solid var(--primary-color);
+  border-radius: 12px;
 }
