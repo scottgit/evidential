@@ -254,18 +254,19 @@ forms.css -- imports other files
   margin: 0 5px -.2em 0;
 }
 
-.ev-claim-form-split {
+.ev-form-split {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
-.ev-claim-form-split .ev-group-heading {
+.ev-form-split .ev-group-heading {
   margin: 0 10px 5px 0;
   float: left;
 }
 
-.ev-claim-form-split .ev-argument-group {
+.ev-form-split .ev-argument-group,
+.ev-argument-add {
   margin: 10px;
   padding: 10px;
   flex: 1 1 250px;
@@ -273,31 +274,33 @@ forms.css -- imports other files
   max-width: 50%;
 }
 
-.ev-claim-form-split .ev-data-label {
+.ev-form-split .ev-data-label {
   clear: left;
 }
 
-.ev-argument-group {
+.ev-argument-group,
+.ev-argument-add {
   border: 1px solid var(--primary-color);
   border-radius: 12px;
 }
 
-.ev-argument-group.--adder {
+.ev-argument-add {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 1.8em;
   color: var(--primary-color-light);
+  max-width: 100%;
 }
 
-.ev-argument-group.--adder:hover {
+.ev-argument-add:hover {
   cursor: pointer;
   color: var(--primary-color-dark);
   background-color: var(--secondary-color-white);
 }
 
-.ev-argument-group.--adder > * {
+.ev-argument-add > * {
   text-align: center;
   margin: 0;
 }

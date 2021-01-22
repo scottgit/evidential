@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import ArgumentGroup from './ArgumentGroup';
-import FAI from '../../includes/FAI';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddArgumentsGroup from './AddArgumentsGroup';
 
 
 const ClaimArgumentsSections = ({uniqueIdRef, argStatements, setArgStatements}) => {
   const [checkPairedArguments, setCheckPairedArguments] = useState(false);
 
-  // Generator function to create and send unique id's to the Argument groups
-  const makeArgumentProps = () => ({
+  // Generator function to create and send unique id's to an ArgumentGroup that is paired
+  const makePairedArgumentProps = () => ({
     uniqueId: ++uniqueIdRef.current,
     groupData: argStatements,
     formSetterFn: setArgStatements,
@@ -16,30 +15,24 @@ const ClaimArgumentsSections = ({uniqueIdRef, argStatements, setArgStatements}) 
     setCheckPairedArguments
   })
 
+  // Pass the uniqueIdRef and needed items to the AddArgumentsGroup
+  const passProps = {
+    uniqueIdRef,
+    argStatements,
+    setArgStatements,
+  }
+
   return (
     <>
       <section className="ev-claim-required-arguments">
         <h3>Required Arguments</h3>
         <p>Two arugments are required, one in support and one in rebuttal to the position of the claim's assertion. Additional arguments can be added.</p>
-        <div className="ev-claim-form-split">
-          <ArgumentGroup {...makeArgumentProps()}/>
-          <ArgumentGroup {...makeArgumentProps()}/>
+        <div className="ev-form-split">
+          <ArgumentGroup {...makePairedArgumentProps()}/>
+          <ArgumentGroup {...makePairedArgumentProps()}/>
         </div>
       </section>
-      <section className="ev-claim-additional-arguments">
-        <h3>Additional Arguments</h3>
-        <p>Add additional arguments</p>
-        <div className="ev-claim-form-split">
-          <ArgumentGroup {...makeArgumentProps()}/>
-          <ArgumentGroup {...makeArgumentProps()}/>
-          <ArgumentGroup {...makeArgumentProps()}/>
-          <ArgumentGroup {...makeArgumentProps()}/>
-          <div className="ev-argument-group --adder --hover-sub-tilt">
-            <p>Create another argument</p>
-            <FAI icon={faPlus} className="in-text add-item --sub" />
-          </div>
-        </div>
-      </section>
+      <AddArgumentsGroup {...passProps} />
     </>
   )
 }
