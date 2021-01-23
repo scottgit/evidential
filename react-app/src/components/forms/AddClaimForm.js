@@ -5,20 +5,19 @@ import UIDProvider from '../includes/UIDProvider';
 
 const ClaimFormContext = createContext();
 
-const ___AddClaimForm = () => {
+const ___AddClaimForm = ({currentUser}) => {
 
   const formContext = useContext(ClaimFormContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // {
-    //   assertion,
-    //   notes,
-    //   createdByUserId,
-    //   arguments,       //See further explanation
-    // }
-    // [Object.values(argListDataRef.current.data)]
-    console.log('submit', formContext)
+    const data = {
+      assertion: formContext.assertion,
+      notes: formContext.notes,
+      createdByUserId: currentUser.id,
+      arguments: [Object.values(formContext.argumentsSet)],
+    }
+    console.log('submit', data)
   }
 
   // const memoFn = useMemo(() => _setArgumentsData, [_setArgumentsData])
@@ -39,7 +38,7 @@ const ___AddClaimForm = () => {
   )
 }
 
-const AddClaimForm = () => {
+const AddClaimForm = (props) => {
   return (
     <ClaimFormContext.Provider value={{
       assertion: '',          // Sent to database
@@ -47,7 +46,7 @@ const AddClaimForm = () => {
       argumentsSet: {},       // Modified to array of values and sent to database
       balanced: [null, null], // Only used for frontend check
     }}>
-      <___AddClaimForm />
+      <___AddClaimForm {...props} />
     </ClaimFormContext.Provider>
   )
 }
