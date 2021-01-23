@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import Loader from "../includes/Loader";
 import AddItemModalTrigger from "../includes/AddItemModalTrigger";
 import AddTextForm from '../forms/AddTextForm';
-import AddClaimForm from '../forms/AddClaimForm';
+import {AddClaimForm} from '../forms/AddClaimForm';
 import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 import TextEditLink from '../includes/TextEditLink';

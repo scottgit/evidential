@@ -1,7 +1,9 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
+import {ClaimFormContext} from '../AddClaimForm';
 
 
 const FormTextAreaInputPackage = ({
+  fieldType,
   uniqueId,
   formSetterFn,
   auxilary,
@@ -23,25 +25,10 @@ const FormTextAreaInputPackage = ({
   const idString = (label.split(' ').join('-')); //Make ids without spaces
 
 
+  const formContext = useContext(ClaimFormContext);
 
-  const textInputHandler = (e) => {
-    const v = e.target.value;
-    console.log('v', v)
-    setValue(v);
-    // formSetterFn(v);
-    const charsLeft = maxLength - v.length;
-    setCharsLeft(charsLeft);
-    if (charCountRef.current) {
-      console.log(charCountRef.current)
-      console.log(charsLeft)
-      if (!parseInt(charsLeft)) {
-        charCountRef.current.classList.add("ev-error");
-      }
-      else {
-        charCountRef.current.classList.remove("ev-error");
-      }
-    }
-  }
+  const isArgumentStatement = fieldType === 'Argument Statement';
+  const isArgumentNotes = fieldType === 'Argument Notes';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,7 +45,33 @@ const FormTextAreaInputPackage = ({
     return () => {
       clearTimeout(timer);
     }
-  }, [showInfo, uid])
+  }, [showInfo, uid, idString])
+
+  const textInputHandler = (e) => {
+    const value = e.target.value;
+    setValue(value);
+
+    if (isArgumentStatement) {
+      setState({statement: value})
+    }
+    else if (isArgumentNotes) {
+      setState({argumentNotes: value})
+    }
+    else {
+      setState(value);
+    }
+
+    const charsLeft = maxLength - value.length;
+    setCharsLeft(charsLeft);
+    if (charCountRef.current) {
+      if (!parseInt(charsLeft)) {
+        charCountRef.current.classList.add("ev-error");
+      }
+      else {
+        charCountRef.current.classList.remove("ev-error");
+      }
+    }
+  }
 
   const toggleShow = (e) => {
     if (e.target.classList.contains('ev-explanation-control')) {
@@ -68,21 +81,36 @@ const FormTextAreaInputPackage = ({
     }
   }
 
+  const handleRadioSelect = (e) => {
+    // Need to use integers for true/false for backend wtforms
+    setState({supports: e.target.value === 'support' ? 1 : 0})
+  }
+
+  const setState = (data) => {
+    if (isArgumentStatement || isArgumentNotes) {
+      formSetterFn(uid, data)
+    } else {
+      formSetterFn(formContext, data)
+    }
+  }
+
   return (
     <>
-      { label === 'Statement' &&
+      { (isArgumentStatement &&
         <div className="ev-sup-reb">
           <div>
+            <label htmlFor={`sup-${uid}`}>
             <input type="radio" id={`sup-${uid}`}
-            name={`sup-reb-${uid}`} value="support" />
-            <label htmlFor={`sup-${uid}`}>Supports</label>
+            name={`sup-reb-${uid}`} value="support" onClick={handleRadioSelect} required={true}/>
+            Supports</label>
           </div>
           <div>
+            <label htmlFor={`reb-${uid}`}>
             <input type="radio" id={`reb-${uid}`}
-            name={`sup-reb-${uid}`} value="rebut" />
-            <label htmlFor={`reb-${uid}`}>Rebuts</label>
+            name={`sup-reb-${uid}`} value="rebut" onClick={handleRadioSelect} />
+            Rebuts</label>
           </div>
-        </div>
+        </div>)
       }
       <label className="ev-data-label" htmlFor={`${idString}-${uid}`}>
         <h4 className="ev-data-heading">{label}</h4>

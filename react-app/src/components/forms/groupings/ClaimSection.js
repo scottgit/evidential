@@ -2,8 +2,10 @@ import React from 'react';
 import FormTextAreaInputPackage from '../fields/FormTextAreaInputPackage';
 
 
-const ClaimSection = ({uniqueIdRef, setClaimAssertion, setClaimNotes}) => {
 
+const ClaimSection = ({uniqueIdRef}) => {
+
+  const setClaimAssertion = (context, data) => {context.assertion = data}
   const AddClaimAssertionComponent = (uniqueId = ++uniqueIdRef.current) => (
     <FormTextAreaInputPackage
     uniqueId={uniqueId}
@@ -18,7 +20,7 @@ const ClaimSection = ({uniqueIdRef, setClaimAssertion, setClaimNotes}) => {
       }
     }/>
   )
-
+  const setClaimNotes = (context, data) => {context.notes = data}
   const AddClaimNotesComponent = (uniqueId = ++uniqueIdRef.current) => (
     <FormTextAreaInputPackage
     uniqueId={uniqueId}

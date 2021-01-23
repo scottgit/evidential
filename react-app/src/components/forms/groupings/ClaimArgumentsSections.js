@@ -3,23 +3,16 @@ import ArgumentGroup from './ArgumentGroup';
 import AddArgumentsGroup from './AddArgumentsGroup';
 
 
-const ClaimArgumentsSections = ({uniqueIdRef, argStatements, setArgStatements}) => {
-  const [checkPairedArguments, setCheckPairedArguments] = useState(false);
+const ClaimArgumentsSections = ({uniqueIdRef}) => {
 
   // Generator function to create and send unique id's to an ArgumentGroup that is paired
   const makePairedArgumentProps = () => ({
     uniqueId: ++uniqueIdRef.current,
-    groupData: argStatements,
-    formSetterFn: setArgStatements,
-    checkPairedArguments,
-    setCheckPairedArguments
   })
 
   // Pass the uniqueIdRef and needed items to the AddArgumentsGroup
   const passProps = {
     uniqueIdRef,
-    argStatements,
-    setArgStatements,
   }
 
   return (
@@ -37,4 +30,4 @@ const ClaimArgumentsSections = ({uniqueIdRef, argStatements, setArgStatements}) 
   )
 }
 
-export default ClaimArgumentsSections;
+export default React.memo(ClaimArgumentsSections);

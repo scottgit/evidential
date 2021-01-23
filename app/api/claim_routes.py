@@ -74,8 +74,8 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
     found_support = None
     found_rebut = None
     for arg in arguments:
-        arg_id = arg[0]
-        arg_settings = arg[1]
+        arg_id = arg if isinstance(arg, int) else False
+        arg_settings = arg if isinstance(arg, dict) else {}
         valid_statement = lambda arg_settings : (
             ("statement" in arg_settings) and len(arg_settings.statement) <= 200
         )

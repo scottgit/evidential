@@ -1,12 +1,12 @@
 import React from 'react';
 import FormTextAreaInputPackage from './FormTextAreaInputPackage';
 
-const AddArgumentStatementFields = ({uniqueId, argStatements, setArgStatements, pairedArguments, setPairedArguments}) => {
+const AddArgumentStatementFields = ({uniqueId, setArgListData}) => {
   return (
     <FormTextAreaInputPackage
+      fieldType="Argument Statement"
       uniqueId={uniqueId}
-      formSetterFn={setArgStatements}
-      auxilary={argStatements, pairedArguments, setPairedArguments}
+      formSetterFn={setArgListData}
       settings={
         {
           label: 'Statement',

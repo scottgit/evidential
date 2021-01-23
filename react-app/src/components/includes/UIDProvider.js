@@ -32,4 +32,4 @@ const UIDProvider = ({passToGroup, children}) => {
   )
 }
 
-export default UIDProvider;
+export default React.memo(UIDProvider);

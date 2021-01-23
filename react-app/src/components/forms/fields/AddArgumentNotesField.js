@@ -1,11 +1,12 @@
 import React from 'react';
 import FormTextAreaInputPackage from './FormTextAreaInputPackage';
 
-const AddArgumentNotesField = ({uniqueId, setArgStatements}) => {
+const AddArgumentNotesField = ({uniqueId, setArgListData}) => {
   return (
     <FormTextAreaInputPackage
+      fieldType="Argument Notes"
       uniqueId={uniqueId}
-      formSetterFn={setArgStatements}
+      formSetterFn={setArgListData}
       settings={
         {
           label: 'Notes',
