@@ -20,11 +20,6 @@ const ___AddClaimForm = ({currentUser}) => {
     console.log('submit', data)
   }
 
-  // const memoFn = useMemo(() => _setArgumentsData, [_setArgumentsData])
-  // console.log(argumentsData);
-  // const setArgumentsData = useCallback((data) => memoFn(data), [memoFn])
-
-
   return (
     <div className="ev-claim-create">
       <form onSubmit={handleSubmit}>
@@ -44,7 +39,7 @@ const AddClaimForm = (props) => {
       assertion: '',          // Sent to database
       notes: '',              // Sent to database
       argumentsSet: {},       // Modified to array of values and sent to database
-      balanced: [null, null], // Only used for frontend check
+      persistArgsList: []     // Tracks just "added" arguments uids
     }}>
       <___AddClaimForm {...props} />
     </ClaimFormContext.Provider>

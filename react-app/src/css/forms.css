@@ -304,3 +304,13 @@ forms.css -- imports other files
   text-align: center;
   margin: 0;
 }
+
+.ev-sup-reb label:not([readonly]):hover,
+.ev-sup-reb label:not([readonly]):hover input {
+  cursor: pointer;
+}
+
+.ev-sup-reb label[readonly]:hover,
+.ev-sup-reb label[readonly]:hover input {
+  cursor: not-allowed;
+}

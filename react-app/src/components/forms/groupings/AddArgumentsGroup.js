@@ -1,27 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useContext} from 'react';
 import ArgumentGroup from './ArgumentGroup';
 import FAI from '../../includes/FAI';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {ClaimFormContext} from '../AddClaimForm';
 
 
 const AddArgumentsGroup = ({uniqueIdRef}) => {
-  const [argList, setArgList] = useState([])
+  const formContext = useContext(ClaimFormContext);
+  const [argList, _setArgList] = useState([]);
+  const setArgList = useCallback((data) => _setArgList(data), [_setArgList]);
 
   // Generator function to create and send unique id's to an ArgumentGroup
-  const makeArgumentProps = () => ({
-    uniqueId: ++uniqueIdRef.current,
-  })
+  const makeArgumentProps = () => {
+    return ({
+      uniqueId: ++uniqueIdRef.current,
+      setArgList
+    })
+  }
 
   const handleAddArgumentGroup = (e) => {
-    setArgList([...argList, <ArgumentGroup {...makeArgumentProps()}/>]);
+    const newList = [...argList, <ArgumentGroup {...makeArgumentProps()}/>];
+    setArgList(newList);
+    console.log('newList', newList)
+    formContext.persistArgsList = [...formContext.persistArgsList, newList[newList.length-1].props.uniqueId];
   }
 
   const Additionals = ({children}) => {
+    console.log('persist', formContext.persistArgsList)
     return (
       <>
-        {children.map((child) => {
+        {children.map((child, idx) => {
             if (React.isValidElement(child)) {
-              return React.cloneElement(child, {key: `arg-group-${++uniqueIdRef.current}`})
+              const uid = formContext.persistArgsList[idx];
+              return React.cloneElement(child, {key: `arg-group-${uid}`, setArgList, listIndex: idx});
             }
           return child;
         })}
@@ -32,7 +43,7 @@ const AddArgumentsGroup = ({uniqueIdRef}) => {
   return (
     <section className="ev-additional-arguments">
     <h3>Additional Arguments</h3>
-    <p>Add additional arguments</p>
+    <p>Optionally add additional arguments to this claim's analysis.</p>
 
     <div className="ev-form-split" >
       <Additionals children={argList}/>

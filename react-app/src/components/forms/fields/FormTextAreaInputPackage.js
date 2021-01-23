@@ -16,19 +16,26 @@ const FormTextAreaInputPackage = ({
     required: false
   }
 }) => {
+  const formContext = useContext(ClaimFormContext);
   const uid = uniqueId;
-  const {label, explanation, maxLength, rows, placeholder, required} = settings;
-  const [value, setValue] = useState('');
+  const {fixedSupport, label, explanation, maxLength, rows, placeholder, required} = settings;
+  const isArgumentStatement = fieldType === 'Argument Statement';
+  const isArgumentNotes = fieldType === 'Argument Notes';
+  const validArg = formContext.argumentsSet && formContext.argumentsSet[uid];
+
+  const persistArgumentData = () => {
+    if (isArgumentStatement && validArg) return validArg.statement;
+    if (isArgumentNotes && validArg) return validArg.argumentNotes;
+    return '';
+  }
+
+  const [value, setValue] = useState(persistArgumentData());
   const [showInfo, setShowInfo] = useState(false);
   const [charsLeft, setCharsLeft] = useState(maxLength);
   const charCountRef = useRef(null)
   const idString = (label.split(' ').join('-')); //Make ids without spaces
 
 
-  const formContext = useContext(ClaimFormContext);
-
-  const isArgumentStatement = fieldType === 'Argument Statement';
-  const isArgumentNotes = fieldType === 'Argument Notes';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -88,28 +95,65 @@ const FormTextAreaInputPackage = ({
 
   const setState = (data) => {
     if (isArgumentStatement || isArgumentNotes) {
+      console.log('setting data', data)
       formSetterFn(uid, data)
     } else {
       formSetterFn(formContext, data)
     }
   }
 
+  const argumentCheckedState = (value) => {
+    // Set required argument's status to checked to its needed value
+    if (!!fixedSupport) return {checked: fixedSupport};
+    // Set added argument's last state
+    if (validArg) {
+      if (  (validArg.supports === 1 && value === 'support')
+          ||(validArg.supports === 0 && value === 'rebut')) {
+        return {defaultChecked: true}
+      }
+    }
+    return {}
+  }
+
   return (
     <>
       { (isArgumentStatement &&
         <div className="ev-sup-reb">
-          <div>
-            <label htmlFor={`sup-${uid}`}>
-            <input type="radio" id={`sup-${uid}`}
-            name={`sup-reb-${uid}`} value="support" onClick={handleRadioSelect} required={true}/>
-            Supports</label>
-          </div>
-          <div>
-            <label htmlFor={`reb-${uid}`}>
-            <input type="radio" id={`reb-${uid}`}
-            name={`sup-reb-${uid}`} value="rebut" onClick={handleRadioSelect} />
-            Rebuts</label>
-          </div>
+          {/* JSX balks at any "checked" property attempting to be set on a button
+          that is not readOnly or have an onChange; so here, I needed to not even
+          try to set "checked" if it wasn't a fixedSupport, and found this pattern
+          of a solution online: {...(!!fixedSupport ? {checked: fixedSupport} : {}) } */}
+          {(fixedSupport === 'support' || !fixedSupport) &&
+            <div>
+              <label htmlFor={`sup-${uid}`} readOnly={!!fixedSupport}>
+              <input
+                type="radio"
+                id={`sup-${uid}`}
+                name={`sup-reb-${uid}`}
+                value="support"
+                onClick={handleRadioSelect}
+                required={true}
+                {...argumentCheckedState('support')}
+                readOnly={!!fixedSupport}
+              />
+              Supports</label>
+            </div>
+          }
+          {(fixedSupport === 'rebut' || !fixedSupport) &&
+            <div>
+              <label htmlFor={`reb-${uid}`} readOnly={!!fixedSupport}>
+              <input
+                type="radio"
+                id={`reb-${uid}`}
+                name={`sup-reb-${uid}`}
+                value="rebut"
+                onClick={handleRadioSelect}
+                {...argumentCheckedState('rebut')}
+                readOnly={!!fixedSupport}
+              />
+              Rebuts</label>
+            </div>
+          }
         </div>)
       }
       <label className="ev-data-label" htmlFor={`${idString}-${uid}`}>

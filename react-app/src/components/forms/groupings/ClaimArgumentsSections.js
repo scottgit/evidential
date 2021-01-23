@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ArgumentGroup from './ArgumentGroup';
 import AddArgumentsGroup from './AddArgumentsGroup';
 
@@ -6,8 +6,14 @@ import AddArgumentsGroup from './AddArgumentsGroup';
 const ClaimArgumentsSections = ({uniqueIdRef}) => {
 
   // Generator function to create and send unique id's to an ArgumentGroup that is paired
+  let argSupport = null;
+  const balancer = () => {
+    argSupport = argSupport ? 'rebut' : 'support';
+    return argSupport;
+  };
   const makePairedArgumentProps = () => ({
     uniqueId: ++uniqueIdRef.current,
+    fixedSupport: balancer()
   })
 
   // Pass the uniqueIdRef and needed items to the AddArgumentsGroup
