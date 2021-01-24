@@ -6,7 +6,7 @@ import { faPlus, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 ReactModal.setAppElement('#root');
 
-const AddItemModalTrigger = ({type, children}) => {
+const AddItemModalTrigger = ({type, children, hideClose=false}) => {
   const [showModal, setShowModal] = useState(false)
 
   const handleShowModal = (e) => {
@@ -32,9 +32,11 @@ const AddItemModalTrigger = ({type, children}) => {
         closeTimeoutMS={500}
         overlayClassName="ev-modal-overlay"
       >
-        <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
+        { !hideClose &&
+          <button className="ev-button button icon ev-modal-close" onClick={handleCloseModal}>
           <FAI icon={faWindowClose} />
         </button>
+        }
         {React.cloneElement(children, {handleCloseModal})}
       </ReactModal>
     </>

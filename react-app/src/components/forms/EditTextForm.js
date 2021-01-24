@@ -101,7 +101,7 @@ const EditTextForm = ({currentUser, itemData, title, setItemData, setContentDisp
         setTimeout(() => setItemData({...data}), 1000);
       }
     } catch (err) {
-      console.log('err', err)
+      // console.error('err', err)
       setErrors(err.errors)
     }
   }

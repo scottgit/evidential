@@ -17,7 +17,11 @@ html {
   --secondary-color-white: rgb(255, 251, 239);
 
   --error-color: red;
+  --error-color-light: rgb(250, 146, 146);
+  --error-color-dark: rgb(117, 2, 2);
   --success-color: green;
+  --success-color-light: rgb(2, 197, 2);
+  --success-color-dark: rgb(1, 68, 1);
   --lightest-white: white;
 
   /* Icons */
@@ -33,4 +37,8 @@ html {
   --button-primary-background: linear-gradient(175deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
 
   --button-primary-background-hover: linear-gradient(179deg, var(--primary-color-light), var(--primary-color), var(--primary-color-dark));
+
+  --button-warning-background-hover: linear-gradient(179deg, var(--error-color-light), var(--error-color), var(--error-color-dark));
+
+  --button-safe-background-hover: linear-gradient(179deg, var(--success-color-light), var(--success-color), var(--success-color-dark));
 }

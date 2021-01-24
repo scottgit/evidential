@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext} from 'react';
+import React, {useRef, useState, useEffect, useContext, useCallback} from 'react';
 import {ClaimFormContext} from '../AddClaimForm';
 
 
@@ -6,7 +6,6 @@ const FormTextAreaInputPackage = ({
   fieldType,
   uniqueId,
   formSetterFn,
-  auxilary,
   settings={
     label: 'You need to set a label string!',
     explanation: '',
@@ -35,9 +34,26 @@ const FormTextAreaInputPackage = ({
   const charCountRef = useRef(null)
   const idString = (label.split(' ').join('-')); //Make ids without spaces
 
+  // const setState = (data) => {
 
+  // }
+
+  const setState = useCallback((data) => {
+    if (isArgumentStatement || isArgumentNotes) {
+      formSetterFn(uid, data)
+    } else {
+      formSetterFn(formContext, data)
+    }
+  }, [formSetterFn, isArgumentStatement, isArgumentNotes, uid, formContext])
+
+  const handleRadioSelect = useCallback((e, givenTarget) => {
+    // Need to use integers for true/false for backend wtforms
+    if (!givenTarget) givenTarget = e.target;
+    setState({supports: givenTarget.value === 'support' ? 1 : 0})
+  }, [setState]);
 
   useEffect(() => {
+    // Show field information clicks
     const timer = setTimeout(() => {
       const explaination = document.getElementById(`${idString}-explanation-${uid}`)
       if (showInfo) {
@@ -53,6 +69,15 @@ const FormTextAreaInputPackage = ({
       clearTimeout(timer);
     }
   }, [showInfo, uid, idString])
+
+  useEffect(() => {
+    if (!fixedSupport) return;
+    // Set data for required arguments on load
+    const sup = document.getElementById(`sup-${uid}`);
+    if (sup) handleRadioSelect(null, sup)
+    const reb = document.getElementById(`reb-${uid}`);
+    if (reb) handleRadioSelect(null, reb)
+  }, [handleRadioSelect, uid])
 
   const textInputHandler = (e) => {
     const value = e.target.value;
@@ -88,27 +113,20 @@ const FormTextAreaInputPackage = ({
     }
   }
 
-  const handleRadioSelect = (e) => {
-    // Need to use integers for true/false for backend wtforms
-    setState({supports: e.target.value === 'support' ? 1 : 0})
-  }
 
-  const setState = (data) => {
-    if (isArgumentStatement || isArgumentNotes) {
-      console.log('setting data', data)
-      formSetterFn(uid, data)
-    } else {
-      formSetterFn(formContext, data)
-    }
-  }
+
+
 
   const argumentCheckedState = (value) => {
     // Set required argument's status to checked to its needed value
-    if (!!fixedSupport) return {checked: fixedSupport};
+    if (!!fixedSupport) {
+      return {checked: fixedSupport};
+    }
     // Set added argument's last state
     if (validArg) {
       if (  (validArg.supports === 1 && value === 'support')
           ||(validArg.supports === 0 && value === 'rebut')) {
+
         return {defaultChecked: true}
       }
     }

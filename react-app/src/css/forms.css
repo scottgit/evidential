@@ -125,15 +125,41 @@ forms.css -- imports other files
 
 .ev-claim-create {
   padding: 5px;
-}
-.ev-claim-create h2 {
-  text-align: center;
-  font-size: 1.5em;
-  margin: 0;
-  position: sticky;
-  top: -20px;
+  min-width: 500px;
 }
 
+.ev-claim-create h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5em;
+  margin: -21px -20px 0;
+  padding: 5px 10px 5px;
+  position: sticky;
+  top: -21px;
+  background-color: white;
+  border-bottom: 1px solid var(--primary-color-light);
+}
+
+.ev-claim-create h2 .ev-button {
+  font-size: .7em;
+}
+
+.ev-claim-cancel-confirm {
+  position: absolute;
+  white-space: nowrap;
+  right: 5.5em;
+  font-size: .75em;
+  z-index: 1;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  padding-left: 5px
+}
+
+.ev-claim-cancel-confirm .ev-button {
+  margin: 0 5px;
+}
 
 .ev-claim-info {
   margin: 0 10px;
@@ -142,7 +168,7 @@ forms.css -- imports other files
   border-radius: 12px;
 }
 
-.ev-data-label {
+.ev-data-label:not(:last-of-type) {
   display: block;
   margin-bottom: 1em;
 }
@@ -245,13 +271,17 @@ forms.css -- imports other files
 
 /* Arguments */
 
+/* .ev-argument-group {
+  position: relative;
+} */
+
 .ev-sup-reb {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
 }
 
 .ev-sup-reb input[type="radio"] {
-  margin: 0 5px -.2em 0;
+  margin: 0 5px -.2em 10px;
 }
 
 .ev-form-split {
@@ -272,6 +302,17 @@ forms.css -- imports other files
   flex: 1 1 250px;
   min-width: 250px;
   max-width: 50%;
+}
+
+@media screen and (max-width: 750px) {
+  .ev-form-split .ev-argument-group,
+.ev-argument-add {
+  margin: 10px;
+  padding: 10px;
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 100%;
+}
 }
 
 .ev-form-split .ev-data-label {
@@ -313,4 +354,29 @@ forms.css -- imports other files
 .ev-sup-reb label[readonly]:hover,
 .ev-sup-reb label[readonly]:hover input {
   cursor: not-allowed;
+}
+
+.ev-argument-delete {
+  display: flex;
+  justify-content: flex-end;
+  margin: -15px -10px -10px 0;
+}
+
+.ev-argument-delete-confirm {
+  display: flex;
+  align-items: center;
+}
+
+.ev-argument-delete-confirm + .ev-icon {
+  color: var(--primary-color-light);
+}
+.ev-argument-delete-confirm + .ev-icon.--hover-tilt:hover {
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ev-argument-delete .ev-button {
+  font-size: .7em;
+  padding: 3px 6px;
+  margin: 0 5px 0 20px;
 }

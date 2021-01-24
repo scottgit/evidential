@@ -25,8 +25,6 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
     }
   }, [claim, setContentDisplayed])
 
-  console.log(claim)
-
   const hasKeys = claim && !!claim.hitKeys.length;
 
   return (

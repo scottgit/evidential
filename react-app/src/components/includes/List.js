@@ -105,7 +105,8 @@ const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=fals
         <HTag>
           {pluralType.replace(/\b[a-z]/g, char => char.toUpperCase())}
           {canAddItem && currentUser &&
-          <AddItemModalTrigger type={listType}>
+          // The claim form handles its own close, so hideClose is set
+          <AddItemModalTrigger type={listType} hideClose={displayKey === 'assertion'}>
             {modalContent}
           </AddItemModalTrigger>
           }

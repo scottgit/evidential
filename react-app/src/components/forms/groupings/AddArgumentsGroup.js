@@ -1,14 +1,16 @@
-import React, {useState, useCallback, useContext} from 'react';
+import React, {useState, useCallback} from 'react';
 import ArgumentGroup from './ArgumentGroup';
 import FAI from '../../includes/FAI';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import {ClaimFormContext} from '../AddClaimForm';
 
 
 const AddArgumentsGroup = ({uniqueIdRef}) => {
-  const formContext = useContext(ClaimFormContext);
   const [argList, _setArgList] = useState([]);
+  // Memoize to send to children
   const setArgList = useCallback((data) => _setArgList(data), [_setArgList]);
+
+  // Getter function to avoid child rerenders on argList change
+  const getArgList = useCallback(() => argList, [argList]);
 
   // Generator function to create and send unique id's to an ArgumentGroup
   const makeArgumentProps = () => {
@@ -21,18 +23,15 @@ const AddArgumentsGroup = ({uniqueIdRef}) => {
   const handleAddArgumentGroup = (e) => {
     const newList = [...argList, <ArgumentGroup {...makeArgumentProps()}/>];
     setArgList(newList);
-    console.log('newList', newList)
-    formContext.persistArgsList = [...formContext.persistArgsList, newList[newList.length-1].props.uniqueId];
   }
 
   const Additionals = ({children}) => {
-    console.log('persist', formContext.persistArgsList)
     return (
       <>
         {children.map((child, idx) => {
             if (React.isValidElement(child)) {
-              const uid = formContext.persistArgsList[idx];
-              return React.cloneElement(child, {key: `arg-group-${uid}`, setArgList, listIndex: idx});
+              const uid = child.props.uniqueId;
+              return React.cloneElement(child, {key: `arg-group-${uid}`, getArgList, setArgList, listIndex: idx});
             }
           return child;
         })}

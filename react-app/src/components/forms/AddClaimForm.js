@@ -1,13 +1,13 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import ClaimSection from './groupings/ClaimSection';
 import ClaimArgumentsSections from './groupings/ClaimArgumentsSections';
 import UIDProvider from '../includes/UIDProvider';
 
 const ClaimFormContext = createContext();
 
-const ___AddClaimForm = ({currentUser}) => {
-
+const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
   const formContext = useContext(ClaimFormContext);
+  const [showConfirm, setShowConfrim] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,13 +17,34 @@ const ___AddClaimForm = ({currentUser}) => {
       createdByUserId: currentUser.id,
       arguments: [Object.values(formContext.argumentsSet)],
     }
-    console.log('submit', data)
+    console.log(data);
+  }
+
+  const toggleShowConfirm = (e) => {
+    setShowConfrim(!showConfirm);
+  }
+
+  const doCancel = (e) => {
+    handleCloseModal()
   }
 
   return (
     <div className="ev-claim-create">
       <form onSubmit={handleSubmit}>
-        <h2>Create Claim <button type='submit'>Submit</button></h2>
+        <h2>
+          <button type='submit' className='ev-button --safe'>Submit</button>
+          Create Claim
+          <div className='ev-claim-cancel'>
+            { showConfirm &&
+              <div className="ev-claim-cancel-confirm">
+                <span className="ev-error">Cancel and lose data?</span>
+                <button className="ev-button --warning" type='button' onClick={doCancel}>Yes</button>
+                <button className="ev-button --safe" type='button' onClick={toggleShowConfirm}>No</button>
+              </div>
+            }
+            <button type='button' className='ev-button --warning' onClick={toggleShowConfirm}>Cancel</button>
+          </div>
+          </h2>
           <UIDProvider passToGroup={true}>
             <ClaimSection />
             <ClaimArgumentsSections />
@@ -39,9 +60,8 @@ const AddClaimForm = (props) => {
       assertion: '',          // Sent to database
       notes: '',              // Sent to database
       argumentsSet: {},       // Modified to array of values and sent to database
-      persistArgsList: []     // Tracks just "added" arguments uids
     }}>
-      <___AddClaimForm {...props} />
+      <ADD_CLAIM_FORM {...props} />
     </ClaimFormContext.Provider>
   )
 }

@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import AddArgumentNotesField from '../fields/AddArgumentNotesField';
 import AddArgumentStatementFields from '../fields/AddArgumentStatementFields';
 import {ClaimFormContext} from '../AddClaimForm';
 import FAI from '../../includes/FAI';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-const ArgumentGroup = ({uniqueId, listIndex, fixedSupport}) => {
+const ArgumentGroup = ({uniqueId, listIndex, getArgList, setArgList, fixedSupport}) => {
   const formContext = useContext(ClaimFormContext);
   const [showConfirm, setShowConfrim] = useState(false);
 
@@ -35,7 +35,6 @@ const ArgumentGroup = ({uniqueId, listIndex, fixedSupport}) => {
     }
 
     formContext.argumentsSet = {...currentData, ...updateData};
-    console.log(formContext.argumentsSet)
   }
 
   const handleKeyedConfirm = (e) => {
@@ -49,13 +48,13 @@ const ArgumentGroup = ({uniqueId, listIndex, fixedSupport}) => {
   }
 
   const doDelete = (e) => {
-    const target = e.target;
     if (uniqueId in formContext.argumentsSet) {
-      delete formContext.argumentsSet[uniqueId]
+      delete formContext.argumentsSet[uniqueId];
     }
-    console.log('deleting list num', listIndex)
-    // const newList = [...argList].splice(listPos, 1);
-    // setArgList(newList);
+    const newList = [...getArgList()]
+    newList.splice(listIndex, 1);
+    setArgList(newList);
+    setShowConfrim(false);
   }
 
   const statementProps = ({
@@ -80,8 +79,8 @@ const ArgumentGroup = ({uniqueId, listIndex, fixedSupport}) => {
         <div className="ev-argument-delete">
           { showConfirm &&
           <span className="ev-argument-delete-confirm">
-            <button className="ev-button" type='button' onClick={doDelete}>Delete?</button>
-            <button className="ev-button" type='button' onClick={toggleShowConfirm}>Cancel!</button>
+            <button className="ev-button --warning" type='button' onClick={doDelete}>Delete</button>
+            <button className="ev-button --safe" type='button' onClick={toggleShowConfirm}>Cancel</button>
           </span>
           }
           <FAI

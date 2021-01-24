@@ -17,8 +17,8 @@ const ConfirmModal = ({modalMsgRef, showModal, handleCloseModal, affirmAction, m
     <div className="ev-confirm" ref={modalMsgRef}>
       <p>{message}</p>
       <div>
-        <button className="ev-button" type="button" onClick={affirmAction}>Yes</button>
-        <button className="ev-button" type="button" onClick={handleCloseModal}>No</button>
+        <button className="ev-button --warning" type="button" onClick={affirmAction}>Yes</button>
+        <button className="ev-button --safe" type="button" onClick={handleCloseModal}>No</button>
       </div>
     </div>
   </ReactModal>
