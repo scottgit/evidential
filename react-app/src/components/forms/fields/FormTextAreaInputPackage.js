@@ -22,13 +22,15 @@ const FormTextAreaInputPackage = ({
   const isArgumentNotes = fieldType === 'Argument Notes';
   const validArg = formContext.argumentsSet && formContext.argumentsSet[uid];
 
-  const persistArgumentData = () => {
+  const persistData = () => {
     if (isArgumentStatement && validArg) return validArg.statement;
     if (isArgumentNotes && validArg) return validArg.argumentNotes;
+    if (formContext.assertion && fieldType === 'Assertion') return formContext.assertion
+    if (formContext.notes && fieldType === 'Claim Notes') return formContext.notes
     return '';
   }
 
-  const [value, setValue] = useState(persistArgumentData());
+  const [value, setValue] = useState(persistData());
   const [showInfo, setShowInfo] = useState(false);
   const [charsLeft, setCharsLeft] = useState(maxLength);
   const charCountRef = useRef(null)
@@ -42,9 +44,9 @@ const FormTextAreaInputPackage = ({
     if (isArgumentStatement || isArgumentNotes) {
       formSetterFn(uid, data)
     } else {
-      formSetterFn(formContext, data)
+      formSetterFn(data)
     }
-  }, [formSetterFn, isArgumentStatement, isArgumentNotes, uid, formContext])
+  }, [formSetterFn, isArgumentStatement, isArgumentNotes, uid])
 
   const handleRadioSelect = useCallback((e, givenTarget) => {
     // Need to use integers for true/false for backend wtforms
@@ -72,12 +74,15 @@ const FormTextAreaInputPackage = ({
 
   useEffect(() => {
     if (!fixedSupport) return;
-    // Set data for required arguments on load
+    // Set radio button state for required arguments on load
     const sup = document.getElementById(`sup-${uid}`);
     if (sup) handleRadioSelect(null, sup)
     const reb = document.getElementById(`reb-${uid}`);
     if (reb) handleRadioSelect(null, reb)
   }, [handleRadioSelect, uid])
+
+  useEffect(() => {
+  }, [formContext.errors.length])
 
   const textInputHandler = (e) => {
     const value = e.target.value;
@@ -132,7 +137,7 @@ const FormTextAreaInputPackage = ({
     }
     return {}
   }
-
+  console.log('rerendering', idString, uid)
   return (
     <>
       { (isArgumentStatement &&

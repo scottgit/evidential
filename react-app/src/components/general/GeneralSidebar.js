@@ -6,6 +6,7 @@ import TextEditLink from "../includes/TextEditLink";
 import TextViewLink from "../includes/TextViewLink";
 import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import AddClaimButton from '../includes/AddClaimButton';
 
 const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
   const [showAbout, setShowAbout] = useState(false);
@@ -62,6 +63,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
+          <AddClaimButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           {textOptionLinks()}
           <AddTextButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >

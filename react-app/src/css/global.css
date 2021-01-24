@@ -154,6 +154,11 @@ a:hover {
   right: auto;
 }
 
+.fa-layers .ev-icon.--mid {
+  font-size: .5em;
+  inset: 2px 4px 6px;
+}
+
 .active .ev-icon {
   color: #ccc;
   cursor: default;

@@ -20,6 +20,12 @@ def claim(id):
 
     return claim.full_to_dict()
 
+'''
+@claim_routes.route('/<int:claimId>/add_hit_keys')
+def add_key(claimId):
+    claim = Claim.query.get(claimId)
+'''
+
 
 @claim_routes.route('/create', methods=['POST'])
 @login_required
@@ -28,8 +34,24 @@ def create():
     Creates a claim to use for analysis; claims require at least two arguments (can be more),
     one in support, one in rebut relationships; if hit_keys were provided, then
     """
+    print('****REQ DATA***', request.data)
+    print('****REQ JSON***', request.json)
+    print('****REQ FORM***', dict(request.form.items(multi=True)))
+    print('****REQ FORM 1***', request.form.get('assertion'))
+    print('****REQ FORM 2***', request.form.get('claimNotes'))
+    print('****REQ FORM 3***', request.form.getlist('arguments'))
+    arg_list = request.json['arguments']
+    print('******ARG ARRAY****', arg_list)
+    print('****REQ form dict***', list(request.form.getlist('arguments', dict)))
     form = CreateClaimForm()
+    print("****FORM DATA***", form.data)
+    # form['arguments'].data = arg_list
+    setattr(form,'arguments',arg_list)
+    print("*****FORM ARGS****", form['arguments'].data)
+    form.data["arguments"] = arg_list
+    print("*****FORM ARGS SET****", form.data['arguments[]'])
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
         user_id = form.data['createdByUserId']
         # First: Create Claim (but don't commit)
@@ -42,16 +64,28 @@ def create():
         db.session.add(claim)
         db.session.flush()
         '''
-        NOTE: Arguments are coming in as a list of paired lists,
-        the pair being the "id" of an existing Argument (or null if needing creation),
-        and a "settings" dict for the data being set (null if the "id" was provided); e.g.
+        NOTE: The "arguments" should be coming in as an array of integers and/or objects,
+            an integer being the "id" of an existing Argument,
+            and a object for the data being set on a new Argument.
+            So if argument data is new, it should be sending this object:
 
-        The "supports" needs to come as a digit 0/1 for false/true so that that wtforms can process it within the array (as apparently Booleans are not supported within a FieldSet). It will be converted to a boolean on DB save.
-        [
-            [id, settings], # representative names shown
-            [7, None],      # expecting to pull an existing argument
-            [None, {"statement": "Blah!", "argumentNotes": "Blah, blah.", "supports": 1}]
-        ]
+                {
+                    statement: "Blah!",
+                    argumentNotes: "Blah, blah.",
+                    supports: 1   // See further explanation
+                }
+
+            The "supports" needs to come as a digit 0/1 for false/true so that that wtforms can process it within the array (as apparently Booleans are not supported within a FieldSet). It will be converted to a boolean on DB save.
+
+            So a final example of what an "arguments" array might look like:
+            [
+                7,      // expecting to pull an existing argument
+                { "statement": "Blah!",
+                    "argumentNotes": "Blah, blah.",
+                    "supports": 1
+                },      // setting up a new argument
+                3,      // expecting to pull an existing argument
+            ]
         '''
         # Second: Check for and create if needed Arguments (with two other steps within that)
         arguments = form.data['arguments']
@@ -73,6 +107,7 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
     errors = {}
     found_support = None
     found_rebut = None
+    print('*****arguments*****', arguments)
     for arg in arguments:
         arg_id = arg if isinstance(arg, int) else False
         arg_settings = arg if isinstance(arg, dict) else {}
@@ -95,7 +130,7 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
             )
             db.session.add(argument)
             db.session.flush()
-            arg[0] = argument.id # store new id back in list for use in just a bit
+            arg_id = argument.id # store new id back in list for use in just a bit
         else: # An invalid settings object was given
             invalid_statement = {"invalid argument statement":"Argument statement was missing or beyond 200 character limit. Cannot create Argument; please correct and resubmit."}
             errors.update(invalid_statement)
@@ -105,7 +140,7 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
         if (len(errors) == 0):
             s_r = SupportRebut(
                 claim_id=claim_id,
-                argument_id=arg[0], # Using list as this number is what is "accurate" based off either existance or creation of argument
+                argument_id=arg_id,
                 supports=bool(valid_support),
                 created_by=user_id
             )
@@ -124,7 +159,7 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
 
         if (errors):
             db.session.rollback()
-            return {'errors': validation_messages(errors)}
+            return {"errors": validation_messages(errors)}
         else:
             return {"success": "Arguments added."}
 

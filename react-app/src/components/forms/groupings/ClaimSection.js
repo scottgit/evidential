@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import FormTextAreaInputPackage from '../fields/FormTextAreaInputPackage';
-
+import {ClaimFormContext} from '../AddClaimForm';
 
 
 const ClaimSection = ({uniqueIdRef}) => {
+  const formContext = useContext(ClaimFormContext);
 
-  const setClaimAssertion = (context, data) => {context.assertion = data}
-  const AddClaimAssertionComponent = (uniqueId = ++uniqueIdRef.current) => (
+  const claimId = 'claimId' in formContext ? formContext.claimId : (formContext['claimId'] = ++uniqueIdRef.current);
+
+  const setClaimAssertion = (data) => {formContext.assertion = data}
+  const AddClaimAssertionComponent = (uniqueId = claimId) => (
     <FormTextAreaInputPackage
+    key={`Assertion-${uniqueId}`}
+    fieldType='Assertion'
     uniqueId={uniqueId}
     formSetterFn={setClaimAssertion}
     settings={
@@ -20,9 +25,11 @@ const ClaimSection = ({uniqueIdRef}) => {
       }
     }/>
   )
-  const setClaimNotes = (context, data) => {context.notes = data}
-  const AddClaimNotesComponent = (uniqueId = ++uniqueIdRef.current) => (
+  const setClaimNotes = (data) => {formContext.notes = data}
+  const AddClaimNotesComponent = (uniqueId = claimId) => (
     <FormTextAreaInputPackage
+    key={`ClaimNotes-${uniqueId}`}
+    fieldType='Claim Notes'
     uniqueId={uniqueId}
     formSetterFn={setClaimNotes}
     settings={
@@ -38,8 +45,8 @@ const ClaimSection = ({uniqueIdRef}) => {
 
   return (
     <section >
-      <h3>Claim Info</h3>
-      <div className="ev-claim-info">
+      <h3>Claim Settings</h3>
+      <div className="ev-claim-settings">
         {AddClaimAssertionComponent()}
         {AddClaimNotesComponent()}
       </div>

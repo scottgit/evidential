@@ -1,4 +1,13 @@
-export default async function genericFetch({path, errorMsg, data, method='GET'}) {
+export default async function genericFetch({path, errorMsg, data, method='GET', type='JSON'}) {
+
+  let contentType;
+  switch(type) {
+    case 'FORM':
+      contentType = "multipart/form-data";
+      break;
+    default:
+      contentType = "application/json";
+  }
 
   try {
     let response;
@@ -8,7 +17,9 @@ export default async function genericFetch({path, errorMsg, data, method='GET'})
     else {
       response = await fetch(`/api${path}`, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": contentType
+        },
         body: JSON.stringify(data)
       });
     }

@@ -19,7 +19,7 @@ const ClaimDetail = (props) => {
 
   // Setup the display of main and sidebar
   const display = (() => {
-    const show = ["view", "create", "edit"].filter((str) => location.pathname.includes(str))
+    const show = ["view", "edit"].filter((str) => location.pathname.includes(str))
     return {main: `${show[0].toUpperCase()}-CLAIM`, sidebar: "USER"};
   })()
 
@@ -92,10 +92,6 @@ const ClaimDetail = (props) => {
     { (itemData && (
           (display.main === "VIEW-CLAIM" &&
             <Claim key={`${display.main}-viewbody-${itemKey}`} {...claimProps} />
-          )
-          ||
-          (display.main === "CREATE-CLAIM" &&
-            <AddClaimForm key={`${display.main}-editbody-${itemKey}`} {...claimProps} />
           )
           ||
           (display.main === "EDIT-CLAIM" &&

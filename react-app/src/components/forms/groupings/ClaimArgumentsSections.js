@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ArgumentGroup from './ArgumentGroup';
 import AddArgumentsGroup from './AddArgumentsGroup';
-
+import {ClaimFormContext} from '../AddClaimForm';
 
 const ClaimArgumentsSections = ({uniqueIdRef}) => {
+  const formContext = useContext(ClaimFormContext);
 
   // Generator function to create and send unique id's to an ArgumentGroup that is paired
   let argSupport = null;
@@ -11,8 +12,19 @@ const ClaimArgumentsSections = ({uniqueIdRef}) => {
     argSupport = argSupport ? 'rebut' : 'support';
     return argSupport;
   };
+
+  let assigned = -1;
+  const assignId = () => {
+    const argLength = formContext.pairedArgIds.length;
+    if (argLength < 2) {
+      const uid = ++uniqueIdRef.current;
+      formContext.pairedArgIds[argLength] = uid;
+      return uid
+    }
+    return formContext.pairedArgIds[++assigned]
+  }
   const makePairedArgumentProps = () => ({
-    uniqueId: ++uniqueIdRef.current,
+    uniqueId: assignId(),
     fixedSupport: balancer()
   })
 

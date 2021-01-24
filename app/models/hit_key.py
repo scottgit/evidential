@@ -19,11 +19,9 @@ class HitKey(db.Model, CommonColumns, TrackUpdates):
 
   claims = relationship(
     'ClaimHitKeys',
-    back_populates='hit_key')#,
-    # order_by='ClaimHitKeys.claim.assertion',
-    # )
+    back_populates='hit_key')
 
-  hits = relationship('Hit', back_populates='hit_key') #, order_by='Hit.text_id')
+  hits = relationship('Hit', back_populates='hit_key') 
 
   # for to_history() keys are for python, and must match attribute key names of the model, so snake-case
   def to_history(self):
