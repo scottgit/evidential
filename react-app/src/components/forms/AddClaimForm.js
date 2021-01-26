@@ -15,23 +15,14 @@ const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    // const fullForm = document.getElementById('create-claim');
-    // console.log(fullForm)
-    // let test = {'statement-0': [{statement: ["Test"], argumentNotes: [""], supports: [1]}], 'statement-1': [{statement: ["Test"], argumentNotes: [""], supports: [0]}] }
-    // let formData = new FormData()
-    // formData.append('assertion', formContext.assertion)
-    // formData.append('claimNotes', formContext.notes)
-    // formData.append('createdByUserId', currentUser.id)
-    // formData.append('arguments', Object.values(formContext.argumentsSet))
 
     const data = {
       assertion: formContext.assertion,
       claimNotes: formContext.notes,
       createdByUserId: currentUser.id,
-      arguments: Object.values(formContext.argumentsSet),
-      // arguments: formContext.argumentsSet,
+      newArguments: Object.values(formContext.argumentsSet),
+      existingArguments: [] //TODO implement ability to link existing arguments as well
     }
-    console.log(data)
 
     try {
       const res = await createClaim(data);
