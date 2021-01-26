@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
+import ClaimsAdded from '../user/ClaimsAdded';
 import DataChanges from '../user/DataChanges';
 import AddTextButton from '../includes/AddTextButton';
 import TextEditLink from "../includes/TextEditLink";
@@ -88,6 +89,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
 
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
           {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
+          {(currentUser.claimsAdded && <ClaimsAdded user={currentUser} currentUser={currentUser} />)}
       </div>
     )
     }

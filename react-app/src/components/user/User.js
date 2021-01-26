@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, Redirect } from "react-router-dom";
 import TextsAdded from './TextsAdded';
+import ClaimsAdded from './ClaimsAdded';
 import DataChanges from './DataChanges';
 import Loader from "../includes/Loader";
 
@@ -43,9 +44,9 @@ function User({currentUser}) {
             <div><strong>Status: </strong> {user.deleted ? 'Deactivated' : 'Active'}</div>
             {(!!user.dataChanges.length && <DataChanges user={user} />)}
             {(!!user.textsAdded.length && <TextsAdded user={user} currentUser={currentUser} />)}
+            {(!!user.claimsAdded.length && <ClaimsAdded user={user} currentUser={currentUser} />)}
           </>
         }
-
       </main>
     </div>
   );

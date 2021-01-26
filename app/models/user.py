@@ -30,6 +30,12 @@ class User(db.Model, UserMixin):
     texts = Text.query.filter(Text._created_by==self.id).all()
     return texts
 
+  @hybrid_property
+  def claims_added(self):
+    from app.models import Claim
+    claims = Claim.query.filter(Claim._created_by==self.id).all()
+    return claims
+
   @property
   def password(self):
     return self.hashed_password
@@ -62,6 +68,7 @@ class User(db.Model, UserMixin):
       **self.to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
+      "claimsAdded": [claim.to_dict() for claim in self.claims_added],
     }
 
   def public_to_dict(self):
@@ -80,4 +87,5 @@ class User(db.Model, UserMixin):
       **self.public_to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
       "textsAdded": [text.to_dict() for text in self.texts_added],
+      "claimsAdded": [claim.to_dict() for claim in self.claims_added],
     }

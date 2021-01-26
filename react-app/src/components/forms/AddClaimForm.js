@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useState } from 'react';
+import {useHistory} from 'react-router-dom';
 import ClaimSection from './groupings/ClaimSection';
 import ClaimArgumentsSections from './groupings/ClaimArgumentsSections';
 import UIDProvider from '../includes/UIDProvider';
 import {createClaim} from '../../services/claim';
+import { updateCurrentUserInfo } from '../../services/user';
 
 const ClaimFormContext = createContext();
 
-const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
+const ADD_CLAIM_FORM = ({currentUser, setCurrentUser, handleCloseModal}) => {
   const formContext = useContext(ClaimFormContext);
   const [showConfirm, setShowConfrim] = useState(false);
   const [errors, setErrors] = useState([]);
-  formContext.errors = errors;
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,13 +27,12 @@ const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
     }
 
     try {
-      const res = await createClaim(data);
-      if (res.errors) {
-        throw res;
+      const claim = await createClaim(data);
+      if (!claim.errors) {
+        handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
+        setTimeout(() => history.push(`/claim/view/${claim.id}`), 400)
       }
-      // TODO redirect to NEWLY created Claim
-      console.log(res);
-      alert('submitted');
     } catch (err) {
       console.log('errors', formContext)
       setErrors(err.errors)
