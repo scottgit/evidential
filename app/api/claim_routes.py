@@ -8,14 +8,14 @@ claim_routes = Blueprint('claims', __name__)
 
 
 @claim_routes.route('')
-def claims():
+def get_claims():
     claims = Claim.query.all()
 
     return {"claims": [claim.full_to_dict() for claim in claims]}
 
 
 @claim_routes.route('/<int:id>')
-def claim(id):
+def get_claim(id):
     claim = Claim.query.get(id)
 
     return claim.full_to_dict()
@@ -34,23 +34,21 @@ def create():
     Creates a claim to use for analysis; claims require at least two arguments (can be more),
     one in support, one in rebut relationships; if hit_keys were provided, then
     """
-    print('****REQ DATA***', request.data)
-    print('****REQ JSON***', request.json)
-    print('****REQ FORM***', dict(request.form.items(multi=True)))
-    print('****REQ FORM 1***', request.form.get('assertion'))
-    print('****REQ FORM 2***', request.form.get('claimNotes'))
-    print('****REQ FORM 3***', request.form.getlist('arguments'))
     arg_list = request.json['arguments']
-    print('******ARG ARRAY****', arg_list)
-    print('****REQ form dict***', list(request.form.getlist('arguments', dict)))
+
+
     form = CreateClaimForm()
-    print("****FORM DATA***", form.data)
-    # form['arguments'].data = arg_list
-    setattr(form,'arguments',arg_list)
-    print("*****FORM ARGS****", form['arguments'].data)
-    form.data["arguments"] = arg_list
-    print("*****FORM ARGS SET****", form.data['arguments[]'])
     form['csrf_token'].data = request.cookies['csrf_token']
+    # form['arguments'].pop_entry()
+    for arg in arg_list:
+        form['arguments'].append_entry(arg)
+    # form['arguments'].data = arg_list
+    # setattr(form,'arguments',arg_list)
+    print("*****FORM ARGS****", list(form['arguments'].entries))
+    for entry in form['arguments'].entries:
+        print('***ARGS***', entry.data)
+    # form.data["arguments"] = arg_list
+    # print("*****FORM ARGS SET****", form.data['arguments[]'])
 
     if form.validate_on_submit():
         user_id = form.data['createdByUserId']
@@ -109,59 +107,54 @@ def create_arguments(claim_id, user_id, arguments, check_support_and_rebut_exist
     found_rebut = None
     print('*****arguments*****', arguments)
     for arg in arguments:
-        arg_id = arg if isinstance(arg, int) else False
-        arg_settings = arg if isinstance(arg, dict) else {}
-        valid_statement = lambda arg_settings : (
-            ("statement" in arg_settings) and len(arg_settings.statement) <= 200
-        )
-        valid_support = lambda arg_settings : "supports" in arg_settings
+        arg_id = arg.id if 'id' in arg else False
+        # valid_statement = lambda arg_settings : (
+        #     ("statement" in arg_settings) and len(arg_settings.statement) <= 200
+        # )
+        # valid_support = lambda arg_settings : "supports" in arg_settings
 
         if (arg_id):
-            exists = Argument.query.get(arg_id)
-            if (not exists): # An invalid id was given, abort all operations
-                raise_error = {f"missing argument id {arg_id}": f"Argument with id {arg_id} was not found in the database. Cannot link to Claim (Argument and any Claim creation aborted). Contact site administrator for help, as invalid id should not have been passed."}
+            argument = Argument.query.get(arg_id)
+            if (not argument): # An invalid id was given, abort all operations
+                raise_error = {f"missing argument id {arg_id}": [f"Argument with id {arg_id} was not found in the database. Cannot link to Claim (Argument and any Claim creation aborted). Contact site administrator for help, as invalid id should not have been passed."]}
                 errors.update(raise_error)
-        elif (valid_statement and valid_support):
+        else:
             argument = Argument(
-                statement=arg_settings['statement'],
-                notes=arg_settings['argumentNotes'],
+                statement=arg['statement'],
+                notes=arg['argumentNotes'],
                 created_by=user_id
-                # defaults done for id, created_at
+                # defaults done for primary key id and created_at
             )
             db.session.add(argument)
             db.session.flush()
             arg_id = argument.id # store new id back in list for use in just a bit
-        else: # An invalid settings object was given
-            invalid_statement = {"invalid argument statement":"Argument statement was missing or beyond 200 character limit. Cannot create Argument; please correct and resubmit."}
-            errors.update(invalid_statement)
-            invalid_support = {"missing argument relation":"Support or Rebut relation not given. Cannot create Support/Rebut relation; please correct and resubmit."}
-            errors.update(invalid_support)
+
         # Link Arguments to Claim via SupportRebut
         if (len(errors) == 0):
             s_r = SupportRebut(
                 claim_id=claim_id,
                 argument_id=arg_id,
-                supports=bool(valid_support),
+                supports=bool(arg['supports']),
                 created_by=user_id
             )
             db.session.add(s_r)
             db.session.flush()
         else:
             break
-        # Track if both a support and rebut argument has processed
-        if (check_support_and_rebut_exist):
-            if (found_support == None and bool(s_r.supports) == True):
-                found_support = True
-            if (found_rebut == None and bool(s_r.supports) == False):
-                found_rebut = True
-            if (not (found_support and found_rebut)):
-                errors.update({"argument balance": "At least one support and one rebut argument were not set. Please add the missing needed Argument type and resubmit."})
+    # Track if both a support and rebut argument has processed
+    if (check_support_and_rebut_exist):
+        if (found_support == None and s_r.supports == True):
+            found_support = True
+        if (found_rebut == None and s_r.supports == False):
+            found_rebut = True
+        if (not (found_support and found_rebut)):
+            errors.update({"argument balance": ["At least one support and one rebut argument were not set. Please add the missing needed Argument type and resubmit."]})
 
-        if (errors):
-            db.session.rollback()
-            return {"errors": validation_messages(errors)}
-        else:
-            return {"success": "Arguments added."}
+    if (errors):
+        db.session.rollback()
+        return {"errors": validation_messages(errors)}
+    else:
+        return {"success": "Arguments added."}
 
 
 # def add_hit_keys(claim_id, user_id, hit_keys):

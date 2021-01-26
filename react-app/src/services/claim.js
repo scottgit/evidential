@@ -37,7 +37,7 @@ export const createClaim = async (data) => {
           3,      // expecting to pull an existing argument
       ]
   */
-  const request = {path: `/claims/create`, errorMsg: 'Failed to create claim.', data, method: 'POST', type: 'FORM'}
+  const request = {path: `/claims/create`, errorMsg: 'Failed to create claim.', data, method: 'POST'}
   console.log('request', data)
   return genericFetch({...request});
 }

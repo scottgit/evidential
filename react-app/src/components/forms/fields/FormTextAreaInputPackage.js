@@ -36,10 +36,6 @@ const FormTextAreaInputPackage = ({
   const charCountRef = useRef(null)
   const idString = (label.split(' ').join('-')); //Make ids without spaces
 
-  // const setState = (data) => {
-
-  // }
-
   const setState = useCallback((data) => {
     if (isArgumentStatement || isArgumentNotes) {
       formSetterFn(uid, data)
@@ -79,10 +75,10 @@ const FormTextAreaInputPackage = ({
     if (sup) handleRadioSelect(null, sup)
     const reb = document.getElementById(`reb-${uid}`);
     if (reb) handleRadioSelect(null, reb)
-  }, [handleRadioSelect, uid])
+  }, [handleRadioSelect, uid, fixedSupport])
 
-  useEffect(() => {
-  }, [formContext.errors.length])
+  // useEffect(() => {
+  // }, [formContext.errors.length])
 
   const textInputHandler = (e) => {
     const value = e.target.value;
@@ -137,7 +133,7 @@ const FormTextAreaInputPackage = ({
     }
     return {}
   }
-  console.log('rerendering', idString, uid)
+
   return (
     <>
       { (isArgumentStatement &&
@@ -187,7 +183,7 @@ const FormTextAreaInputPackage = ({
           </div>
         </div>
         }
-        <textarea id={`${idString}-${uid}`} autoComplete={'off'} rows={rows} className="ev-text-area" value={value} placeholder={placeholder} onChange={textInputHandler} required={required} maxLength={maxLength} spellCheck={true}></textarea>
+        <textarea id={`${idString}-${uid}`} name={`${idString}-${uid}`} autoComplete={'off'} rows={rows} className="ev-text-area" value={value} placeholder={placeholder} onChange={textInputHandler} required={required} maxLength={maxLength} spellCheck={true}></textarea>
         <div className="ev-characters-remaining" ref={charCountRef}>{charsLeft} characters remaining</div>
       </label>
     </>

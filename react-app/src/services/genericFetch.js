@@ -3,7 +3,7 @@ export default async function genericFetch({path, errorMsg, data, method='GET', 
   let contentType;
   switch(type) {
     case 'FORM':
-      contentType = "multipart/form-data";
+      contentType = "application/x-www-form-urlencoded; charset=UTF-8";
       break;
     default:
       contentType = "application/json";

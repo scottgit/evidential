@@ -15,35 +15,36 @@ const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    const fullForm = document.getElementById('create-claim');
-    console.log(formContext.assertion)
-    let formData = new FormData()
-    formData.set('assertion', formContext.assertion)
-    formData.set('claimNotes', formContext.notes)
-    formData.set('createdByUserId', currentUser.id)
-    formData.set('arguments', formContext.argumentsSet)
-    // const data = {
-    //   assertion: formContext.assertion,
-    //   claimNotes: formContext.notes,
-    //   createdByUserId: currentUser.id,
-    //   arguments: Object.values(formContext.argumentsSet),
-    // }
+    // const fullForm = document.getElementById('create-claim');
+    // console.log(fullForm)
+    // let test = {'statement-0': [{statement: ["Test"], argumentNotes: [""], supports: [1]}], 'statement-1': [{statement: ["Test"], argumentNotes: [""], supports: [0]}] }
+    // let formData = new FormData()
+    // formData.append('assertion', formContext.assertion)
+    // formData.append('claimNotes', formContext.notes)
+    // formData.append('createdByUserId', currentUser.id)
+    // formData.append('arguments', Object.values(formContext.argumentsSet))
 
-    console.log(formData);
-    return;
+    const data = {
+      assertion: formContext.assertion,
+      claimNotes: formContext.notes,
+      createdByUserId: currentUser.id,
+      arguments: Object.values(formContext.argumentsSet),
+      // arguments: formContext.argumentsSet,
+    }
+    console.log(data)
 
-    // try {
-    //   const res = await createClaim(data);
-    //   if (res.errors) {
-    //     throw res;
-    //   }
-    //   // TODO redirect to NEWLY created Claim
-    //   console.log(res);
-    //   alert('submitted');
-    // } catch (err) {
-    //   console.log('errors', formContext)
-    //   setErrors(err.errors)
-    // }
+    try {
+      const res = await createClaim(data);
+      if (res.errors) {
+        throw res;
+      }
+      // TODO redirect to NEWLY created Claim
+      console.log(res);
+      alert('submitted');
+    } catch (err) {
+      console.log('errors', formContext)
+      setErrors(err.errors)
+    }
   }
 
   const toggleShowConfirm = (e) => {
@@ -74,7 +75,7 @@ const ADD_CLAIM_FORM = ({currentUser, handleCloseModal}) => {
           { (!!errors.length) &&
             <div className="ev-form-errors">
               {errors.map((error) => (
-                <div key={error}>{error}</div>
+                <div key={`${error}-${Date.now()}`}>{error}</div>
               ))}
             </div>
           }

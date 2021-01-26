@@ -1,10 +1,13 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import ArgumentGroup from './ArgumentGroup';
 import FAI from '../../includes/FAI';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {ClaimFormContext} from '../AddClaimForm';
 
 
 const AddArgumentsGroup = ({uniqueIdRef}) => {
+  const formContext = useContext(ClaimFormContext);
+
   const [argList, _setArgList] = useState([]);
   // Memoize to send to children
   const setArgList = useCallback((data) => _setArgList(data), [_setArgList]);
@@ -13,12 +16,30 @@ const AddArgumentsGroup = ({uniqueIdRef}) => {
   const getArgList = useCallback(() => argList, [argList]);
 
   // Generator function to create and send unique id's to an ArgumentGroup
-  const makeArgumentProps = () => {
+  const makeArgumentProps = useCallback((uid) => {
+    const uniqueId = uid || ++uniqueIdRef.current;
     return ({
-      uniqueId: ++uniqueIdRef.current,
+      uniqueId,
       setArgList
     })
-  }
+  }, [setArgList, uniqueIdRef]);
+
+  // IFFY to persist data from context on rerenders
+  const persistList = useCallback(() => {
+    const list = [];
+    const requiredList = formContext.pairedArgIds;
+    for (let key in formContext.argumentsSet) {
+      if ( !requiredList.includes(parseInt(key)) ) {
+        list.push(<ArgumentGroup {...makeArgumentProps(key)}/>)
+      }
+    }
+    setArgList(list);
+  }, [setArgList, formContext.argumentsSet, formContext.pairedArgIds, makeArgumentProps]);
+
+  useEffect(() => {
+    persistList();
+    // eslint-disable-next-line
+  }, [])
 
   const handleAddArgumentGroup = (e) => {
     const newList = [...argList, <ArgumentGroup {...makeArgumentProps()}/>];

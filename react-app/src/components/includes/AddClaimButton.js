@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import FAI from './FAI';
-import { faCommentAlt, faPlus, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import AddTextForm from '../forms/AddTextForm';
+import { faCommentAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AddClaimForm } from '../forms/AddClaimForm';
 
 
