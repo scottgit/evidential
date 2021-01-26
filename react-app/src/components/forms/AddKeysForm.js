@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useRef} from 'react';
 import AddKeys from './fields/AddKeys';
 import FormHeader from '../includes/FormHeader';
+import processHitKeys from '../../services/processHitKeys';
 
 const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => {
   const [keys, _setKeys] = useState();
@@ -49,7 +50,7 @@ const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => 
   const handleSubmit = (e) => {
     e.preventDefault();
     //Clean up the keys and make into an array
-    const hitKeys = keys.trim().split(',').map(key => key.trim());
+    const hitKeys = processHitKeys(keys);
 
     const data = {hitKeys}
     console.log(data);

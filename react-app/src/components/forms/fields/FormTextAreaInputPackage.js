@@ -27,6 +27,7 @@ const FormTextAreaInputPackage = ({
     if (isArgumentNotes && validArg) return validArg.argumentNotes;
     if (formContext && formContext.assertion && fieldType === 'Assertion') return formContext.assertion
     if (formContext && formContext.notes && fieldType === 'Claim Notes') return formContext.notes
+    if (formContext && formContext.hitKeys && fieldType === 'Hit Keys') return formContext.hitKeys
     return '';
   }
 

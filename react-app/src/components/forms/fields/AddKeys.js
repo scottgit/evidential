@@ -1,7 +1,7 @@
 import React from 'react';
 import FormTextAreaInputPackage from './FormTextAreaInputPackage';
 
-const AddKeys = ({uniqueId=1, formSetterFn, required, placeholder="(Optional) But highly recommended"}) => {
+const AddKeys = ({uniqueId=1, formSetterFn, required=false, placeholder="(Optional) But highly recommended"}) => {
 
   return (
     <FormTextAreaInputPackage

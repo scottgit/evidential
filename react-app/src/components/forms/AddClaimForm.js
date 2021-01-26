@@ -6,6 +6,7 @@ import UIDProvider from '../includes/UIDProvider';
 import {createClaim} from '../../services/claim';
 import { updateCurrentUserInfo } from '../../services/user';
 import FormHeader from '../includes/FormHeader';
+import processHitKeys from '../../services/processHitKeys';
 
 const ClaimFormContext = createContext();
 
@@ -22,22 +23,23 @@ const ADD_CLAIM_FORM = ({currentUser, setCurrentUser, handleCloseModal}) => {
     const data = {
       assertion: formContext.assertion,
       claimNotes: formContext.notes,
+      hitKeys: processHitKeys(formContext.hitKeys),
       createdByUserId: currentUser.id,
       newArguments: Object.values(formContext.argumentsSet),
       existingArguments: [] //TODO implement ability to link existing arguments as well
     }
-
-    try {
-      const claim = await createClaim(data);
-      if (!claim.errors) {
-        handleCloseModal();
-        updateCurrentUserInfo(setCurrentUser, currentUser.id);
-        setTimeout(() => history.push(`/claim/view/${claim.id}`), 400)
-      }
-    } catch (err) {
-      console.log('errors', formContext)
-      setErrors(err.errors)
-    }
+    console.log(data);
+    // try {
+    //   const claim = await createClaim(data);
+    //   if (!claim.errors) {
+    //     handleCloseModal();
+    //     updateCurrentUserInfo(setCurrentUser, currentUser.id);
+    //     setTimeout(() => history.push(`/claim/view/${claim.id}`), 400)
+    //   }
+    // } catch (err) {
+    //   console.log('errors', formContext)
+    //   setErrors(err.errors)
+    // }
   }
 
   const toggleShowConfirm = (e) => {
@@ -68,8 +70,9 @@ const AddClaimForm = (props) => {
     <ClaimFormContext.Provider value={{
       assertion: '',          // Sent to database
       notes: '',              // Sent to database
+      hitKeys: '',
       argumentsSet: {},       // Modified to array of values and sent to database
-      pairedArgIds: []
+      pairedArgIds: []        // Track which arguments are paired
     }}>
       <ADD_CLAIM_FORM {...props} />
     </ClaimFormContext.Provider>
