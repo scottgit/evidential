@@ -1,0 +1,15 @@
+.ev-claim-info.--columns {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr;
+}
+
+.ev-claim-info.--columns .hit-keys-list {
+  padding: 10px;
+  border-left: 1px solid var(--primary-color-light);
+  background-color: var(--primary-color-white);
+}
+
+.ev-claim-info.--columns .hit-keys-list header {
+  background-color: inherit;
+}

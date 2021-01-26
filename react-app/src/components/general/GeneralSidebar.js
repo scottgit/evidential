@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import TextsAdded from '../user/TextsAdded';
+import ClaimsAdded from '../user/ClaimsAdded';
 import DataChanges from '../user/DataChanges';
 import AddTextButton from '../includes/AddTextButton';
 import TextEditLink from "../includes/TextEditLink";
 import TextViewLink from "../includes/TextViewLink";
 import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import AddClaimButton from '../includes/AddClaimButton';
 
 const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
   const [showAbout, setShowAbout] = useState(false);
@@ -62,6 +64,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
+          <AddClaimButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           {textOptionLinks()}
           <AddTextButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
@@ -86,6 +89,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
 
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
           {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
+          {(currentUser.claimsAdded && <ClaimsAdded user={currentUser} currentUser={currentUser} />)}
       </div>
     )
     }

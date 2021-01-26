@@ -107,6 +107,9 @@ const AddTextForm = ({currentUser, setCurrentUser, handleCloseModal}) => {
         updateCurrentUserInfo(setCurrentUser, currentUser.id);
         setTimeout(() => history.push(`/text/edit/${text.id}`), 400)
       }
+      else {
+        throw text;
+      }
 
     } catch (err) {
       console.error('Failed to upload text:' + err)

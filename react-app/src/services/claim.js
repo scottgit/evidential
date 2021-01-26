@@ -7,33 +7,34 @@ export const fetchClaim = async (claimId) => {
 
 export const createClaim = async (data) => {
   /* Expects data
-      {
-        assertion,
-        notes,
-        createdByUserId,
-        arguments,       //See further explanation
-      }
+      The "newArguments" key should go out as an array of objects,
+      with statement and argumentNotes being keys.
 
-      The "arguments" should be coming in as an array of paired arrays,
-      the pair being the "id" of an existing Argument (or null if needing creation),
-      and a "settings" object for the data being set (null if the "id" was provided). So if argument data is new, it should be sending this "settings" object:
+      The "existingArguments" key should go out as an array of objects
+      with an integer being the "id" of an existing Argument
+
+      In both cases, they should have a "supports" value to indicate how the argument
+      is to relate to this claim.
+
+      So if argument data is new, newArguments should be sending these objects:
 
           {
-            statement: "Blah!",
-            argumentNotes: "Blah, blah.",
-            supports: 1   // See further explanation
+              statement: "Blah!",
+              argumentNotes: "Blah, blah.",
+              supports: 1   // See further explanation
+          }
+
+      If argument data is existing, existingArguments should  be sending these objects:
+
+          {
+              id: 7,
+              supports: 1
           }
 
       The "supports" needs to come as a digit 0/1 for false/true so that that wtforms can process it within the array (as apparently Booleans are not supported within a FieldSet). It will be converted to a boolean on DB save.
-
-      So a final example of what an "arguments" array might look like:
-      [
-          [id, settings], // representative names shown
-          [7, None],      // expecting to pull an existing argument
-          [None, {"statement": "Blah!", "argumentNotes": "Blah, blah.", "supports": 1}] // setting up a new argument
-      ]
   */
   const request = {path: `/claims/create`, errorMsg: 'Failed to create claim.', data, method: 'POST'}
+
   return genericFetch({...request});
 }
 

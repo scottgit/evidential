@@ -14,7 +14,7 @@ label {
 
 .body {
   height: 100%;
-  min-width: 250px;
+  min-width: 500px;
 }
 
 p {
@@ -58,6 +58,8 @@ a:hover {
 .ev-error {
   color: var(--error-color);
 }
+
+
 
 .--hide {
   display: none;
@@ -136,6 +138,7 @@ a:hover {
 
 *:not(.active) > .ev-icon.--hover-tilt:hover,
 .--hover-sub-tilt:hover > .ev-icon.--sub {
+  -webkit-backface-visibility: hidden;
   transform: var(--base-transform) rotate(15deg);
 }
 
@@ -149,6 +152,11 @@ a:hover {
   bottom: 0;
   left: calc( var(--icon-padding) + 2px ) ;
   right: auto;
+}
+
+.fa-layers .ev-icon.--mid {
+  font-size: .5em;
+  inset: 2px 4px 6px;
 }
 
 .active .ev-icon {
@@ -220,6 +228,13 @@ a:hover {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+.ev-button.--warning:hover {
+  background: var(--button-warning-background-hover);
+}
+
+.ev-button.--safe:hover {
+  background: var(--button-safe-background-hover);
+}
 
 /* Inputs */
 .ev-form-errors {

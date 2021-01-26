@@ -8,7 +8,9 @@ export default async function genericFetch({path, errorMsg, data, method='GET'})
     else {
       response = await fetch(`/api${path}`, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(data)
       });
     }
