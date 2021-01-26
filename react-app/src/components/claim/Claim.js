@@ -65,7 +65,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
             heading={'h3'}
             listType={"hit key"}
             listData={claim.hitKeys}
-            canAddItem={false}
+            canAddItem={true}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
           />
