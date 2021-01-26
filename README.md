@@ -1,7 +1,7 @@
 ![Header Name](./public/images/Evidential.png)
 
 # Evidential
-An app to analyze and rate the arguments made within texts for various claims they attempt to support. A slightly more robust summary is taken from the splash page:
+Evidential is an app to help researchers analyze and rate the arguments made within texts for various claims those texts attempt to support. A slightly more robust summary is taken from the splash page:
 
 > Evidential is here to help researchers understand and analyze written works&mdash;books, journal articles, essays, opinion pieces&mdash;whatever type of <strong>text</strong> that makes a <strong>claim</strong> and then tries to back it up with additional <strong>arguments</strong> (evidence).</p>
 >
