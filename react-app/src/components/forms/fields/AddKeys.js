@@ -1,7 +1,8 @@
 import React from 'react';
 import FormTextAreaInputPackage from './FormTextAreaInputPackage';
 
-const AddKeys = ({uniqueId=1, formSetterFn, required}) => {
+const AddKeys = ({uniqueId=1, formSetterFn, required, placeholder="(Optional) But highly recommended"}) => {
+
   return (
     <FormTextAreaInputPackage
     key={`HitKeys-${uniqueId}`}
@@ -11,7 +12,7 @@ const AddKeys = ({uniqueId=1, formSetterFn, required}) => {
     settings={
       {
         label: 'Hit Keys',
-        explanation: <div className="ev-nested-explaination">When defining Hit Keys, keep the following in mind:
+        explanation: <div className="ev-nested-explanation">When defining Hit Keys, keep the following in mind:
         <ul>
           <li>Use single words or short (approx. two to four word) phrases that are commonly used when discussing the claim</li>
           <li>Hits are only made for a <em>whole</em> match (e.g. if the hit key is the phrase "hot dog", it would not match "hot" or "dog or "hotdog")</li>

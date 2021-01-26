@@ -68,6 +68,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
             canAddItem={true}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+            otherData={claim}
           />
         </section>
       }

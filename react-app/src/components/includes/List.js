@@ -8,7 +8,7 @@ import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 import TextEditLink from '../includes/TextEditLink';
 
-const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=false, listData=[], heading='h2'}) => {
+const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=false, listData=[], heading='h2', otherData}) => {
   const [listItems, setListItems] = useState(listData);
   const [isLoaded, setIsLoaded] = useState(0);
 
@@ -33,7 +33,7 @@ const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=fals
         break;
       case 'hit key':
         displayKey = 'key';
-        modalContent = <AddKeysForm currentUser={currentUser} setCurrentUser={setCurrentUser}/>;
+        modalContent = <AddKeysForm currentUser={currentUser} setCurrentUser={setCurrentUser} claim={otherData}/>;
         break;
       case 'rating':
         displayKey = 'rating';
@@ -106,7 +106,7 @@ const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=fals
           {pluralType.replace(/\b[a-z]/g, char => char.toUpperCase())}
           {canAddItem && currentUser &&
           // The claim form handles its own close, so hideClose is set
-          <AddItemModalTrigger type={listType} hideClose={displayKey === 'assertion'}>
+          <AddItemModalTrigger type={listType} hideClose={displayKey === 'assertion' || displayKey === 'key'}>
             {modalContent}
           </AddItemModalTrigger>
           }

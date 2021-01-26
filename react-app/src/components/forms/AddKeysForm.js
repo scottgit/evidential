@@ -1,12 +1,26 @@
 import React, {useState, useCallback, useRef} from 'react';
-import AddKeys from './fields/FormTextAreaInputPackage';
+import AddKeys from './fields/AddKeys';
+import FormHeader from '../includes/FormHeader';
 
-const AddKeysForm = (claim) => {
+const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => {
   const [keys, _setKeys] = useState();
-  const currentKeys = useRef(null);
+  const [showConfirm, setShowConfrim] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const currentKeysElem = useRef(null);
+
+  const toggleShowConfirm = (e) => {
+    setShowConfrim(!showConfirm);
+  }
+
+  const doCancel = (e) => {
+    handleCloseModal()
+  }
 
   const checkDuplicates = useCallback((setKeys, newKeys) => {
+    // Get key string from hitKey object
+    setKeys = setKeys.map(key => key.key);
     // Remove any previous alerts
+    const currentKeys = currentKeysElem.current;
     const currentDups = currentKeys.querySelectorAll('.ev-hk-dup');
     currentDups.forEach(dup => dup.classList.remove('ev-hk-dup'));
     const dupWarn = currentKeys.querySelector(`#ev-hk-dup-warn`);
@@ -25,7 +39,7 @@ const AddKeysForm = (claim) => {
       dupWarn.classList.remove('--hide');
     }
     return foundDup;
-  }, [currentKeys])
+  }, [currentKeysElem])
 
   const setKeys = useCallback((newKeys) => {
     _setKeys(newKeys);
@@ -41,23 +55,28 @@ const AddKeysForm = (claim) => {
     console.log(data);
   }
 
-  const keyProps = {required: true, formSetterFn: setKeys}
+  const keyProps = {required: true, formSetterFn: setKeys, placeholder: "(Required) At least one"}
 
+  const headerProps = {headerTitle: 'Add Hit Keys', errors, doCancel, showConfirm, toggleShowConfirm}
   return (
-    <form id="ev-hk-add" class="ev-hk-add" onSubmit={handleSubmit}>
-      <h3>Set Hit Keys for Claim:</h3>
+    <form id="ev-hk-add" className="ev-hk-add" onSubmit={handleSubmit}>
+      <FormHeader {...headerProps} />
+      <h3>Claim:</h3>
       <p className="ev-hk-claim">{claim.assertion}</p>
       <AddKeys {...keyProps}/>
-      <div className="ev-hk-current" ref={currentKeys}>
+      <div className="ev-hk-current" ref={currentKeysElem}>
         <h4>Current Keys <span id="ev-hk-dup-warn" className="--hide ev-error">{"(Duplicates Being Set!)"}</span></h4>
-        {(!!claim.hitKeys.length && claim.hitKeys.map(key => {
-          return (<>
-            <span id={`ev-hk-unique-${key.replace(' ','-')}`} key={key}>{key}</span>,
-          </>)
+        <div className="ev-hk-keyset">
+        {(!!claim.hitKeys.length && claim.hitKeys.map((key, idx) => {
+          const hitKey = key.key;
+          return (<React.Fragment key={hitKey} >
+            <span id={`ev-hk-unique-${hitKey.replace(' ','-')}`} >{hitKey}</span>{idx !== (claim.hitKeys.length - 1) && ', '}
+          </React.Fragment>)
         }))
           ||
           "None set yet."
         }
+        </div>
       </div>
     </form>
   )

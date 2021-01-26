@@ -5,6 +5,7 @@ import ClaimArgumentsSections from './groupings/ClaimArgumentsSections';
 import UIDProvider from '../includes/UIDProvider';
 import {createClaim} from '../../services/claim';
 import { updateCurrentUserInfo } from '../../services/user';
+import FormHeader from '../includes/FormHeader';
 
 const ClaimFormContext = createContext();
 
@@ -47,34 +48,16 @@ const ADD_CLAIM_FORM = ({currentUser, setCurrentUser, handleCloseModal}) => {
     handleCloseModal()
   }
 
+  const headerProps = {headerTitle: 'Create Claim', errors, doCancel, showConfirm, toggleShowConfirm}
+
   return (
     <div className="ev-claim-create">
       <form id="create-claim" method="POST" onSubmit={handleSubmit}>
-        <h2>
-          <button type='submit' className='ev-button --safe'>Submit</button>
-          Create Claim
-          <div className='ev-claim-cancel'>
-            { showConfirm &&
-              <div className="ev-claim-cancel-confirm">
-                <span className="ev-error">Cancel and lose data?</span>
-                <button className="ev-button --warning" type='button' onClick={doCancel}>Yes</button>
-                <button className="ev-button --safe" type='button' onClick={toggleShowConfirm}>No</button>
-              </div>
-            }
-            <button type='button' className='ev-button --warning' onClick={toggleShowConfirm}>Cancel</button>
-          </div>
-          </h2>
-          { (!!errors.length) &&
-            <div className="ev-form-errors">
-              {errors.map((error) => (
-                <div key={`${error}-${Date.now()}`}>{error}</div>
-              ))}
-            </div>
-          }
-          <UIDProvider passToGroup={true}>
-            <ClaimSection />
-            <ClaimArgumentsSections />
-          </UIDProvider>
+        <FormHeader {...headerProps} />
+        <UIDProvider passToGroup={true}>
+          <ClaimSection />
+          <ClaimArgumentsSections />
+        </UIDProvider>
       </form>
     </div>
   )

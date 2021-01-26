@@ -128,7 +128,7 @@ forms.css -- imports other files
   min-width: 500px;
 }
 
-.ev-claim-create h2 {
+.ev-form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -141,11 +141,11 @@ forms.css -- imports other files
   border-bottom: 1px solid var(--primary-color-light);
 }
 
-.ev-claim-create h2 .ev-button {
+.ev-form-header .ev-button {
   font-size: .7em;
 }
 
-.ev-claim-cancel-confirm {
+.ev-form-cancel-confirm {
   position: absolute;
   white-space: nowrap;
   right: 5.5em;
@@ -157,7 +157,7 @@ forms.css -- imports other files
   padding-left: 5px
 }
 
-.ev-claim-cancel-confirm .ev-button {
+.ev-form-cancel-confirm .ev-button {
   margin: 0 5px;
 }
 
@@ -173,8 +173,9 @@ forms.css -- imports other files
   margin-bottom: 1em;
 }
 
-.ev-data-label > h4 {
+.ev-data-heading {
   margin: 0 10px 0 0;
+  padding-bottom: 4px;
   float: left;
 }
 
@@ -185,7 +186,7 @@ forms.css -- imports other files
 
 .ev-explanation-control {
   font-size: .8em;
-  padding: 3px;
+  padding: 3px 3px 7px 3px;
   margin-bottom: -1px;
 }
 
@@ -223,7 +224,7 @@ forms.css -- imports other files
   animation-direction: reverse;
 }
 
-.ev-data-explanation > p {
+.ev-data-explanation > .ev-explanation-wrapper {
   margin: 0;
   padding: 6px;
   background-color: var(--primary-color-white);
@@ -379,4 +380,20 @@ forms.css -- imports other files
   font-size: .7em;
   padding: 3px 6px;
   margin: 0 5px 0 20px;
+}
+
+/* Hit Keys Form */
+
+.ev-hk-dup {
+  background-color: var(--secondary-color-light);
+  color: var(--error-color);
+  padding: 0 5px;
+}
+
+.ev-hk-claim,
+.ev-hk-keyset {
+  margin-left: 20px;
+  padding: 5px;
+  border-left: 3px solid var(--primary-color);
+  background-color: var(--primary-color-white);
 }
