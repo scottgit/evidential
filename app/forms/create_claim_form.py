@@ -14,6 +14,8 @@ class ExistingArgumentData(Form):
     supports = IntegerField('supports', validators=[NumberRange(0,1, "Argument needs support or rebut in relation to claim set.")])
 
 
+class NewHitKeys(Form):
+    key = StringField('key', validators=[DataRequired(), Length(max=30)])
 
 def argument_list_length_check(form, field):
     existing = len(form['existingArguments'].data)
@@ -27,3 +29,4 @@ class CreateClaimForm(FlaskForm):
     createdByUserId = IntegerField('createdByUserId', validators=[DataRequired()])
     newArguments = FieldList(FormField(NewArgumentSettings), validators=[argument_list_length_check])
     existingArguments = FieldList(FormField(ExistingArgumentData))
+    hitKeys = FieldList(FormField(NewHitKeys))

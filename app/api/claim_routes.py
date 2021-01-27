@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_login import login_required
-from app.models import Claim, SupportRebut, Argument, db
+from app.models import Claim, SupportRebut, Argument, HitKey, ClaimHitKeys, db
 from app.forms import CreateClaimForm
 from .includes.validation_messages import validation_messages
 
@@ -22,7 +22,7 @@ def get_claim(id):
 
 '''
 @claim_routes.route('/<int:claimId>/add_hit_keys')
-def add_key(claimId):
+def add_keys(claimId):
     claim = Claim.query.get(claimId)
 '''
 
@@ -64,12 +64,15 @@ def create():
 
         The "supports" needs to come as a digit 0/1 for false/true so that that wtforms can process it within the array (as apparently Booleans are not supported within a FieldSet). It will be converted to a boolean on DB save.
     '''
-    # Build arguments arrays, since form does not take them in automatically
+    # Build arguments and keys arrays, since form does not take them in automatically
     for arg in request.json['newArguments']:
         form['newArguments'].append_entry(arg)
 
     for arg in request.json['existingArguments']:
         form['existingArguments'].append_entry(arg)
+
+    for key in request.json['hitKeys']:
+        form['hitKeys'].append_entry(key)
 
     if form.validate_on_submit():
         user_id = form.data['createdByUserId']
@@ -118,7 +121,6 @@ def create_and_link_arguments(claim_id, user_id, arguments, check_support_and_re
             # Check for exact same argument statement's existence
             argument = Argument.query.filter_by(statement = arg['statement']).first()
 
-            print("*****ARGUMENT****", argument)
             if (argument):
                 argument = argument.to_dict()
                 supports = SupportRebut.query.filter(SupportRebut.claim_id == claim_id, SupportRebut.argument_id == argument['id']).first()
@@ -150,7 +152,7 @@ def create_and_link_arguments(claim_id, user_id, arguments, check_support_and_re
                 supports=bool(arg['supports']),
                 created_by=user_id
             )
-            print('****SR*****', s_r.supports)
+
             db.session.add(s_r)
             db.session.flush()
             # Track if both a support and rebut argument has processed
@@ -172,4 +174,29 @@ def create_and_link_arguments(claim_id, user_id, arguments, check_support_and_re
         return {"success": "Arguments added."}
 
 
-# def add_hit_keys(claim_id, user_id, hit_keys):
+def add_and_link_hit_keys(claim_id, user_id, hit_keys):
+    claim = Claim.get(claim_id)
+
+    for key in hit_keys:
+        linkKey = HitKey.query.filter(HitKey.key == key).first()
+
+        #Check if key already exists and is already linked to that claim
+        if (linkKey and linkKey in claim.hit_keys):
+            continue
+
+        #Check if key does not exist, and if so, make it
+        if (not linkKey):
+            linkKey = HitKey(
+                key=key,
+                created_by=user_id
+            )
+            db.session.add(linkKey)
+            db.session.flush()
+
+        #Link either existing or new key to the claim
+        link = ClaimHitKeys(
+                claim_id,
+                key_id=linkKey.id,
+                created_by=user_id
+            )
+        db.session.add(link)
