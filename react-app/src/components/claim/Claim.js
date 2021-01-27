@@ -26,6 +26,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
   }, [claim, setContentDisplayed])
 
   const hasKeys = claim && !!claim.hitKeys.length;
+  console.log(itemData)
 
   return (
     <div className={`ev-claim-info ${hasKeys ? '--columns' : ''}`}>
@@ -41,6 +42,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
           <section>
             <h2>Arguments</h2>
             <List
+              key={`sup-${claim.supportingArguments.length}`}
               heading={'h3'}
               listType={"supporting argument"}
               listData={claim.supportingArguments}
@@ -49,6 +51,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
               setCurrentUser={setCurrentUser}
             />
             <List
+              key={`reb-${claim.rebutingArguments.length}`}
               heading={'h3'}
               listType={"rebutting argument"}
               listData={claim.rebutingArguments}
@@ -62,6 +65,7 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
       {claim && hasKeys &&
         <section className="hit-keys-list">
           <List
+            key={`hk-${claim.hitKeys.length}`}
             heading={'h3'}
             listType={"hit key"}
             listData={claim.hitKeys}

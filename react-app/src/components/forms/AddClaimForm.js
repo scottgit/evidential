@@ -28,18 +28,17 @@ const ADD_CLAIM_FORM = ({currentUser, setCurrentUser, handleCloseModal}) => {
       newArguments: Object.values(formContext.argumentsSet),
       existingArguments: [] //TODO implement ability to link existing arguments as well
     }
-    console.log(data);
-    // try {
-    //   const claim = await createClaim(data);
-    //   if (!claim.errors) {
-    //     handleCloseModal();
-    //     updateCurrentUserInfo(setCurrentUser, currentUser.id);
-    //     setTimeout(() => history.push(`/claim/view/${claim.id}`), 400)
-    //   }
-    // } catch (err) {
-    //   console.log('errors', formContext)
-    //   setErrors(err.errors)
-    // }
+
+    try {
+      const claim = await createClaim(data);
+      if (!claim.errors) {
+        handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
+        setTimeout(() => history.push(`/claim/view/${claim.id}`), 400)
+      }
+    } catch (err) {
+      setErrors(err.errors)
+    }
   }
 
   const toggleShowConfirm = (e) => {

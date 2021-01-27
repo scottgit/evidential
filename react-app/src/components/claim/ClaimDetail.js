@@ -11,11 +11,12 @@ const ClaimDetail = (props) => {
   const {authenticated, currentUser, setCurrentUser} = props;
   const location = useLocation();
   let getClaimObj = location.itemData ? location.itemData : null;
+  const doUpdate = location.update ? location.update : 0;
   const {claimId} = useParams();
-  const [itemData, setItemData] = useState(getClaimObj);;
+  const [itemData, setItemData] = useState(getClaimObj);
   const [contentDisplayed, setContentDisplayed] = useState(false);
   const history = useHistory();
-
+  console.log(doUpdate)
   // Setup the display of main and sidebar
   const display = (() => {
     const show = ["view", "edit"].filter((str) => location.pathname.includes(str))
@@ -68,7 +69,7 @@ const ClaimDetail = (props) => {
       stillMounted = false
     }
     // eslint-disable-next-line
-  }, [priorState]) //Only do textload if prior claimId changed
+  }, [priorState, doUpdate]) //Only do textload if prior claimId changed or update needed
 
   const handleRetry = (e) => {
     getClaimObj = null;
@@ -83,7 +84,9 @@ const ClaimDetail = (props) => {
   const claimProps = {currentUser, itemData, setItemData, handleRetry, setContentDisplayed, setCurrentUser};
   const sideBarProps = {display, authenticated, currentUser, itemData};
 
-  const itemKey = itemData ? `${itemData.assertion}-${itemData.notes}` : `initial`;
+  const itemKey = itemData ? `${itemData.assertion}-${itemData.notes}-${doUpdate}` : `initial`;
+
+  console.log(itemKey)
 
   return (
     <SplitView {...viewProps}>

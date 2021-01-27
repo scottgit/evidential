@@ -37,7 +37,7 @@ function App() {
       } catch (err) {
         if (stillMounted) {
           setLoaded(true);
-          console.error(err);
+          // console.error(err);
         }
       }
     })();

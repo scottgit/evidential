@@ -38,10 +38,19 @@ export const createClaim = async (data) => {
   return genericFetch({...request});
 }
 
+
+
 export const editClaim = async (claimId, data) => {
   /* Expects data
+    TODO implement this
     Same as createClaim, but fields may be empty
   */
   const request = {path: `/claims/edit/${claimId}`, errorMsg: 'Failed to edit claim.', data, method: 'POST'}
+  return genericFetch({...request});
+}
+
+
+export const addHitKeys = async (claimId, data) => {
+  const request = {path: `/claims/${claimId}/add_hit_keys`, errorMsg: 'Failed to add hit keys.', data, method: 'POST'}
   return genericFetch({...request});
 }

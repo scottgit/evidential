@@ -1,13 +1,17 @@
 import React, {useState, useCallback, useRef} from 'react';
+import {useHistory} from 'react-router-dom';
 import AddKeys from './fields/AddKeys';
 import FormHeader from '../includes/FormHeader';
 import processHitKeys from '../../services/processHitKeys';
+import {addHitKeys} from '../../services/claim';
+import { updateCurrentUserInfo } from '../../services/user';
 
 const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => {
   const [keys, _setKeys] = useState();
   const [showConfirm, setShowConfrim] = useState(false);
   const [errors, setErrors] = useState([]);
   const currentKeysElem = useRef(null);
+  const history = useHistory();
 
   const toggleShowConfirm = (e) => {
     setShowConfrim(!showConfirm);
@@ -47,13 +51,27 @@ const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => 
     checkDuplicates(claim.hitKeys, newKeys.trim().split(','))
   }, [_setKeys, checkDuplicates, claim.hitKeys]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //Clean up the keys and make into an array
     const hitKeys = processHitKeys(keys);
 
-    const data = {hitKeys}
-    console.log(data);
+    const data = {createdByUserId: currentUser.id, hitKeys}
+    try {
+      const updatedClaim = await addHitKeys(claim.id, data);
+      if (!updatedClaim.errors) {
+        handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
+        //Update the claim view
+        setTimeout(() => history.push({
+          pathname: `/claim/view/${claim.id}`,
+          itemData: updatedClaim,
+          update: updatedClaim.hitKeys.length
+        }), 250)
+      }
+    } catch (err) {
+      setErrors(err.errors)
+    }
   }
 
   const keyProps = {required: true, formSetterFn: setKeys, placeholder: "(Required) At least one"}
