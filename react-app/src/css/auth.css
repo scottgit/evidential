@@ -7,7 +7,7 @@ auth.css
 .ev-user-info-change > .ev-main {
   max-width: 500px;
   margin: 0 auto;
-  --text-space: 9rem;
+  --text-space: 8em;
   overflow: visible;
 }
 

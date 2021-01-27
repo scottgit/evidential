@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import FormTextAreaInputPackage from '../fields/FormTextAreaInputPackage';
 import {ClaimFormContext} from '../AddClaimForm';
+import AddKeys from '../fields/AddKeys';
 
 
 const ClaimSection = ({uniqueIdRef}) => {
@@ -43,12 +44,15 @@ const ClaimSection = ({uniqueIdRef}) => {
     }/>
   )
 
+  const setHitKeys = (data) => {formContext.hitKeys = data}
+  const hitKeysProps = {uniqueId: claimId, formSetterFn: setHitKeys, required: false, placeholder: "(Optional) But highly recommended"};
   return (
     <section >
       <h3>Claim Settings</h3>
       <div className="ev-claim-settings">
         {AddClaimAssertionComponent()}
         {AddClaimNotesComponent()}
+        <AddKeys {...hitKeysProps}/>
       </div>
     </section>
   )

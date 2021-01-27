@@ -1,22 +1,102 @@
-import React from 'react'
+import React, {useState, useCallback, useRef} from 'react';
+import {useHistory} from 'react-router-dom';
+import AddKeys from './fields/AddKeys';
+import FormHeader from '../includes/FormHeader';
+import processHitKeys from '../../services/processHitKeys';
+import {addHitKeys} from '../../services/claim';
+import { updateCurrentUserInfo } from '../../services/user';
 
-const AddKeysForm = (claim) => {
+const AddKeysForm = ({currentUser, setCurrentUser, claim, handleCloseModal}) => {
+  const [keys, _setKeys] = useState();
+  const [showConfirm, setShowConfrim] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const currentKeysElem = useRef(null);
+  const history = useHistory();
+
+  const toggleShowConfirm = (e) => {
+    setShowConfrim(!showConfirm);
+  }
+
+  const doCancel = (e) => {
+    handleCloseModal()
+  }
+
+  const checkDuplicates = useCallback((setKeys, newKeys) => {
+    // Get key string from hitKey object
+    setKeys = setKeys.map(key => key.key);
+    // Remove any previous alerts
+    const currentKeys = currentKeysElem.current;
+    const currentDups = currentKeys.querySelectorAll('.ev-hk-dup');
+    currentDups.forEach(dup => dup.classList.remove('ev-hk-dup'));
+    const dupWarn = currentKeys.querySelector(`#ev-hk-dup-warn`);
+    dupWarn.classList.add('--hide');
+
+    let foundDup = false;
+    for (let i=0; i<newKeys.length; i++) {
+      const newKey = newKeys[i].trim();
+      // Alert user if they have entered a duplicate key
+      if (setKeys.includes(newKey)) {
+        currentKeys.querySelector(`#ev-hk-unique-${newKey.replace(' ','-')}`).classList.add('ev-hk-dup');
+        foundDup = true;
+      }
+    }
+    if (foundDup) {
+      dupWarn.classList.remove('--hide');
+    }
+    return foundDup;
+  }, [currentKeysElem])
+
+  const setKeys = useCallback((newKeys) => {
+    _setKeys(newKeys);
+    checkDuplicates(claim.hitKeys, newKeys.trim().split(','))
+  }, [_setKeys, checkDuplicates, claim.hitKeys]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //Clean up the keys and make into an array
+    const hitKeys = processHitKeys(keys);
+
+    const data = {createdByUserId: currentUser.id, hitKeys}
+    try {
+      const updatedClaim = await addHitKeys(claim.id, data);
+      if (!updatedClaim.errors) {
+        handleCloseModal();
+        updateCurrentUserInfo(setCurrentUser, currentUser.id);
+        //Update the claim view
+        setTimeout(() => history.push({
+          pathname: `/claim/view/${claim.id}`,
+          itemData: updatedClaim,
+          update: updatedClaim.hitKeys.length
+        }), 250)
+      }
+    } catch (err) {
+      setErrors(err.errors)
+    }
+  }
+
+  const keyProps = {required: true, formSetterFn: setKeys, placeholder: "(Required) At least one"}
+
+  const headerProps = {headerTitle: 'Add Hit Keys', errors, doCancel, showConfirm, toggleShowConfirm}
   return (
-    <form id="ev-add-keys">
-      <label>
-        Add Hit Keys for claim:
-        <p className="ev-info">{claim.assertion}</p>
-        <div className="ev-instructions">When defining Hit Keys, keep the following in mind:
-        <ul>
-          <li>Use single words or short (approx. two to four word) phrases that are commonly used when discussing the claim</li>
-          <li>Hits are only made for a <em>whole</em> match (e.g. if the hit key is the phrase "hot dog",)</li>
-          <li>They <strong>are not</strong> case sensitive (e.g. bug = Bug = BUG)</li>
-          <li>If abbreviations are keywords, <strong>input just the form <em>with</em> periods</strong> (e.g. N.A.S.A. rather than NASA; the program will check for <em>both</em>)</li>
-          <li>Entered in a comma separated format between keys (e.g. New York, Mets, )</li>
-        </ul>
+    <form id="ev-hk-add" className="ev-hk-add" onSubmit={handleSubmit}>
+      <FormHeader {...headerProps} />
+      <h3>Claim:</h3>
+      <p className="ev-hk-claim">{claim.assertion}</p>
+      <AddKeys {...keyProps}/>
+      <div className="ev-hk-current" ref={currentKeysElem}>
+        <h4>Current Keys <span id="ev-hk-dup-warn" className="--hide ev-error">{"(Duplicates Being Set!)"}</span></h4>
+        <div className="ev-hk-keyset">
+        {(!!claim.hitKeys.length && claim.hitKeys.map((key, idx) => {
+          const hitKey = key.key;
+          return (<React.Fragment key={hitKey} >
+            <span id={`ev-hk-unique-${hitKey.replace(' ','-')}`} >{hitKey}</span>{idx !== (claim.hitKeys.length - 1) && ', '}
+          </React.Fragment>)
+        }))
+          ||
+          "None set yet."
+        }
         </div>
-
-      </label>
+      </div>
     </form>
   )
 }

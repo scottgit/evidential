@@ -20,13 +20,14 @@ const FormTextAreaInputPackage = ({
   const {fixedSupport, label, explanation, maxLength, rows, placeholder, required} = settings;
   const isArgumentStatement = fieldType === 'Argument Statement';
   const isArgumentNotes = fieldType === 'Argument Notes';
-  const validArg = formContext.argumentsSet && formContext.argumentsSet[uid];
+  const validArg = formContext && formContext.argumentsSet && formContext.argumentsSet[uid];
 
   const persistData = () => {
     if (isArgumentStatement && validArg) return validArg.statement;
     if (isArgumentNotes && validArg) return validArg.argumentNotes;
-    if (formContext.assertion && fieldType === 'Assertion') return formContext.assertion
-    if (formContext.notes && fieldType === 'Claim Notes') return formContext.notes
+    if (formContext && formContext.assertion && fieldType === 'Assertion') return formContext.assertion
+    if (formContext && formContext.notes && fieldType === 'Claim Notes') return formContext.notes
+    if (formContext && formContext.hitKeys && fieldType === 'Hit Keys') return formContext.hitKeys
     return '';
   }
 
@@ -51,22 +52,23 @@ const FormTextAreaInputPackage = ({
   }, [setState]);
 
   useEffect(() => {
+    if (!explanation) return;
     // Show field information clicks
     const timer = setTimeout(() => {
-      const explaination = document.getElementById(`${idString}-explanation-${uid}`)
+      const expl = document.getElementById(`${idString}-explanation-${uid}`)
       if (showInfo) {
-        explaination.classList.remove('--unclicked');
-        explaination.classList.add('--show');
-        explaination.previousElementSibling.classList.add('--show');
+        expl.classList.remove('--unclicked');
+        expl.classList.add('--show');
+        expl.previousElementSibling.classList.add('--show');
       } else {
-        explaination.classList.remove('--show');
-        explaination.previousElementSibling.classList.remove('--show');
+        expl.classList.remove('--show');
+        expl.previousElementSibling.classList.remove('--show');
       }
     }, 100);
     return () => {
       clearTimeout(timer);
     }
-  }, [showInfo, uid, idString])
+  }, [showInfo, uid, idString, explanation])
 
   useEffect(() => {
     if (!fixedSupport) return;
@@ -76,9 +78,6 @@ const FormTextAreaInputPackage = ({
     const reb = document.getElementById(`reb-${uid}`);
     if (reb) handleRadioSelect(null, reb)
   }, [handleRadioSelect, uid, fixedSupport])
-
-  // useEffect(() => {
-  // }, [formContext.errors.length])
 
   const textInputHandler = (e) => {
     const value = e.target.value;
@@ -113,9 +112,6 @@ const FormTextAreaInputPackage = ({
       setShowInfo(!showInfo);
     }
   }
-
-
-
 
 
   const argumentCheckedState = (value) => {
@@ -179,7 +175,7 @@ const FormTextAreaInputPackage = ({
         <h4 className="ev-data-heading">{label}</h4>
         {explanation && <div className="ev-data-info"><span onClick={toggleShow} className="ev-explanation-control">What is this?</span>
           <div id={`${idString}-explanation-${uid}`} className="ev-data-explanation --unclicked">
-            <p>{explanation}</p>
+            <div className="ev-explanation-wrapper">{explanation}</div>
           </div>
         </div>
         }
