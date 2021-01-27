@@ -31,8 +31,8 @@ const AddTextForm = ({currentUser, setCurrentUser, handleCloseModal}) => {
     acceptedFiles.forEach(async (file) => {
       const reader = new FileReader()
 
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
+      // reader.onabort = () => console.log('file reading was aborted')
+      // reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
       // Do whatever you want with the file contents
         const res = reader.result

@@ -26,7 +26,6 @@ const Claim = ({itemData, setContentDisplayed, currentUser, setCurrentUser}) => 
   }, [claim, setContentDisplayed])
 
   const hasKeys = claim && !!claim.hitKeys.length;
-  console.log(itemData)
 
   return (
     <div className={`ev-claim-info ${hasKeys ? '--columns' : ''}`}>

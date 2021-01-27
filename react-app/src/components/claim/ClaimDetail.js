@@ -16,7 +16,7 @@ const ClaimDetail = (props) => {
   const [itemData, setItemData] = useState(getClaimObj);
   const [contentDisplayed, setContentDisplayed] = useState(false);
   const history = useHistory();
-  console.log(doUpdate)
+
   // Setup the display of main and sidebar
   const display = (() => {
     const show = ["view", "edit"].filter((str) => location.pathname.includes(str))
@@ -86,7 +86,6 @@ const ClaimDetail = (props) => {
 
   const itemKey = itemData ? `${itemData.assertion}-${itemData.notes}-${doUpdate}` : `initial`;
 
-  console.log(itemKey)
 
   return (
     <SplitView {...viewProps}>
