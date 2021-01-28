@@ -85,7 +85,7 @@ function App() {
           <ClaimDetail authenticated={authenticated} currentUser={currentUser} />
         </Route>
         <ProtectedRoute
-          path={"/text/edit/:textId(\\d+)" }
+          path={"/text/(edit|analyze)/:textId(\\d+)" }
           exact={true}
           authenticated={authenticated}
           currentUser={currentUser}

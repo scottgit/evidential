@@ -6,6 +6,9 @@ import EditTextForm from "../forms/EditTextForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
 import Text from "./Text";
+import pluralizeCheck from '../../services/pluarlizeCheck';
+import Mark from 'mark.js'
+
 
 const TextDetail = (props) => {
   const {authenticated, currentUser, setCurrentUser} = props;
@@ -16,6 +19,10 @@ const TextDetail = (props) => {
   const [title, setTitle] = useState(itemData ? itemData.title : '');
   const [contentDisplayed, setContentDisplayed] = useState(false);
   const history = useHistory();
+  const [analysisState, setAnalysisState] = useState({
+    claim: true,
+    hitCount: 0,
+  })
 
   // Setup the display of main and sidebar
   const display = (() => {
@@ -26,6 +33,7 @@ const TextDetail = (props) => {
   // Track text state change and revisce content display retry attempt to load allowed
   const priorState = useMemo(() => {setContentDisplayed(false); return textId}, [textId])
   const retry = useRef(false);
+  const ANALYSIS = display.main === 'ANALYZE-TEXT';
 
 
   const handleTextLoad = () => {
@@ -86,16 +94,63 @@ const TextDetail = (props) => {
 
   const viewProps = {...props, display, itemData, handleRetry}
   const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser};
-  const sideBarProps = {display, authenticated, currentUser, itemData};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState};
+  const sideBarProps = {display, authenticated, currentUser, itemData, analysisState, setAnalysisState};
 
   const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
+
+  const temp1 = useMemo(() => ['righteousness', 'predestination'], []);
+  const temp = useMemo(() => {
+    const n = pluralizeCheck(temp1);
+    return n;
+  }, [temp1]);
+
+  const markClick = (e) => {
+    alert('mark-'+e.target.id)
+  }
+
+  useEffect(() => {
+    if (ANALYSIS && analysisState.claim && contentDisplayed) {
+      const claim = analysisState.claim;
+      let counter = 0;
+      const textElem = document.getElementById('ev-display-text');
+
+      const highlights = new Mark(document.getElementById('ev-display-text'));
+      highlights.mark(temp, { //pluralizeCheck(claim.hitKeys)
+        className: 'hit-highlight',
+        exclude: [],
+        separateWordSearch: false,
+        accuracy: {
+          value: "exactly",
+          limiters: ":;.,-–—‒_(){}[]!'\"+=".split("")
+        },
+        synonyms: {},
+        acrossElements: true,
+        caseSensitive: false,
+        ignoreJoiners: false,
+        ignorePunctuation: ":;.,-–—‒_(){}[]!'\"+=".split(""),
+        each: mark => {
+          mark.setAttribute('id', `hit-mark-${++counter}`);
+          mark.onclick = markClick;
+        },
+        done: counter => {setAnalysisState({...analysisState, hitCount: counter})}
+      });
+    }
+
+  }, [ANALYSIS, analysisState.claim, contentDisplayed])
+
+
+
 
   return (
     <SplitView {...viewProps}>
     <PageHeader key={`${display.main}-header-${itemKey}`} {...headerProps} />
     { (itemData && (
-          (display.main === "VIEW-TEXT" &&
+          (((display.main === "VIEW-TEXT" || ANALYSIS) &&
+            (ANALYSIS &&
+              <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
+            ))
+            ||
             <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
           )
           ||

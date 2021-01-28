@@ -29,7 +29,7 @@ const Text = ({itemData, setContentDisplayed}) => {
   }, [content, setContentDisplayed])
 
   return (
-    <div className="ev-text-content">
+    <div id="ev-display-text" className="ev-text-content">
       {ReactHtmlParser(content)}
     </div>
   )
