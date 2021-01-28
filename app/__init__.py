@@ -72,6 +72,6 @@ def inject_csrf_token(response):
 def react_root(path):
     print("path", path)
     # Whitelist static files for favicon
-    if path in ('favicon.ico', 'site.webmanifest'):
+    if path in ('favicon.ico', 'site.webmanifest', 'favicons/<path:path>'):
         return app.send_static_file(path)
     return app.send_static_file('index.html')
