@@ -84,8 +84,11 @@ This is not an exhuastive list, but a highlight of some of the main technologies
   <!-- * Slider component (for Ratings): [react-component/slider](https://github.com/react-component/slider)
   * Bar charts (for Text profile display): [react-charts/bar-chart](https://canvasjs.com/react-charts/bar-chart/) -->
   * Icons [fontawesome with react](https://fontawesome.com/how-to-use/on-the-web/using-with/react)
-  * HTML Sanitizing: [DOMPurify](https://github.com/cure53/DOMPurify)
   * Modal support: [react-modal](https://github.com/reactjs/react-modal)
+* Other
+  * Pluarlize terms for hit key search: [pluralize](https://github.com/plurals/pluralize)
+  * Mark hits of hit key searches: [mark.js](https://github.com/julmot/mark.js/)
+  * HTML Sanitizing: [DOMPurify](https://github.com/cure53/DOMPurify)
 
 ## Contributing
 
