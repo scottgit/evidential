@@ -75,7 +75,8 @@ def react_root(path):
     if path in (
         'favicon.ico',
         'site.webmanifest',
-        'favicons/android-chrome-144x144.png',
+        'browserconfig.xml',
+        'android-chrome-144x144.png',
         'apple-touch-icon.png',
         'favicon-16x16.png',
         'favicon-32x32.png',
