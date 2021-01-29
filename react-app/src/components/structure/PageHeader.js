@@ -15,7 +15,7 @@ const PageHeader = ({display, itemData, handleRetry, title, handleTitleInput, co
   const headingClass = display.main !== "EDIT-TEXT" ? "" : "ev-heading-input-wrapper";
 
   const titleText = () => (
-      (display.main !== "EDIT-TEXT" && `${itemData.title ? ': '+itemData.title : ''}`)
+      (display.main !== "EDIT-TEXT" && `${itemData.title ? itemData.title : ''}`)
       ||
       (display.main === "EDIT-TEXT" &&
       <div className={headingClass}>
@@ -29,10 +29,10 @@ const PageHeader = ({display, itemData, handleRetry, title, handleTitleInput, co
     <header>
       <h1>
         <span className={headingClass}>{pageName} ({formName})
-        {display.main === "EDIT-TEXT" ? <>:&nbsp;</> : ''}
+        {display.main === "EDIT-TEXT" ? <>:&nbsp;</> : ': '}
       </span>
       {
-        ((!contentDisplayed) && <> &nbsp;Loading <Loader className="in-text" /></>)
+        ((!contentDisplayed) && <>Loading <Loader className="in-text" /></>)
         ||
         (!itemData && <><span className="ev-error">&nbsp;**ERROR!**</span> <button type="button" onClick={handleRetry} className="ev-button in-text">Retry?</button></>)
         ||

@@ -5,8 +5,11 @@ import HomeIntro from "./HomeIntro";
 import GeneralSidebar from "./GeneralSidebar";
 
 const Home = ({authenticated, currentUser, setCurrentUser}) => {
-  //props has: authenticated, currentUser
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(
+    authenticated
+    ? {main: "HOME", sidebar: "USER"}
+    : {main: "WELCOME", sidebar: "ABOUT"}
+  );
 
   useEffect(() => {
     function doDisplay() {

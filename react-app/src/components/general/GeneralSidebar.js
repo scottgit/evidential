@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TextsAdded from '../user/TextsAdded';
 import ClaimsAdded from '../user/ClaimsAdded';
 import DataChanges from '../user/DataChanges';
@@ -11,14 +11,16 @@ import FAI from '../includes/FAI';
 import { faUserCircle, faInfoCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faSearchengin } from '@fortawesome/free-brands-svg-icons';
 import AddClaimButton from '../includes/AddClaimButton';
-import SelectSearch from 'react-select-search';
+import Select from 'react-select';
+import Loader from "../includes/Loader";
 
-const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
-  // const showMain = display.main;
+const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData, analysisDone, setAnalysisDone, analysisState, setAnalysisState, claims}) => {
+
   const showSidebar = display.sidebar;
   const [showAbout, setShowAbout] = useState(showSidebar.includes('ABOUT'));
   const [showUser, setShowUser] = useState(showSidebar.includes('USER'));
   const [showAnalysis, setShowAnalysis] = useState(showSidebar.includes('ANALYZE'));
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const About = () => (
     <div className="ev-about-sidebar">
@@ -52,6 +54,14 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
       </aside>
     </div>
   )
+
+
+
+  useEffect(() => {
+    if (selectedOption && "value" in selectedOption) {
+      setAnalysisState({...analysisState, claim: selectedOption.value})
+    }
+  }, [selectedOption, setAnalysisState])
 
   const handleContextualButtons = (e) => {
     let button = e.target;
@@ -99,6 +109,19 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     }
   }
 
+  const claimSelectionItems = () => {
+    return (
+      claims.map(claim => {
+        return {label: claim.assertion, value: claim}
+      })
+    )
+  }
+
+  const handleClaimSelection = (selection, action) => {
+    setSelectedOption(selection);
+    setAnalysisDone(false);
+  }
+
   const AboutButton = <FAI id="ev-About" icon={faInfoCircle} className="in-text --dark --hover-tilt" title={`Show About`}/>
 
   const UserButton = <FAI id="ev-User" icon={faUserCircle} className="in-text --dark --hover-tilt" title={`Show User`}/>
@@ -127,8 +150,8 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
           {display.sidebar === "ANALYZE" &&
             <span className="ev-context-button-group" onClick={handleContextualButtons} tabIndex="0" >
               { (showUser || showAbout) && !showAnalysis && AnalysisButton }
-              { (showAnalysis || showUser) && !showAbout && AboutButton }
               { (showAnalysis || showAbout) && !showUser && UserButton }
+              { (showAnalysis || showUser) && !showAbout && AboutButton }
             </span>
           }
         </nav>
@@ -149,20 +172,35 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
           {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
           {(currentUser.claimsAdded && <ClaimsAdded user={currentUser} currentUser={currentUser} />)}
       </div>
-    ) || ((currentUser && showAnalysis) &&
+    ) || ((currentUser && showAnalysis && claims) &&
       <div className="ev-analysis-sidebar">
-        <SelectSearch
-          name="claim-analysis"
-          value=""
-          search={true}
+        <Select
+          name ="claim-analysis"
           className="ev-claim-analysis-select"
           placeholder="Select Claim to Analyze on this Text"
-          onChange= {(e) => alert(e.target.value)}
-          renderOption={null}
-          options={[
-
-          ]}
+          isSearchable={true}
+          defaultValue={selectedOption}
+          onChange={handleClaimSelection}
+          options={claimSelectionItems()}
+          value={selectedOption}
         />
+        <h3>Analyze Claim:</h3>
+        <div className="ev-current-claim-analysis">{
+          (!!analysisState.claim &&
+          analysisState.claim.assertion)
+          ||
+          "No claim selected."
+        }</div>
+        <div className="ev-analysis-results" >
+        { (analysisDone &&
+            `Analysis Complete! Total hits: ${analysisState.hitCount}`
+          )
+          ||
+          (selectedOption &&
+            <>Analyzing  <Loader className="in-text" /></>
+          )
+        }
+        </div>
       </div>
     )
     }

@@ -5,6 +5,11 @@ export const fetchClaim = async (claimId) => {
   return genericFetch({...request});
 }
 
+export const fetchClaims = async () => {
+  const request = {path: `/claims`, errorMsg: 'Failed to load claim content.'}
+  return genericFetch({...request});
+}
+
 export const createClaim = async (data) => {
   /* Expects data
       The "newArguments" key should go out as an array of objects,
