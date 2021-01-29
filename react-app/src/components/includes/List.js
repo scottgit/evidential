@@ -7,6 +7,7 @@ import {AddClaimForm} from '../forms/AddClaimForm';
 import AddArgumentsForm from '../forms/AddArgumentsForm';
 import AddKeysForm from '../forms/AddKeysForm';
 import TextEditLink from '../includes/TextEditLink';
+import TextAnalyzeLink from "../includes/TextAnalyzeLink";
 
 const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=false, listData=[], heading='h2', otherData}) => {
   const [listItems, setListItems] = useState(listData);
@@ -82,7 +83,10 @@ const List = ({ currentUser, setCurrentUser, listType, linkPath, canAddItem=fals
               {item[displayKey]}
             </NavLink>
             {listType === 'text' &&
-              <TextEditLink text={item} currentUser={currentUser}/>
+              <>
+                <TextEditLink text={item} currentUser={currentUser}/>
+                <TextAnalyzeLink text={item} currentUser={currentUser}/>
+              </>
             }
             </>
           )

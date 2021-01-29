@@ -5,7 +5,11 @@ import PageHeader from "../structure/PageHeader";
 import EditTextForm from "../forms/EditTextForm";
 import GeneralSidebar from "../general/GeneralSidebar";
 import {fetchText} from "../../services/text";
+import {fetchClaims} from "../../services/claim";
 import Text from "./Text";
+import pluralizeCheck from '../../services/pluarlizeCheck';
+import Mark from 'mark.js'
+
 
 const TextDetail = (props) => {
   const {authenticated, currentUser, setCurrentUser} = props;
@@ -14,20 +18,29 @@ const TextDetail = (props) => {
   const {textId} = useParams();
   const [itemData, setItemData] = useState(getTextObj);
   const [title, setTitle] = useState(itemData ? itemData.title : '');
-  const [contentDisplayed, setContentDisplayed] = useState(false);
+  const [contentDisplayed, setContentDisplayed] = useState(itemData ? true : false);
+  const [analysisDone, setAnalysisDone] = useState(false);
   const history = useHistory();
+  const [claims, setClaims] = useState([]);
+  const [analysisState, setAnalysisState] = useState({
+    claim: false,
+    hitCount: 0,
+  })
 
   // Setup the display of main and sidebar
   const display = (() => {
     const show = ["view", "edit", "analyze"].filter((str) => location.pathname.includes(str))
-    return {main: `${show[0].toUpperCase()}-TEXT`, sidebar: "USER"};
+    const mainPre = show[0].toUpperCase();
+    return {main: `${mainPre}-TEXT`, sidebar: mainPre === "ANALYZE" ? "ANALYZE": "USER"};
   })()
 
-  // Track text state change and revisce content display retry attempt to load allowed
+  const ANALYSIS = display.main === 'ANALYZE-TEXT';
+
+  // Track text state change and revise content display retry to allow reload
   const priorState = useMemo(() => {setContentDisplayed(false); return textId}, [textId])
   const retry = useRef(false);
 
-
+  // Check for text data and fetch if none
   const handleTextLoad = () => {
     try {
       // Check if the effect should actually run
@@ -43,6 +56,7 @@ const TextDetail = (props) => {
           // Process successful fetch
             setItemData(data);
             setTitle(data.title);
+            setContentDisplayed(true);
           }
         })();
       }
@@ -50,6 +64,7 @@ const TextDetail = (props) => {
         // Process passed data
         setItemData(getTextObj);
         setTitle(getTextObj.title)
+        setContentDisplayed(true);
       }
     } catch (err) {
       // Other errors get handled here
@@ -84,18 +99,78 @@ const TextDetail = (props) => {
     setTitle(e.target.value)
   }
 
+  // Function to set mark's as valid or ignored hits
+  const handleMarkClick = (e) => {
+    alert('mark-'+ e.target.id)
+  }
+
+  // Get claims for processing analysis
+  useEffect(() => {
+    if (!ANALYSIS) return;
+
+    (async () => {
+      const claims = await fetchClaims();
+      if (!claims.errors) {
+        setClaims(claims.claims)
+      }
+      else {
+        //TODO Error handler for no claims to analyze
+      }
+    })();
+
+  }, [ANALYSIS, setClaims]);
+
+  // Do analysis
+  useEffect(() => {
+    if (ANALYSIS && analysisState.claim && contentDisplayed) {
+
+      const claim = analysisState.claim;
+
+      const hitKeys = claim.hitKeys.map(keyObj => keyObj.key);
+      let counter = 0;
+      const textElem = document.getElementById('ev-display-text');
+
+      const highlights = new Mark(textElem);
+      highlights.unmark();
+      highlights.mark(pluralizeCheck(hitKeys), {
+        className: 'hit-highlight',
+        exclude: [],
+        separateWordSearch: false,
+        accuracy: {
+          value: "exactly",
+          limiters: ":;.,-–—‒_(){}[]!'\"+=".split("")
+        },
+        synonyms: {},
+        acrossElements: true,
+        caseSensitive: false,
+        ignoreJoiners: false,
+        ignorePunctuation: ":;.,-–—‒_(){}[]!'\"+=".split(""),
+        each: mark => {
+          mark.setAttribute('id', `hit-mark-${++counter}`);
+          mark.onclick = handleMarkClick;
+        },
+        done: counter => {
+          setAnalysisState({...analysisState, hitCount: counter});
+          setAnalysisDone(true)
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, [ANALYSIS, analysisState.claim, contentDisplayed])
+
+
   const viewProps = {...props, display, itemData, handleRetry}
-  const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser};
-  const sideBarProps = {display, authenticated, currentUser, itemData};
+  const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed, analysisDone};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState};
+  const sideBarProps = {display, authenticated, currentUser, itemData, analysisDone, setAnalysisDone, analysisState, setAnalysisState, claims};
 
   const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
 
   return (
     <SplitView {...viewProps}>
-    <PageHeader key={`${display.main}-header-${itemKey}`} {...headerProps} />
+    <PageHeader key={`${display.main}-header-${itemKey}}`} {...headerProps} />
     { (itemData && (
-          (display.main === "VIEW-TEXT" &&
+          ((display.main === "VIEW-TEXT" || ANALYSIS) &&
             <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
           )
           ||

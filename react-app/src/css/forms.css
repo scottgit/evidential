@@ -397,3 +397,21 @@ forms.css -- imports other files
   border-left: 3px solid var(--primary-color);
   background-color: var(--primary-color-white);
 }
+
+/* Claim Selection for Analysis */
+
+input.ev-claim-analysis-select__input {
+  width: 100%
+}
+
+div.ev-claim-analysis-select__select {
+
+}
+
+ul.ev-claim-analysis-select__options {
+
+}
+
+li.ev-claim-analysis-select__row {
+
+}

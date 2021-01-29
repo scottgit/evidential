@@ -5,6 +5,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/jest-dom": "^4.2.4",
@@ -13,7 +14,9 @@
     "@tinymce/tinymce-react": "^3.9.0",
     "dompurify": "^2.2.6",
     "http-proxy-middleware": "^1.0.5",
+    "mark.js": "^8.11.1",
     "normalize.css": "^8.0.1",
+    "pluralize": "^8.0.0",
     "postcss-custom-properties": "^11.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -21,7 +24,8 @@
     "react-html-parser": "^2.0.2",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.0"
+    "react-scripts": "4.0.0",
+    "react-select": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

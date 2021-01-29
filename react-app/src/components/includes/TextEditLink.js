@@ -15,7 +15,7 @@ const TextEditLink = ({text, currentUser, noParenthesis=false, inNav=false, hide
   hide = hide ? '--hide' : '';
   const startParenthesis = noParenthesis ? "" : "(";
   const endParenthesis = noParenthesis ? "" : ")";
-  const className = `ev-icon in-text ${(inNav && '--stretch --hover-tilt') || '--hover-flip'}`
+  const className = `in-text ${(inNav && '--stretch --hover-tilt') || '--hover-flip'}`
 
   return (
     <>

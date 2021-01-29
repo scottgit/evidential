@@ -154,9 +154,25 @@ a:hover {
   right: auto;
 }
 
+.fa-layers .ev-icon.--hc {
+  font-size: .5em;
+  top: calc( -1 * var(--icon-padding) + 1px);
+  bottom: auto;
+  left: calc( -1 * var(--icon-padding) - 1px);
+  right: auto;
+}
+
 .fa-layers .ev-icon.--mid {
   font-size: .5em;
   inset: 2px 4px 6px;
+}
+
+.ev-context-button-group .svg-inline--fa {
+  vertical-align: 0;
+}
+
+.ev-context-button-group {
+  white-space: nowrap;
 }
 
 .active .ev-icon {
