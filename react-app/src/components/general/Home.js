@@ -20,7 +20,7 @@ const Home = ({authenticated, currentUser, setCurrentUser}) => {
       )
     }
     doDisplay();
-  }, [authenticated])
+  }, [authenticated, currentUser])
 
 
   const sendProps = {display, setDisplay, authenticated, currentUser};
@@ -31,7 +31,7 @@ const Home = ({authenticated, currentUser, setCurrentUser}) => {
     {(<SplitView {...sendProps}>
         <header>{
           ((display.main === "HOME") &&
-          <h1>Home: {currentUser.firstName}</h1>)
+          <h1>Home: {currentUser ? currentUser.firstName : ''}</h1>)
           ||
           ((display.main === "WELCOME") &&
           <h1>Welcome to Evidential</h1>)

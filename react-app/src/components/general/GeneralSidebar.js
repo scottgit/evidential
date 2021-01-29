@@ -61,6 +61,7 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     if (selectedOption && "value" in selectedOption) {
       setAnalysisState({...analysisState, claim: selectedOption.value})
     }
+    // eslint-disable-next-line
   }, [selectedOption, setAnalysisState])
 
   const handleContextualButtons = (e) => {
