@@ -67,8 +67,8 @@ class User(db.Model, UserMixin):
     return {
       **self.to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
-      "textsAdded": [text.to_dict() for text in self.texts_added],
-      "claimsAdded": [claim.to_dict() for claim in self.claims_added],
+      "textsAdded": [text.full_to_dict() for text in self.texts_added],
+      "claimsAdded": [claim.full_to_dict() for claim in self.claims_added],
     }
 
   def public_to_dict(self):
@@ -86,6 +86,6 @@ class User(db.Model, UserMixin):
     return {
       **self.public_to_dict(),
       "dataChanges": [update.to_dict() for update in self.data_changes],
-      "textsAdded": [text.to_dict() for text in self.texts_added],
-      "claimsAdded": [claim.to_dict() for claim in self.claims_added],
+      "textsAdded": [text.full_to_dict() for text in self.texts_added],
+      "claimsAdded": [claim.full_to_dict() for claim in self.claims_added],
     }
