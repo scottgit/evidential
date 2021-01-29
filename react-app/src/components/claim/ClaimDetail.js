@@ -34,14 +34,23 @@ const ClaimDetail = (props) => {
       if (!getClaimObj) {
         // Perform the fetch request
         (async () => {
-          const data = await fetchClaim(claimId);
-          // DB errors come through as "clean" from fetch and need handled here
-          if (data.errors) {
-            throw data
-          }
-          else {
-          // Process successful fetch
-            setItemData(data);
+          try {
+            const data = await fetchClaim(claimId);
+            // DB errors come through as "clean" from fetch and need handled here
+            if (data.errors) {
+              throw data
+            }
+            else {
+            // Process successful fetch
+              setItemData(data);
+            }
+          } catch (err) {
+            if (!retry.current) { //Allow a retry message to be displayed once
+              setContentDisplayed(true);
+            } else { // After retry send 404
+              retry.current = false;
+              history.push('/page-not-found')
+            }
           }
         })();
       }

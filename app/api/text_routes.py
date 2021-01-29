@@ -16,7 +16,9 @@ def texts():
 @text_routes.route('/<int:id>')
 def text(id):
     text = Text.query.get(id)
-    return text.full_to_dict()
+    if (text):
+        return text.full_to_dict()
+    return 404
 
 
 @text_routes.route('/upload', methods=['POST'])

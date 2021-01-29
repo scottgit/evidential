@@ -47,16 +47,25 @@ const TextDetail = (props) => {
       if (!getTextObj) {
         // Perform the fetch request
         (async () => {
-          const data = await fetchText(textId);
-          // DB errors come through as "clean" from fetch and need handled here
-          if (data.errors) {
-            throw data
-          }
-          else {
-          // Process successful fetch
-            setItemData(data);
-            setTitle(data.title);
-            setContentDisplayed(true);
+          try {
+            const data = await fetchText(textId);
+            // DB errors come through as "clean" from fetch and need handled here
+            if (data.errors) {
+              throw data
+            }
+            else {
+            // Process successful fetch
+              setItemData(data);
+              setTitle(data.title);
+              setContentDisplayed(true);
+            }
+          } catch (err) {
+            if (!retry.current) { //Allow a retry message to be displayed once
+              setContentDisplayed(true);
+            } else { // After retry send 404
+              retry.current = false;
+              history.push('/page-not-found')
+            }
           }
         })();
       }
