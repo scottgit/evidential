@@ -99,6 +99,9 @@ structure.css -- works with site layout wrappers
 
 .ev-sidebar-nav {
   font-size: 2em;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 /* Sets sidebar scroll position next to main's */
 .ev-rtl {

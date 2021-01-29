@@ -20,21 +20,21 @@ const TextDetail = (props) => {
   const [contentDisplayed, setContentDisplayed] = useState(false);
   const history = useHistory();
   const [analysisState, setAnalysisState] = useState({
-    claim: true,
+    claim: false,
     hitCount: 0,
   })
 
   // Setup the display of main and sidebar
   const display = (() => {
     const show = ["view", "edit", "analyze"].filter((str) => location.pathname.includes(str))
-    return {main: `${show[0].toUpperCase()}-TEXT`, sidebar: "USER"};
+    const mainPre = show[0].toUpperCase();
+    return {main: `${mainPre}-TEXT`, sidebar: mainPre === "ANALYZE" ? "ANALYZE": "USER"};
   })()
 
   // Track text state change and revisce content display retry attempt to load allowed
   const priorState = useMemo(() => {setContentDisplayed(false); return textId}, [textId])
   const retry = useRef(false);
   const ANALYSIS = display.main === 'ANALYZE-TEXT';
-
 
   const handleTextLoad = () => {
     try {
@@ -106,7 +106,7 @@ const TextDetail = (props) => {
   }, [temp1]);
 
   const markClick = (e) => {
-    alert('mark-'+e.target.id)
+    alert('mark-'+ e.target.id)
   }
 
   useEffect(() => {
@@ -114,8 +114,8 @@ const TextDetail = (props) => {
       const claim = analysisState.claim;
       let counter = 0;
       const textElem = document.getElementById('ev-display-text');
-
-      const highlights = new Mark(document.getElementById('ev-display-text'));
+      console.log('highlighting', temp)
+      const highlights = new Mark(textElem);
       highlights.mark(temp, { //pluralizeCheck(claim.hitKeys)
         className: 'hit-highlight',
         exclude: [],
@@ -136,7 +136,7 @@ const TextDetail = (props) => {
         done: counter => {setAnalysisState({...analysisState, hitCount: counter})}
       });
     }
-
+    // eslint-disable-next-line
   }, [ANALYSIS, analysisState.claim, contentDisplayed])
 
 
@@ -146,11 +146,7 @@ const TextDetail = (props) => {
     <SplitView {...viewProps}>
     <PageHeader key={`${display.main}-header-${itemKey}`} {...headerProps} />
     { (itemData && (
-          (((display.main === "VIEW-TEXT" || ANALYSIS) &&
-            (ANALYSIS &&
-              <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
-            ))
-            ||
+          ((display.main === "VIEW-TEXT" || ANALYSIS) &&
             <Text key={`${display.main}-viewbody-${itemKey}`} {...textProps} />
           )
           ||

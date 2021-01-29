@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import TextEditLink from '../includes/TextEditLink';
+import TextAnalyzeLink from '../includes/TextAnalyzeLink';
 
 const TextsAdded = ({user, currentUser}) => {
 
@@ -15,7 +16,9 @@ const TextsAdded = ({user, currentUser}) => {
               Added "<NavLink to={{
                 pathname: `/text/view/${text.id}`,
                 itemData: text
-              }}>{text.title}</NavLink>" on {text.createdAt} <TextEditLink text={text} currentUser={currentUser}/>
+              }}>{text.title}</NavLink>" on {text.createdAt}
+              <TextEditLink text={text} currentUser={currentUser}/>
+              <TextAnalyzeLink text={text} currentUser={currentUser}/>
             </li>
           )
         })}

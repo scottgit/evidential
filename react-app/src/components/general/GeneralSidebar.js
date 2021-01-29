@@ -3,14 +3,22 @@ import TextsAdded from '../user/TextsAdded';
 import ClaimsAdded from '../user/ClaimsAdded';
 import DataChanges from '../user/DataChanges';
 import AddTextButton from '../includes/AddTextButton';
+import AddHitKeysButton from '../includes/AddHitKeysButton';
 import TextEditLink from "../includes/TextEditLink";
 import TextViewLink from "../includes/TextViewLink";
+import TextAnalyzeLink from "../includes/TextAnalyzeLink";
 import FAI from '../includes/FAI';
-import { faUserCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faInfoCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSearchengin } from '@fortawesome/free-brands-svg-icons';
 import AddClaimButton from '../includes/AddClaimButton';
+import SelectSearch from 'react-select-search';
 
 const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, itemData}) => {
-  const [showAbout, setShowAbout] = useState(false);
+  // const showMain = display.main;
+  const showSidebar = display.sidebar;
+  const [showAbout, setShowAbout] = useState(showSidebar.includes('ABOUT'));
+  const [showUser, setShowUser] = useState(showSidebar.includes('USER'));
+  const [showAnalysis, setShowAnalysis] = useState(showSidebar.includes('ANALYZE'));
 
   const About = () => (
     <div className="ev-about-sidebar">
@@ -45,14 +53,35 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     </div>
   )
 
-  const toggleAbout = (e) => {
-    setShowAbout(!showAbout);
+  const handleContextualButtons = (e) => {
+    let button = e.target;
+    if (!button.id) button = button.parentElement;
+    switch (button.id) {
+      case 'ev-About':
+        setShowAbout(true);
+        setShowUser(false);
+        setShowAnalysis(false);
+        break;
+      case 'ev-User':
+        setShowAbout(false);
+        setShowUser(true);
+        setShowAnalysis(false);
+        break;
+      case 'ev-Analysis':
+        setShowAbout(false);
+        setShowUser(false);
+        setShowAnalysis(true);
+        break;
+      default:
+        break;
+    }
   }
 
   const textOptionLinks = () => {
     if (display.main && display.main.includes("-TEXT") && itemData) {
       return (
         <>
+          <TextAnalyzeLink text={itemData} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "ANALYZE-TEXT"}/>
           <TextEditLink text={itemData} currentUser={currentUser} noParenthesis={true} inNav={true} hide={display.main === "EDIT-TEXT"}/>
           <TextViewLink text={itemData} hide={display.main === "VIEW-TEXT"}/>
         </>
@@ -60,24 +89,53 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
     }
   }
 
+  const claimOptionLinks = () => {
+    if (display.main && display.main.includes("-CLAIM") && itemData) {
+      return (
+        <>
+          <AddHitKeysButton currentUser={currentUser} setCurrentUser={setCurrentUser} claim={itemData} />
+        </>
+      )
+    }
+  }
+
+  const AboutButton = <FAI id="ev-About" icon={faInfoCircle} className="in-text --dark --hover-tilt" title={`Show About`}/>
+
+  const UserButton = <FAI id="ev-User" icon={faUserCircle} className="in-text --dark --hover-tilt" title={`Show User`}/>
+
+  const AnalysisButton = <>
+    <span id="ev-Analysis" className={`fa-layers fa-fw --hover-sub-tilt`} tabIndex="0" title={`Show Analysis`} >
+      <FAI icon={faCircle} className="--dark" />
+      <FAI icon={faSearchengin} className="--sub --mid" />
+    </span>
+  </>
+
   return (
     <>
       { authenticated &&
         <nav className="ev-sidebar-nav">
+          {claimOptionLinks()}
           <AddClaimButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
           {textOptionLinks()}
           <AddTextButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          <span className="fa-layers fa-fw" onClick={toggleAbout} tabIndex="0" >
-            { showAbout &&
-              <FAI icon={faUserCircle} className="ev-icon --dark --hover-tilt" title={`Show User`}/> }
-            { !showAbout && <FAI icon={faInfoCircle} className="ev-icon --dark --hover-tilt" title={`Show About`}/>
-            }
-          </span>
+          {display.sidebar === "USER" &&
+            <span className="fa-layers fa-fw" onClick={handleContextualButtons} tabIndex="0" >
+            { showAbout && UserButton}
+            { !showAbout && AboutButton}
+            </span>
+          }
+          {display.sidebar === "ANALYZE" &&
+            <span className="ev-context-button-group" onClick={handleContextualButtons} tabIndex="0" >
+              { (showUser || showAbout) && !showAnalysis && AnalysisButton }
+              { (showAnalysis || showUser) && !showAbout && AboutButton }
+              { (showAnalysis || showAbout) && !showUser && UserButton }
+            </span>
+          }
         </nav>
       }
     { ((display.sidebar === "ABOUT" || !currentUser || showAbout) &&
       <About />
-    ) || ((display.sidebar === "USER" && currentUser && !showAbout) &&
+    ) || ((currentUser && showUser) &&
       <div className="ev-user-sidebar">
           <header><h3>Logged in as: {currentUser.siteIdentifier}</h3></header>
           <ul>
@@ -90,6 +148,21 @@ const GeneralSidebar = ({display, authenticated, currentUser, setCurrentUser, it
           {(currentUser.dataChanges && <DataChanges user={currentUser} />)}
           {(currentUser.textsAdded && <TextsAdded user={currentUser} currentUser={currentUser} />)}
           {(currentUser.claimsAdded && <ClaimsAdded user={currentUser} currentUser={currentUser} />)}
+      </div>
+    ) || ((currentUser && showAnalysis) &&
+      <div className="ev-analysis-sidebar">
+        <SelectSearch
+          name="claim-analysis"
+          value=""
+          search={true}
+          className="ev-claim-analysis-select"
+          placeholder="Select Claim to Analyze on this Text"
+          onChange= {(e) => alert(e.target.value)}
+          renderOption={null}
+          options={[
+
+          ]}
+        />
       </div>
     )
     }
