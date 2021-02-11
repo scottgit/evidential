@@ -82,6 +82,7 @@ def react_root(path):
         'favicon-32x32.png',
         'mstile-150x150.png',
         'safari-pinned-tab.svg',
+        'Evidential.png'
         ):
         return app.send_static_file(path)
     return app.send_static_file('index.html')
