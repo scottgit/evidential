@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactHtmlParser from 'react-html-parser';
 import DOMPurify from "dompurify";
 
-const Text = ({itemData, setContentDisplayed}) => {
+const Text = ({itemData, setContentDisplayed, textWrapper}) => {
   const [content, _setContent] = useState('');
   // Make sure any content change is cleaned before display in browser
   const setContent = (content) => _setContent(DOMPurify.sanitize(content, {FORBID_TAGS: ['img', 'input', 'form']}));
@@ -29,7 +29,7 @@ const Text = ({itemData, setContentDisplayed}) => {
   }, [content, setContentDisplayed])
 
   return (
-    <div id="ev-display-text" className="ev-text-content">
+    <div id="ev-display-text" className="ev-text-content" ref={textWrapper}>
       {ReactHtmlParser(content)}
     </div>
   )

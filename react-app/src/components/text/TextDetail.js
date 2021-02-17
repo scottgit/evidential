@@ -26,6 +26,7 @@ const TextDetail = (props) => {
     claim: false,
     hitCount: 0,
   })
+  const textWrapper = useRef(null);
 
   // Setup the display of main and sidebar
   const display = (() => {
@@ -99,9 +100,17 @@ const TextDetail = (props) => {
     setTitle(e.target.value)
   }
 
+
+
   // Function to set mark's as valid or ignored hits
   const handleMarkClick = (e) => {
-    alert('mark-'+ e.target.id)
+    const wrap = textWrapper.current;
+    const range = document.createRange();
+    range.setStartAfter(wrap);
+    range.setStart(wrap, 0);
+
+    alert('mark-'+ e.target.id + '@range: ' + range.startOffset);
+    console.log('mark-'+ e.target.id, range);
   }
 
   // Get claims for processing analysis
@@ -161,7 +170,7 @@ const TextDetail = (props) => {
 
   const viewProps = {...props, display, itemData, handleRetry}
   const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed, analysisDone};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState, textWrapper};
   const sideBarProps = {display, authenticated, currentUser, itemData, analysisDone, setAnalysisDone, analysisState, setAnalysisState, claims};
 
   const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
