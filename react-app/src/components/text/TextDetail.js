@@ -105,9 +105,10 @@ const TextDetail = (props) => {
   // Function to set mark's as valid or ignored hits
   const handleMarkClick = (e) => {
     const wrap = textWrapper.current;
+
     const range = document.createRange();
-    range.setStartAfter(wrap);
-    range.setStart(wrap, 0);
+    range.setStartBefore(e.target);
+    range.setStartAfter(e.target);
 
     alert('mark-'+ e.target.id + '@range: ' + range.startOffset);
     console.log('mark-'+ e.target.id, range);
