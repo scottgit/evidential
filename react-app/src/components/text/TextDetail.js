@@ -26,7 +26,7 @@ const TextDetail = (props) => {
     claim: false,
     hitCount: 0,
   })
-  const textWrapper = useRef(null);
+
 
   // Setup the display of main and sidebar
   const display = (() => {
@@ -104,8 +104,6 @@ const TextDetail = (props) => {
 
   // Function to set mark's as valid or ignored hits
   const handleMarkClick = (e) => {
-    const wrap = textWrapper.current;
-
     const range = document.createRange();
     range.setStartBefore(e.target);
     range.setStartAfter(e.target);
@@ -135,10 +133,23 @@ const TextDetail = (props) => {
     if (ANALYSIS && analysisState.claim && contentDisplayed) {
 
       const claim = analysisState.claim;
+      const textElem = document.getElementById('ev-display-text');
+
+      // Check if analysis for this claim was already run and exit if so
+      let claimMeta = textElem.querySelector(`script[data-claim-${claim.id}]`);
+      if (claimMeta) {
+        return;
+      }
+      // Otherwise, check if any script has been added for claim tracking
+      else {
+        claimMeta = textElem.querySelector(`script[data-claims-analyzed]`);
+        if (!claimMeta) {
+          claimMeta = `<script type="text/plain" data-claims-analyzed></script>`
+        }
+      }
 
       const hitKeys = claim.hitKeys.map(keyObj => keyObj.key);
       let counter = 0;
-      const textElem = document.getElementById('ev-display-text');
 
       const highlights = new Mark(textElem);
       highlights.unmark();
@@ -156,7 +167,8 @@ const TextDetail = (props) => {
         ignoreJoiners: false,
         ignorePunctuation: ":;.,-–—‒_(){}[]!'\"+=".split(""),
         each: mark => {
-          mark.setAttribute('id', `hit-mark-${++counter}`);
+          mark.setAttribute('data-claim-id', claim.id)
+          mark.setAttribute('id', `hit-mark-${claim.id}-${++counter}`);
           mark.onclick = handleMarkClick;
         },
         done: counter => {
@@ -171,7 +183,7 @@ const TextDetail = (props) => {
 
   const viewProps = {...props, display, itemData, handleRetry}
   const headerProps = {display, itemData, handleRetry, currentUser, title, handleTitleInput, contentDisplayed, analysisDone};
-  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState, textWrapper};
+  const textProps = {currentUser, itemData, setItemData, handleRetry, setTitle, title, setContentDisplayed, setCurrentUser, analysisState, setAnalysisState};
   const sideBarProps = {display, authenticated, currentUser, itemData, analysisDone, setAnalysisDone, analysisState, setAnalysisState, claims};
 
   const itemKey = itemData ? `${itemData.title}-${itemData.content}` : `initial`;
