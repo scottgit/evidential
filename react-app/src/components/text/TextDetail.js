@@ -138,9 +138,10 @@ const TextDetail = (props) => {
       // Check if analysis for this claim was already run and exit if so
       let claimMeta = textElem.querySelector(`script[data-claim-${claim.id}]`);
       if (claimMeta) {
-        const hitMarks = document.querySelectorAll(`[data-claim-id=${claim.id}]`);
+        const hitMarks = document.querySelectorAll(`[data-claim-id='${claim.id}']`);
         const hitCount = hitMarks.length;
         setAnalysisState({...analysisState, hitCount});
+        setAnalysisDone(true)
         return;
       }
       // Otherwise, check if any script has been added for claim tracking
