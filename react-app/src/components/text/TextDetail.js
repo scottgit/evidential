@@ -138,14 +138,21 @@ const TextDetail = (props) => {
       // Check if analysis for this claim was already run and exit if so
       let claimMeta = textElem.querySelector(`script[data-claim-${claim.id}]`);
       if (claimMeta) {
+        const hitCount = document.querySelectorAll(`[data-claim-id=${claim.id}]`).length;
+        setAnalysisState({...analysisState, hitCount});
         return;
       }
       // Otherwise, check if any script has been added for claim tracking
       else {
         claimMeta = textElem.querySelector(`script[data-claims-analyzed]`);
         if (!claimMeta) {
-          claimMeta = `<script type="text/plain" data-claims-analyzed></script>`
+          const newMeta = document.createElement('script');
+          newMeta.setAttribute('type', 'text/plain');
+          newMeta.setAttribute('data-claims-analyzed', '');
+          textElem.appendChild(newMeta);
+          claimMeta = newMeta;
         }
+        claimMeta.setAttribute(`data-claim-${claim.id}`);
       }
 
       const hitKeys = claim.hitKeys.map(keyObj => keyObj.key);
@@ -171,11 +178,13 @@ const TextDetail = (props) => {
           mark.setAttribute('id', `hit-mark-${claim.id}-${++counter}`);
           mark.onclick = handleMarkClick;
         },
-        done: counter => {
-          setAnalysisState({...analysisState, hitCount: counter});
+        done: hitCount => {
+          setAnalysisState({...analysisState, hitCount});
           setAnalysisDone(true)
         }
       });
+
+      //TODO Save analysis results as hits
     }
     // eslint-disable-next-line
   }, [ANALYSIS, analysisState.claim, contentDisplayed])
