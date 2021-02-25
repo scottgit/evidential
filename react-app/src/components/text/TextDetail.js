@@ -138,7 +138,8 @@ const TextDetail = (props) => {
       // Check if analysis for this claim was already run and exit if so
       let claimMeta = textElem.querySelector(`script[data-claim-${claim.id}]`);
       if (claimMeta) {
-        const hitCount = document.querySelectorAll(`[data-claim-id=${claim.id}]`).length;
+        const hitMarks = document.querySelectorAll(`[data-claim-id=${claim.id}]`);
+        const hitCount = hitMarks.length;
         setAnalysisState({...analysisState, hitCount});
         return;
       }
@@ -149,10 +150,10 @@ const TextDetail = (props) => {
           const newMeta = document.createElement('script');
           newMeta.setAttribute('type', 'text/plain');
           newMeta.setAttribute('data-claims-analyzed', '');
-          textElem.appendChild(newMeta);
+          textElem.prepend(newMeta);
           claimMeta = newMeta;
         }
-        claimMeta.setAttribute(`data-claim-${claim.id}`);
+        claimMeta.setAttribute(`data-claim-${claim.id}`, '');
       }
 
       const hitKeys = claim.hitKeys.map(keyObj => keyObj.key);
